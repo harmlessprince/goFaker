@@ -6,34 +6,39 @@ import (
 
 type EnNGPerson struct {
 	providers.Person
-	maleNameFormats   [][]func(*EnNGPerson) string
-	femaleNameFormats [][]func(*EnNGPerson) string
-	maleFirstNames    []string
-	femaleFirstNames  []string
-	lastNames         []string
 }
 
-// GetMaleNameFormats is a method that provides access to the maleNameFormats.
-func (p *EnNGPerson) GetMaleNameFormats() [][]func(*EnNGPerson) string {
-	//p.maleNameFormats = []string{"{{ firstNameMale }} {{ lastName }}"}
-	p.maleNameFormats = [][]func(*EnNGPerson) string{
-		{(*EnNGPerson).FirstNameMale, (*EnNGPerson).LastName},
-		{(*EnNGPerson).FirstNameMale, (*EnNGPerson).FirstNameMale, (*EnNGPerson).LastName},
+func NewPerson() *EnNGPerson {
+	p := &EnNGPerson{}
+	p.SetMaleNameFormats()
+	p.SetFemaleNameFormats()
+	p.SetFirstNameFormats()
+	p.SetMaleFirstNames()
+	p.SetFemaleFirstNames()
+	p.SetLastNames()
+	return p
+}
+
+// SetMaleNameFormats is a method that provides access to the maleNameFormats.
+func (p *EnNGPerson) SetMaleNameFormats() {
+	maleNameFormats := [][]func(*providers.Person) string{
+		{(*providers.Person).FirstNameMale, (*providers.Person).LastName},
+		{(*providers.Person).FirstNameMale, (*providers.Person).FirstNameMale, (*providers.Person).LastName},
 	}
-	return p.maleNameFormats
+	p.Person.SetMaleNameFormats(maleNameFormats)
 }
 
-// GetFemaleNameFormats is a method that provides access to the femaleNameFormats.
-func (p *EnNGPerson) GetFemaleNameFormats() [][]func(*EnNGPerson) string {
-	p.femaleNameFormats = [][]func(*EnNGPerson) string{
-		{(*EnNGPerson).FirstNameFemale, (*EnNGPerson).LastName},
-		{(*EnNGPerson).FirstNameFemale, (*EnNGPerson).FirstNameFemale, (*EnNGPerson).LastName},
+// SetFemaleNameFormats is a method that provides access to the femaleNameFormats.
+func (p *EnNGPerson) SetFemaleNameFormats() {
+	femaleNameFormats := [][]func(*providers.Person) string{
+		{(*providers.Person).FirstNameFemale, (*providers.Person).LastName},
+		{(*providers.Person).FirstNameFemale, (*providers.Person).FirstNameFemale, (*providers.Person).LastName},
 	}
-	return p.femaleNameFormats
+	p.Person.SetFemaleNameFormats(femaleNameFormats)
 }
 
-func (p *EnNGPerson) GetMaleFirstNames() []string {
-	p.maleFirstNames = []string{
+func (p *EnNGPerson) SetMaleFirstNames() {
+	maleFirstNames := []string{
 		"Abimbola", "Abisola", "Abisoye", "Adeboye", "Adedayo", "Adegoke", "Akande", "Akanni", "Alade", "Ayinde", "Azubuike",
 		"Banji", "Bankole", "Buchi", "Bukola",
 		"Chinedu", "Chisom", "Chukwu",
@@ -56,11 +61,11 @@ func (p *EnNGPerson) GetMaleFirstNames() []string {
 		"Wale",
 		"Yakubu", "Yusuf", "Yusuf",
 	}
-	return p.maleFirstNames
+	p.Person.SetMaleFirstNames(maleFirstNames)
 }
 
-func (p *EnNGPerson) GetFemaleFirstNames() []string {
-	p.femaleFirstNames = []string{
+func (p *EnNGPerson) SetFemaleFirstNames() {
+	femaleFirstNames := []string{
 		"Adaugo", "Akunna", "Aminat", "Aminu", "Augustina", "Ayebatari",
 		"Cherechi", "Chiamaka", "Chimamanda", "Chinyere", "Chizoba",
 		"Ebiere", "Efe",
@@ -85,11 +90,11 @@ func (p *EnNGPerson) GetFemaleFirstNames() []string {
 		"Titi", "Titilayo", "Toluwani",
 		"Zainab",
 	}
-	return p.femaleFirstNames
+	p.Person.SetFemaleFirstNames(femaleFirstNames)
 }
 
-func (p *EnNGPerson) GetLastNames() []string {
-	p.lastNames = []string{
+func (p *EnNGPerson) SetLastNames() {
+	lastNames := []string{
 		"Abiodun", "Abiola", "Abodunrin", "Abosede", "Adaobi", "Adebayo", "Adegboye", "Adegoke", "Ademayowa", "Ademola", "Adeniyan", "Adeoluwa", "Aderinsola", "Aderonke", "Adesina", "Adewale", "Adewale", "Adewale", "Adewunmi", "Adewura", "Adeyemo", "Afolabi", "Afunku", "Agboola", "Agboola", "Agnes", "Aigbiniode", "Ajakaiye", "Ajose-adeogun", "Akeem-omosanya", "Akerele", "Akintade", "Aligbe", "Amaechi", "Aminat", "Aremu", "Atanda", "Ayisat", "Ayobami", "Ayomide", "Ayomide",
 		"Babalola", "Babatunde", "Balogun", "Bamisebi", "Bello", "Busari",
 		"Chibike", "Chibuike", "Chidinma", "Chidozie", "Christian", "Clare",
@@ -112,5 +117,5 @@ func (p *EnNGPerson) GetLastNames() []string {
 		"Wasiu", "Wilcox", "Wuraola",
 		"Yaqub", "Yussuf",
 	}
-	return p.lastNames
+	p.Person.SetLastNames(lastNames)
 }

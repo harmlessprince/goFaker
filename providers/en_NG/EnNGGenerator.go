@@ -3,6 +3,7 @@ package en_NG
 var newAddress = NewAddress()
 
 var newPhoneNumber = NewPhoneNumber()
+var newPerson = NewPerson()
 
 type EnNGGenerator struct {
 	NGAddress
@@ -55,23 +56,23 @@ func (e *EnNGGenerator) GenerateCityName() string {
 }
 
 func (e *EnNGGenerator) GenerateName(gender ...string) string {
-	return e.EnNGPerson.Name()
+	return newPerson.Person.Name()
 }
 
 func (e *EnNGGenerator) GenerateFirstName(gender ...string) string {
-	return e.EnNGPerson.FirstName(gender...)
+	return newPerson.Person.FirstName(gender...)
 }
 
 func (e *EnNGGenerator) GenerateFirstNameMale() string {
-	return e.EnNGPerson.FirstNameMale()
+	return newPerson.Person.FirstNameMale()
 }
 
 func (e *EnNGGenerator) GenerateFirstNameFemale() string {
-	return e.EnNGPerson.FirstNameFemale()
+	return newPerson.Person.FirstNameFemale()
 }
 
 func (e *EnNGGenerator) GenerateLastName() string {
-	return e.EnNGPerson.LastName()
+	return newPerson.Person.LastName()
 }
 
 func (e *EnNGGenerator) GenerateTitle(gender ...string) string {
@@ -79,11 +80,11 @@ func (e *EnNGGenerator) GenerateTitle(gender ...string) string {
 }
 
 func (e *EnNGGenerator) GenerateTitleMale() string {
-	return e.EnNGPerson.TitleMale()
+	return newPerson.Person.TitleMale()
 }
 
 func (e *EnNGGenerator) GenerateTitleFemale() string {
-	return e.EnNGPerson.TitleFemale()
+	return newPerson.Person.TitleFemale()
 }
 
 func (e *EnNGGenerator) GeneratePhoneNumber() string {
