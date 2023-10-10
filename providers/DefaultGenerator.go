@@ -1,5 +1,7 @@
 package providers
 
+var addressGenerator = NewAddress()
+
 type DefaultGenerator struct {
 	Address
 	Person
@@ -7,56 +9,89 @@ type DefaultGenerator struct {
 }
 
 func (e *DefaultGenerator) GenerateAddress() string {
-	//TODO implement me
-	return e.Address.Address()
+	return addressGenerator.Address()
 }
 
-func (e *DefaultGenerator) City() string {
-	//TODO implement me
-	panic("implement me")
+func (e *DefaultGenerator) GenerateCity() string {
+	return addressGenerator.City()
 }
 
-func (e *DefaultGenerator) PostCode() string {
-	//TODO implement me
-	panic("implement me")
+func (e *DefaultGenerator) GeneratePostCode() string {
+	return addressGenerator.PostCode()
 }
 
-func (e *DefaultGenerator) StreetName() string {
-	//TODO implement me
-	panic("implement me")
+func (e *DefaultGenerator) GenerateStreetName() string {
+	return addressGenerator.StreetName()
 }
 
-func (e *DefaultGenerator) StreetAddress() string {
-	//TODO implement me
-	panic("implement me")
+func (e *DefaultGenerator) GenerateStreetAddress() string {
+	return addressGenerator.StreetAddress()
 }
 
-func (e *DefaultGenerator) BuildingNumber() string {
-	//TODO implement me
-	panic("implement me")
+func (e *DefaultGenerator) GenerateBuildingNumber() string {
+	return addressGenerator.BuildingNumber()
 }
 
-func (e *DefaultGenerator) LocalCoordinates() map[string]float64 {
-	//TODO implement me
-	panic("implement me")
+func (e *DefaultGenerator) GenerateLocalCoordinates() map[string]float64 {
+	return addressGenerator.LocalCoordinates()
 }
 
-func (e *DefaultGenerator) Longitude() float64 {
-	//TODO implement me
-	panic("implement me")
+func (e *DefaultGenerator) GenerateLongitude() float64 {
+	return addressGenerator.Longitude()
 }
 
-func (e *DefaultGenerator) Latitude() float64 {
-	//TODO implement me
-	panic("implement me")
+func (e *DefaultGenerator) GenerateLatitude() float64 {
+	return addressGenerator.Latitude()
 }
 
-func (e *DefaultGenerator) CitySuffix() string {
-	//TODO implement me
-	panic("implement me")
+func (e *DefaultGenerator) GenerateCitySuffix() string {
+	return addressGenerator.CitySuffix()
 }
 
-func (e *DefaultGenerator) CityName() string {
-	//TODO implement me
-	panic("implement me")
+func (e *DefaultGenerator) GenerateCityName() string {
+	return addressGenerator.CityName()
+}
+
+func (e *DefaultGenerator) GenerateName(gender ...string) string {
+	return e.Person.Name()
+}
+
+func (e *DefaultGenerator) GenerateFirstName(gender ...string) string {
+	return e.Person.FirstName()
+}
+
+func (e *DefaultGenerator) GenerateFirstNameMale() string {
+	return e.Person.FirstNameMale()
+}
+
+func (e *DefaultGenerator) GenerateFirstNameFemale() string {
+	return e.Person.FirstNameFemale()
+}
+
+func (e *DefaultGenerator) GenerateLastName() string {
+	return e.Person.LastName()
+}
+
+func (e *DefaultGenerator) GenerateTitle(gender ...string) string {
+	return e.Person.Title(gender...)
+}
+
+func (e *DefaultGenerator) GenerateTitleMale() string {
+	return e.Person.TitleMale()
+}
+
+func (e *DefaultGenerator) GenerateTitleFemale() string {
+	return e.Person.TitleFemale()
+}
+
+func (e *DefaultGenerator) GeneratePhoneNumber() string {
+	return e.PhoneNumber.PhoneNumber()
+}
+
+func (e *DefaultGenerator) GenerateE164PhoneNumber() string {
+	return e.PhoneNumber.E164PhoneNumber()
+}
+
+func (e *DefaultGenerator) GenerateImei() string {
+	return e.PhoneNumber.Imei()
 }

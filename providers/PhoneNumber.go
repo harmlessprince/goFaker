@@ -10,8 +10,15 @@ type PhoneNumber struct {
 	e164Formats []string
 }
 
+func (p *PhoneNumber) SetFormats(param ...[]string) {
+	if len(param) > 0 {
+		p.formats = param[0]
+	} else {
+		p.formats = []string{"###-###-###"}
+	}
+}
+
 func (p *PhoneNumber) GetFormats() []string {
-	p.formats = []string{"###-###-###"}
 	return p.formats
 }
 

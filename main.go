@@ -7,25 +7,17 @@ import (
 )
 
 func main() {
-	address := providers.Address{}
-	//
-	fmt.Println(address.Address())
-	//locality := "en_NG"
-	//generator := GeneratorFactory(locality)
-	//
-	//fmt.Println(generator.Address())
-}
 
-//type Generator interface {
-//	Country() string
-//}
+	locality := "en_NG"
+	generator := GeneratorFactory(locality)
+	fmt.Println(generator.GenerateE164PhoneNumber())
+}
 
 func GeneratorFactory(locality string) providers.DataGenerator {
 	switch locality {
 	case "en_NG":
 		return &en_NG.EnNGGenerator{}
 	default:
-		panic("Not Implemented")
 		return &providers.DefaultGenerator{}
 	}
 }

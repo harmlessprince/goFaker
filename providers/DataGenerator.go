@@ -2,16 +2,16 @@ package providers
 
 type DataGenerator interface {
 	GenerateAddress() string
-	City() string
-	PostCode() string
-	StreetName() string
-	StreetAddress() string
-	BuildingNumber() string
-	LocalCoordinates() map[string]float64
-	Longitude() float64
-	Latitude() float64
-	CitySuffix() string
-	CityName() string
+	GenerateCity() string
+	GeneratePostCode() string
+	GenerateStreetName() string
+	GenerateStreetAddress() string
+	GenerateBuildingNumber() string
+	GenerateLocalCoordinates() map[string]float64
+	GenerateLongitude() float64
+	GenerateLatitude() float64
+	GenerateCitySuffix() string
+	GenerateCityName() string
 	//Ean13() string
 	//Ean8() string
 	//Isbn10() string
@@ -32,17 +32,17 @@ type DataGenerator interface {
 	//Company() string
 	//CompanySuffix() string
 	//JobTitle() string
-	//Name(gender ...string) string
-	//FirstName(gender ...string) string
-	//FirstNameMale() string
-	//FirstNameFemale() string
-	//LastName() string
-	//Title(gender ...string) string
-	//TitleMale() string
-	//TitleFemale() string
-	//PhoneNumber() string
-	//E164PhoneNumber() string
-	//Imei() string
+	GenerateName(gender ...string) string
+	GenerateFirstName(gender ...string) string
+	GenerateFirstNameMale() string
+	GenerateFirstNameFemale() string
+	GenerateLastName() string
+	GenerateTitle(gender ...string) string
+	GenerateTitleMale() string
+	GenerateTitleFemale() string
+	GeneratePhoneNumber() string
+	GenerateE164PhoneNumber() string
+	GenerateImei() string
 	//Uuid3() string
 	//Semver(params ...bool)
 	//MimeType() string

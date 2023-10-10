@@ -1,13 +1,10 @@
 package providers
 
 import (
-	"fmt"
 	"math/rand"
 	"strings"
 	"time"
 )
-
-var myGlobalStruct *Address
 
 type Address struct {
 	BaseProvider
@@ -24,8 +21,7 @@ type Address struct {
 	streetPrefix         []string
 }
 
-func init() {
-	fmt.Println("Initialize")
+func NewAddress() *Address {
 	address := &Address{}
 	address.SetStreetSuffix()
 	address.SetPostCodes()
@@ -37,7 +33,7 @@ func init() {
 	address.SetStreetNameFormats()
 	address.SetStreetAddressFormats()
 	address.SetAddressFormats()
-	fmt.Println("Initialized")
+	return address
 }
 
 //<=============Start Setters=============>//
@@ -51,8 +47,6 @@ func (a *Address) SetStreetSuffix(param ...[]string) {
 			"Street",
 		}
 	}
-	fmt.Println(len(a.streetSuffix))
-
 }
 func (a *Address) SetPostCodes(param ...[]string) {
 	if len(param) > 0 {
@@ -259,12 +253,8 @@ func (a *Address) Address() string {
 	formats := a.GetAddressFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var address string
-	if len(formats) <= 0 {
-		panic("Please ensure you have set the addressFormats")
-		return ""
-	}
 	randomIndex := rand.Intn(len(formats))
-	address = combineMultipleFormats(formats[randomIndex], address, true)
+	address = a.combineMultipleFormats(formats[randomIndex], address, true)
 	return address
 }
 
@@ -273,7 +263,7 @@ func (a *Address) City() string {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var city string
 	randomIndex := rand.Intn(len(formats))
-	city = combineMultipleFormats(formats[randomIndex], city, false)
+	city = a.combineMultipleFormats(formats[randomIndex], city, false)
 	return city
 }
 
@@ -296,7 +286,7 @@ func (a *Address) StreetName() string {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var streetName string
 	randomIndex := rand.Intn(len(formats))
-	streetName = combineMultipleFormats(formats[randomIndex], streetName, true)
+	streetName = a.combineMultipleFormats(formats[randomIndex], streetName, true)
 	return streetName
 }
 
@@ -305,7 +295,7 @@ func (a *Address) StreetAddress() string {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var streetAddress string
 	randomIndex := rand.Intn(len(formats))
-	streetAddress = combineMultipleFormats(formats[randomIndex], streetAddress, true)
+	streetAddress = a.combineMultipleFormats(formats[randomIndex], streetAddress, true)
 	return streetAddress
 }
 
@@ -376,10 +366,10 @@ func (a *Address) Latitude() float64 {
 }
 
 // <=============End Implementations=============>//
-func combineMultipleFormats(formats []func(*Address) string, item string, space bool) string {
+func (a *Address) combineMultipleFormats(formats []func(*Address) string, item string, space bool) string {
 	for i := range formats {
 		selectedMethod := formats[i]
-		currentName := invokeSelectedMethodAddress(selectedMethod, &Address{})
+		currentName := a.invokeSelectedMethodAddress(selectedMethod)
 		if len(item) < 0 {
 			item = currentName
 		} else {
@@ -394,6 +384,6 @@ func combineMultipleFormats(formats []func(*Address) string, item string, space 
 	return strings.Trim(item, " ")
 }
 
-func invokeSelectedMethodAddress(fn func(*Address) string, addressStruct *Address) string {
-	return fn(addressStruct)
+func (a *Address) invokeSelectedMethodAddress(fn func(*Address) string) string {
+	return fn(a)
 }
