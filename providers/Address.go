@@ -25,6 +25,7 @@ type Address struct {
 }
 
 func init() {
+	fmt.Println("Initialize")
 	address := &Address{}
 	address.SetStreetSuffix()
 	address.SetPostCodes()
@@ -36,11 +37,13 @@ func init() {
 	address.SetStreetNameFormats()
 	address.SetStreetAddressFormats()
 	address.SetAddressFormats()
+	fmt.Println("Initialized")
 }
 
 //<=============Start Setters=============>//
 
 func (a *Address) SetStreetSuffix(param ...[]string) {
+
 	if len(param) > 0 {
 		a.streetSuffix = param[0]
 	} else {
@@ -48,6 +51,7 @@ func (a *Address) SetStreetSuffix(param ...[]string) {
 			"Street",
 		}
 	}
+	fmt.Println(len(a.streetSuffix))
 
 }
 func (a *Address) SetPostCodes(param ...[]string) {
@@ -252,10 +256,13 @@ func (a *Address) Country() string {
 	return country
 }
 func (a *Address) Address() string {
-	fmt.Println(a.country)
 	formats := a.GetAddressFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var address string
+	if len(formats) <= 0 {
+		panic("Please ensure you have set the addressFormats")
+		return ""
+	}
 	randomIndex := rand.Intn(len(formats))
 	address = combineMultipleFormats(formats[randomIndex], address, true)
 	return address
