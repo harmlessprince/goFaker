@@ -5,7 +5,7 @@ import (
 )
 
 type EnNGPerson struct {
-	providers.Person
+	providers.BasePerson
 }
 
 func NewPerson() *EnNGPerson {
@@ -21,20 +21,20 @@ func NewPerson() *EnNGPerson {
 
 // SetMaleNameFormats is a method that provides access to the maleNameFormats.
 func (p *EnNGPerson) SetMaleNameFormats() {
-	maleNameFormats := [][]func(*providers.Person) string{
-		{(*providers.Person).FirstNameMale, (*providers.Person).LastName},
-		{(*providers.Person).FirstNameMale, (*providers.Person).FirstNameMale, (*providers.Person).LastName},
+	maleNameFormats := [][]func(*providers.BasePerson) string{
+		{(*providers.BasePerson).FirstNameMale, (*providers.BasePerson).LastName},
+		{(*providers.BasePerson).FirstNameMale, (*providers.BasePerson).FirstNameMale, (*providers.BasePerson).LastName},
 	}
-	p.Person.SetMaleNameFormats(maleNameFormats)
+	p.BasePerson.SetMaleNameFormats(maleNameFormats)
 }
 
 // SetFemaleNameFormats is a method that provides access to the femaleNameFormats.
 func (p *EnNGPerson) SetFemaleNameFormats() {
-	femaleNameFormats := [][]func(*providers.Person) string{
-		{(*providers.Person).FirstNameFemale, (*providers.Person).LastName},
-		{(*providers.Person).FirstNameFemale, (*providers.Person).FirstNameFemale, (*providers.Person).LastName},
+	femaleNameFormats := [][]func(*providers.BasePerson) string{
+		{(*providers.BasePerson).FirstNameFemale, (*providers.BasePerson).LastName},
+		{(*providers.BasePerson).FirstNameFemale, (*providers.BasePerson).FirstNameFemale, (*providers.BasePerson).LastName},
 	}
-	p.Person.SetFemaleNameFormats(femaleNameFormats)
+	p.BasePerson.SetFemaleNameFormats(femaleNameFormats)
 }
 
 func (p *EnNGPerson) SetMaleFirstNames() {
@@ -61,7 +61,7 @@ func (p *EnNGPerson) SetMaleFirstNames() {
 		"Wale",
 		"Yakubu", "Yusuf", "Yusuf",
 	}
-	p.Person.SetMaleFirstNames(maleFirstNames)
+	p.BasePerson.SetMaleFirstNames(maleFirstNames)
 }
 
 func (p *EnNGPerson) SetFemaleFirstNames() {
@@ -90,7 +90,7 @@ func (p *EnNGPerson) SetFemaleFirstNames() {
 		"Titi", "Titilayo", "Toluwani",
 		"Zainab",
 	}
-	p.Person.SetFemaleFirstNames(femaleFirstNames)
+	p.BasePerson.SetFemaleFirstNames(femaleFirstNames)
 }
 
 func (p *EnNGPerson) SetLastNames() {
@@ -117,5 +117,5 @@ func (p *EnNGPerson) SetLastNames() {
 		"Wasiu", "Wilcox", "Wuraola",
 		"Yaqub", "Yussuf",
 	}
-	p.Person.SetLastNames(lastNames)
+	p.BasePerson.SetLastNames(lastNames)
 }

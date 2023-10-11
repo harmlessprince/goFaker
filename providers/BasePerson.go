@@ -10,12 +10,12 @@ import (
 const GenderFemale string = "female"
 const GenderMale string = "male"
 
-type Person struct {
+type BasePerson struct {
 	BaseProvider
-	titleFormats      []func(*Person) string
-	firstNameFormats  []func(*Person) string
-	maleNameFormats   [][]func(*Person) string
-	femaleNameFormats [][]func(*Person) string
+	titleFormats      []func(*BasePerson) string
+	firstNameFormats  []func(*BasePerson) string
+	maleNameFormats   [][]func(*BasePerson) string
+	femaleNameFormats [][]func(*BasePerson) string
 	maleFirstNames    []string
 	femaleFirstNames  []string
 	lastNames         []string
@@ -26,66 +26,66 @@ type Person struct {
 }
 
 // GetTitleFormats is a method that provides access to the titleFormats.
-func (p *Person) GetTitleFormats() []func(*Person) string {
-	p.titleFormats = []func(*Person) string{
-		(*Person).TitleMale,
-		(*Person).TitleFemale,
+func (p *BasePerson) GetTitleFormats() []func(*BasePerson) string {
+	p.titleFormats = []func(*BasePerson) string{
+		(*BasePerson).TitleMale,
+		(*BasePerson).TitleFemale,
 	}
 	return p.titleFormats
 }
 
 // SetFirstNameFormats is a method that provides access to set the firstNameFormats.
-func (p *Person) SetFirstNameFormats(param ...[]func(*Person) string) {
+func (p *BasePerson) SetFirstNameFormats(param ...[]func(*BasePerson) string) {
 	if len(param) > 0 {
 		p.firstNameFormats = param[0]
 	} else {
-		p.firstNameFormats = []func(*Person) string{
-			(*Person).FirstNameMale, (*Person).FirstNameFemale,
+		p.firstNameFormats = []func(*BasePerson) string{
+			(*BasePerson).FirstNameMale, (*BasePerson).FirstNameFemale,
 		}
 	}
 }
 
 // GetFirstNameFormats is a method that provides access to the firstNameFormats.
-func (p *Person) GetFirstNameFormats() []func(*Person) string {
+func (p *BasePerson) GetFirstNameFormats() []func(*BasePerson) string {
 	return p.firstNameFormats
 }
 
 // GetMaleNameFormats is a method that provides access to the maleNameFormats.
-func (p *Person) GetMaleNameFormats() [][]func(*Person) string {
-	p.maleNameFormats = [][]func(*Person) string{
-		{(*Person).FirstNameMale, (*Person).LastName},
+func (p *BasePerson) GetMaleNameFormats() [][]func(*BasePerson) string {
+	p.maleNameFormats = [][]func(*BasePerson) string{
+		{(*BasePerson).FirstNameMale, (*BasePerson).LastName},
 	}
 	return p.maleNameFormats
 }
-func (p *Person) SetMaleNameFormats(param ...[][]func(*Person) string) {
+func (p *BasePerson) SetMaleNameFormats(param ...[][]func(*BasePerson) string) {
 	if len(param) > 0 {
 		p.maleNameFormats = param[0]
 	} else {
-		p.maleNameFormats = [][]func(*Person) string{
-			{(*Person).FirstNameMale, (*Person).LastName},
+		p.maleNameFormats = [][]func(*BasePerson) string{
+			{(*BasePerson).FirstNameMale, (*BasePerson).LastName},
 		}
 	}
 }
 
 // GetFemaleNameFormats is a method that provides access to the femaleNameFormats.
-func (p *Person) GetFemaleNameFormats() [][]func(*Person) string {
+func (p *BasePerson) GetFemaleNameFormats() [][]func(*BasePerson) string {
 	return p.femaleNameFormats
 }
-func (p *Person) SetFemaleNameFormats(param ...[][]func(*Person) string) {
+func (p *BasePerson) SetFemaleNameFormats(param ...[][]func(*BasePerson) string) {
 	if len(param) > 0 {
 		p.femaleNameFormats = param[0]
 	} else {
-		p.femaleNameFormats = [][]func(*Person) string{
-			{(*Person).FirstNameFemale, (*Person).LastName},
+		p.femaleNameFormats = [][]func(*BasePerson) string{
+			{(*BasePerson).FirstNameFemale, (*BasePerson).LastName},
 		}
 	}
 }
 
-func (p *Person) GetMaleFirstNames() []string {
+func (p *BasePerson) GetMaleFirstNames() []string {
 	return p.maleFirstNames
 }
 
-func (p *Person) SetMaleFirstNames(param ...[]string) {
+func (p *BasePerson) SetMaleFirstNames(param ...[]string) {
 	if len(param) > 0 {
 		p.maleFirstNames = param[0]
 	} else {
@@ -93,10 +93,10 @@ func (p *Person) SetMaleFirstNames(param ...[]string) {
 	}
 }
 
-func (p *Person) GetFemaleFirstNames() []string {
+func (p *BasePerson) GetFemaleFirstNames() []string {
 	return p.femaleFirstNames
 }
-func (p *Person) SetFemaleFirstNames(param ...[]string) {
+func (p *BasePerson) SetFemaleFirstNames(param ...[]string) {
 	if len(param) > 0 {
 		p.femaleFirstNames = param[0]
 	} else {
@@ -104,11 +104,11 @@ func (p *Person) SetFemaleFirstNames(param ...[]string) {
 	}
 }
 
-func (p *Person) GetLastNames() []string {
+func (p *BasePerson) GetLastNames() []string {
 	return p.lastNames
 }
 
-func (p *Person) SetLastNames(param ...[]string) {
+func (p *BasePerson) SetLastNames(param ...[]string) {
 	if len(param) > 0 {
 		p.lastNames = param[0]
 	} else {
@@ -116,31 +116,31 @@ func (p *Person) SetLastNames(param ...[]string) {
 	}
 }
 
-func (p *Person) GetMaleTitles() []string {
+func (p *BasePerson) GetMaleTitles() []string {
 	p.maleFirstNames = []string{"Mr.", "Dr.", "Prof."}
 	return p.maleFirstNames
 }
-func (p *Person) GetFemaleTitles() []string {
+func (p *BasePerson) GetFemaleTitles() []string {
 	p.femaleTitles = []string{"Mrs.", "Ms.", "Miss", "Dr.", "Prof."}
 	return p.femaleTitles
 }
 
 // GetMaleGender is a method that provides access to the MaleGender value.
-func (p *Person) GetMaleGender() string {
+func (p *BasePerson) GetMaleGender() string {
 	p.genderMale = "male"
 	return p.genderMale
 }
 
 // GetFemaleGender is a method that provides access to the FemaleGender value.
-func (p *Person) GetFemaleGender() string {
+func (p *BasePerson) GetFemaleGender() string {
 	p.genderFemale = "female"
 	return p.genderFemale
 }
-func (p *Person) Name(gender ...string) string {
+func (p *BasePerson) Name(gender ...string) string {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var suppliedGender string
 	var fullName string
-	var formats []func(*Person) string
+	var formats []func(*BasePerson) string
 	if len(gender) > 0 {
 		suppliedGender = gender[0]
 		if suppliedGender == GenderMale {
@@ -160,7 +160,7 @@ func (p *Person) Name(gender ...string) string {
 	return fullName
 }
 
-func (p *Person) parseToFullName(formats []func(*Person) string, fullName string) string {
+func (p *BasePerson) parseToFullName(formats []func(*BasePerson) string, fullName string) string {
 	for i := range formats {
 		selectedMethod := formats[i]
 		currentName := p.invokeSelectedMethod(selectedMethod)
@@ -173,7 +173,7 @@ func (p *Person) parseToFullName(formats []func(*Person) string, fullName string
 	return strings.Trim(fullName, " ")
 }
 
-func (p *Person) FirstName(gender ...string) string {
+func (p *BasePerson) FirstName(gender ...string) string {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var suppliedGender string
 	var firstName string
@@ -194,8 +194,8 @@ func (p *Person) FirstName(gender ...string) string {
 	return firstName
 }
 
-// FirstNameMale returns a male first name for Person
-func (p *Person) FirstNameMale() string {
+// FirstNameMale returns a male first name for BasePerson
+func (p *BasePerson) FirstNameMale() string {
 	firstName, err := p.RandomElementFromStringSlice(p.GetMaleFirstNames())
 	if err != nil {
 		panic(err.Error())
@@ -203,8 +203,8 @@ func (p *Person) FirstNameMale() string {
 	return firstName
 }
 
-// FirstNameFemale returns a female first name for Person
-func (p *Person) FirstNameFemale() string {
+// FirstNameFemale returns a female first name for BasePerson
+func (p *BasePerson) FirstNameFemale() string {
 	firstName, err := p.BaseProvider.RandomElementFromStringSlice(p.GetFemaleFirstNames())
 	if err != nil {
 		panic(err.Error())
@@ -212,8 +212,8 @@ func (p *Person) FirstNameFemale() string {
 	return firstName
 }
 
-// LastName returns a last name for Person
-func (p *Person) LastName() string {
+// LastName returns a last name for BasePerson
+func (p *BasePerson) LastName() string {
 	lastName, err := p.BaseProvider.RandomElementFromStringSlice(p.GetLastNames())
 	if err != nil {
 		panic(err.Error())
@@ -221,8 +221,8 @@ func (p *Person) LastName() string {
 	return lastName
 }
 
-// TitleMale returns a male title for Person
-func (p *Person) TitleMale() string {
+// TitleMale returns a male title for BasePerson
+func (p *BasePerson) TitleMale() string {
 	title, err := p.BaseProvider.RandomElementFromStringSlice(p.GetMaleTitles())
 	if err != nil {
 		panic(err.Error())
@@ -230,8 +230,8 @@ func (p *Person) TitleMale() string {
 	return title
 }
 
-// TitleFemale returns a female title for Person
-func (p *Person) TitleFemale() string {
+// TitleFemale returns a female title for BasePerson
+func (p *BasePerson) TitleFemale() string {
 	title, err := p.BaseProvider.RandomElementFromStringSlice(p.GetFemaleTitles())
 	if err != nil {
 		panic(err.Error())
@@ -239,7 +239,7 @@ func (p *Person) TitleFemale() string {
 	return title
 }
 
-func (p *Person) Title(gender ...string) string {
+func (p *BasePerson) Title(gender ...string) string {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var suppliedGender string
 	var title string
@@ -261,6 +261,6 @@ func (p *Person) Title(gender ...string) string {
 }
 
 // invokeSelectedMethod
-func (p *Person) invokeSelectedMethod(fn func(*Person) string) string {
+func (p *BasePerson) invokeSelectedMethod(fn func(*BasePerson) string) string {
 	return fn(p)
 }

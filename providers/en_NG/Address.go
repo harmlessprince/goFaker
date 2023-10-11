@@ -6,14 +6,14 @@ import (
 )
 
 type NGAddress struct {
-	providers.Address
+	providers.BaseAddress
 }
 
 func (a *NGAddress) SetCountry() {
-	a.Address.SetCountry(constants.CountryNamesEnglish)
+	a.BaseAddress.SetCountry(constants.CountryNamesEnglish)
 }
 func (a *NGAddress) SetPostCodes() {
-	a.Address.SetPostCodes([]string{"## ###", "#####"})
+	a.BaseAddress.SetPostCodes([]string{"## ###", "#####"})
 }
 
 func NewAddress() *NGAddress {

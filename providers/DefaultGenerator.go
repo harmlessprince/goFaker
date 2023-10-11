@@ -3,13 +3,16 @@ package providers
 var addressGenerator = NewAddress()
 
 type DefaultGenerator struct {
-	Address
-	Person
-	PhoneNumber
+	BaseAddress
+	BasePerson
+	BasePhoneNumber
 }
 
 func (e *DefaultGenerator) GenerateAddress() string {
 	return addressGenerator.Address()
+}
+func (e *DefaultGenerator) GenerateCountry() string {
+	return addressGenerator.Country()
 }
 
 func (e *DefaultGenerator) GenerateCity() string {
@@ -53,45 +56,45 @@ func (e *DefaultGenerator) GenerateCityName() string {
 }
 
 func (e *DefaultGenerator) GenerateName(gender ...string) string {
-	return e.Person.Name()
+	return e.BasePerson.Name()
 }
 
 func (e *DefaultGenerator) GenerateFirstName(gender ...string) string {
-	return e.Person.FirstName()
+	return e.BasePerson.FirstName()
 }
 
 func (e *DefaultGenerator) GenerateFirstNameMale() string {
-	return e.Person.FirstNameMale()
+	return e.BasePerson.FirstNameMale()
 }
 
 func (e *DefaultGenerator) GenerateFirstNameFemale() string {
-	return e.Person.FirstNameFemale()
+	return e.BasePerson.FirstNameFemale()
 }
 
 func (e *DefaultGenerator) GenerateLastName() string {
-	return e.Person.LastName()
+	return e.BasePerson.LastName()
 }
 
 func (e *DefaultGenerator) GenerateTitle(gender ...string) string {
-	return e.Person.Title(gender...)
+	return e.BasePerson.Title(gender...)
 }
 
 func (e *DefaultGenerator) GenerateTitleMale() string {
-	return e.Person.TitleMale()
+	return e.BasePerson.TitleMale()
 }
 
 func (e *DefaultGenerator) GenerateTitleFemale() string {
-	return e.Person.TitleFemale()
+	return e.BasePerson.TitleFemale()
 }
 
 func (e *DefaultGenerator) GeneratePhoneNumber() string {
-	return e.PhoneNumber.PhoneNumber()
+	return e.BasePhoneNumber.PhoneNumber()
 }
 
 func (e *DefaultGenerator) GenerateE164PhoneNumber() string {
-	return e.PhoneNumber.E164PhoneNumber()
+	return e.BasePhoneNumber.E164PhoneNumber()
 }
 
 func (e *DefaultGenerator) GenerateImei() string {
-	return e.PhoneNumber.Imei()
+	return e.BasePhoneNumber.Imei()
 }

@@ -6,12 +6,12 @@ import (
 	"time"
 )
 
-type Address struct {
+type BaseAddress struct {
 	BaseProvider
-	cityFormats          [][]func(*Address) string
-	streetNameFormats    [][]func(*Address) string
-	streetAddressFormats [][]func(*Address) string
-	addressFormats       [][]func(*Address) string
+	cityFormats          [][]func(*BaseAddress) string
+	streetNameFormats    [][]func(*BaseAddress) string
+	streetAddressFormats [][]func(*BaseAddress) string
+	addressFormats       [][]func(*BaseAddress) string
 	postcode             []string
 	country              []string
 	buildingNumber       []string
@@ -21,8 +21,8 @@ type Address struct {
 	streetPrefix         []string
 }
 
-func NewAddress() *Address {
-	address := &Address{}
+func NewAddress() *BaseAddress {
+	address := &BaseAddress{}
 	address.SetStreetSuffix()
 	address.SetPostCodes()
 	address.SetBuildingNumber()
@@ -38,7 +38,7 @@ func NewAddress() *Address {
 
 //<=============Start Setters=============>//
 
-func (a *Address) SetStreetSuffix(param ...[]string) {
+func (a *BaseAddress) SetStreetSuffix(param ...[]string) {
 
 	if len(param) > 0 {
 		a.streetSuffix = param[0]
@@ -48,7 +48,7 @@ func (a *Address) SetStreetSuffix(param ...[]string) {
 		}
 	}
 }
-func (a *Address) SetPostCodes(param ...[]string) {
+func (a *BaseAddress) SetPostCodes(param ...[]string) {
 	if len(param) > 0 {
 		a.postcode = param[0]
 	} else {
@@ -57,7 +57,7 @@ func (a *Address) SetPostCodes(param ...[]string) {
 		}
 	}
 }
-func (a *Address) SetBuildingNumber(param ...[]string) {
+func (a *BaseAddress) SetBuildingNumber(param ...[]string) {
 
 	if len(param) > 0 {
 		a.buildingNumber = param[0]
@@ -67,7 +67,7 @@ func (a *Address) SetBuildingNumber(param ...[]string) {
 		}
 	}
 }
-func (a *Address) SetCitySuffix(param ...[]string) {
+func (a *BaseAddress) SetCitySuffix(param ...[]string) {
 	if len(param) > 0 {
 		a.citySuffix = param[0]
 	} else {
@@ -76,7 +76,7 @@ func (a *Address) SetCitySuffix(param ...[]string) {
 		}
 	}
 }
-func (a *Address) SetCityPrefix(param ...[]string) {
+func (a *BaseAddress) SetCityPrefix(param ...[]string) {
 	if len(param) > 0 {
 		a.cityPrefix = param[0]
 	} else {
@@ -85,7 +85,7 @@ func (a *Address) SetCityPrefix(param ...[]string) {
 		}
 	}
 }
-func (a *Address) SetStreetPrefix(param ...[]string) {
+func (a *BaseAddress) SetStreetPrefix(param ...[]string) {
 	if len(param) > 0 {
 		a.streetPrefix = param[0]
 	} else {
@@ -94,7 +94,7 @@ func (a *Address) SetStreetPrefix(param ...[]string) {
 		}
 	}
 }
-func (a *Address) SetCountry(param ...[]string) {
+func (a *BaseAddress) SetCountry(param ...[]string) {
 	if len(param) > 0 {
 		a.country = param[0]
 	} else {
@@ -105,43 +105,43 @@ func (a *Address) SetCountry(param ...[]string) {
 
 }
 
-func (a *Address) SetCityFormats(param ...[][]func(*Address) string) {
+func (a *BaseAddress) SetCityFormats(param ...[][]func(*BaseAddress) string) {
 	if len(param) > 0 {
 		a.cityFormats = param[0]
 	} else {
-		a.cityFormats = [][]func(*Address) string{
-			{(*Address).CityName, (*Address).CitySuffix},
+		a.cityFormats = [][]func(*BaseAddress) string{
+			{(*BaseAddress).CityName, (*BaseAddress).CitySuffix},
 		}
 	}
 
 }
-func (a *Address) SetStreetNameFormats(param ...[][]func(*Address) string) {
+func (a *BaseAddress) SetStreetNameFormats(param ...[][]func(*BaseAddress) string) {
 	if len(param) > 0 {
 		a.streetNameFormats = param[0]
 	} else {
-		a.streetNameFormats = [][]func(*Address) string{
-			{(*Address).CitySuffix, (*Address).StreetPrefix},
+		a.streetNameFormats = [][]func(*BaseAddress) string{
+			{(*BaseAddress).CitySuffix, (*BaseAddress).StreetPrefix},
 		}
 	}
 
 }
-func (a *Address) SetStreetAddressFormats(param ...[][]func(*Address) string) {
+func (a *BaseAddress) SetStreetAddressFormats(param ...[][]func(*BaseAddress) string) {
 	if len(param) > 0 {
 		a.streetAddressFormats = param[0]
 	} else {
-		a.streetAddressFormats = [][]func(*Address) string{
-			{(*Address).BuildingNumber, (*Address).StreetName},
+		a.streetAddressFormats = [][]func(*BaseAddress) string{
+			{(*BaseAddress).BuildingNumber, (*BaseAddress).StreetName},
 		}
 	}
 
 }
 
-func (a *Address) SetAddressFormats(param ...[][]func(*Address) string) {
+func (a *BaseAddress) SetAddressFormats(param ...[][]func(*BaseAddress) string) {
 	if len(param) > 0 {
 		a.addressFormats = param[0]
 	} else {
-		a.addressFormats = [][]func(*Address) string{
-			{(*Address).StreetAddress, (*Address).PostCode, (*Address).City},
+		a.addressFormats = [][]func(*BaseAddress) string{
+			{(*BaseAddress).StreetAddress, (*BaseAddress).PostCode, (*BaseAddress).City},
 		}
 	}
 
@@ -151,49 +151,49 @@ func (a *Address) SetAddressFormats(param ...[][]func(*Address) string) {
 
 //<=============Start Getters=============>//
 
-func (a *Address) GetStreetSuffix() []string {
+func (a *BaseAddress) GetStreetSuffix() []string {
 	return a.streetSuffix
 }
 
-func (a *Address) GetPostCodes() []string {
+func (a *BaseAddress) GetPostCodes() []string {
 	return a.postcode
 }
-func (a *Address) GetBuildingNumber() []string {
+func (a *BaseAddress) GetBuildingNumber() []string {
 	return a.buildingNumber
 }
-func (a *Address) GetCitySuffix() []string {
+func (a *BaseAddress) GetCitySuffix() []string {
 	return a.citySuffix
 }
-func (a *Address) GetCityPrefix() []string {
+func (a *BaseAddress) GetCityPrefix() []string {
 	return a.cityPrefix
 }
-func (a *Address) GetStreetPrefix() []string {
+func (a *BaseAddress) GetStreetPrefix() []string {
 	return a.streetPrefix
 }
 
-func (a *Address) GetCountry() []string {
+func (a *BaseAddress) GetCountry() []string {
 	return a.country
 }
 
 // GetCityFormats is a method that provides access to the cityFormats.
-func (a *Address) GetCityFormats() [][]func(*Address) string {
+func (a *BaseAddress) GetCityFormats() [][]func(*BaseAddress) string {
 	return a.cityFormats
 }
 
 // GetStreetNameFormats is a method that provides access to the streetNameFormats.
-func (a *Address) GetStreetNameFormats() [][]func(*Address) string {
+func (a *BaseAddress) GetStreetNameFormats() [][]func(*BaseAddress) string {
 
 	return a.streetNameFormats
 }
 
 // GetStreetAddressFormats is a method that provides access to the streetAddressFormats.
-func (a *Address) GetStreetAddressFormats() [][]func(*Address) string {
+func (a *BaseAddress) GetStreetAddressFormats() [][]func(*BaseAddress) string {
 
 	return a.streetAddressFormats
 }
 
 // GetAddressFormats is a method that provides access to the addressFormats.
-func (a *Address) GetAddressFormats() [][]func(*Address) string {
+func (a *BaseAddress) GetAddressFormats() [][]func(*BaseAddress) string {
 	return a.addressFormats
 }
 
@@ -201,7 +201,7 @@ func (a *Address) GetAddressFormats() [][]func(*Address) string {
 
 //<=============Start Implementations=============>//
 
-func (a *Address) CityName() string {
+func (a *BaseAddress) CityName() string {
 	cityPrefix, err := a.BaseProvider.RandomElementFromStringSlice(a.GetCityPrefix())
 	if err != nil {
 		panic(err.Error())
@@ -209,7 +209,7 @@ func (a *Address) CityName() string {
 	}
 	return cityPrefix
 }
-func (a *Address) CityPrefix() string {
+func (a *BaseAddress) CityPrefix() string {
 	citySuffix, err := a.BaseProvider.RandomElementFromStringSlice(a.GetCitySuffix())
 	if err != nil {
 		panic(err.Error())
@@ -217,7 +217,7 @@ func (a *Address) CityPrefix() string {
 	}
 	return citySuffix
 }
-func (a *Address) StreetPrefix() string {
+func (a *BaseAddress) StreetPrefix() string {
 	streetPrefix, err := a.BaseProvider.RandomElementFromStringSlice(a.GetStreetPrefix())
 	if err != nil {
 		panic(err.Error())
@@ -225,7 +225,7 @@ func (a *Address) StreetPrefix() string {
 	}
 	return streetPrefix
 }
-func (a *Address) CitySuffix() string {
+func (a *BaseAddress) CitySuffix() string {
 	citySuffix, err := a.BaseProvider.RandomElementFromStringSlice(a.GetCitySuffix())
 	if err != nil {
 		panic(err.Error())
@@ -233,7 +233,7 @@ func (a *Address) CitySuffix() string {
 	return citySuffix
 }
 
-func (a *Address) StreetSuffix() string {
+func (a *BaseAddress) StreetSuffix() string {
 	citySuffix, err := a.BaseProvider.RandomElementFromStringSlice(a.GetStreetSuffix())
 	if err != nil {
 		panic(err.Error())
@@ -241,7 +241,7 @@ func (a *Address) StreetSuffix() string {
 	return citySuffix
 }
 
-func (a *Address) Country() string {
+func (a *BaseAddress) Country() string {
 	country, err := a.BaseProvider.RandomElementFromStringSlice(a.GetCountry())
 	if err != nil {
 		panic(err.Error())
@@ -249,7 +249,7 @@ func (a *Address) Country() string {
 	}
 	return country
 }
-func (a *Address) Address() string {
+func (a *BaseAddress) Address() string {
 	formats := a.GetAddressFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var address string
@@ -258,7 +258,7 @@ func (a *Address) Address() string {
 	return address
 }
 
-func (a *Address) City() string {
+func (a *BaseAddress) City() string {
 	formats := a.GetCityFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var city string
@@ -267,7 +267,7 @@ func (a *Address) City() string {
 	return city
 }
 
-func (a *Address) PostCode() string {
+func (a *BaseAddress) PostCode() string {
 	randomCode, err := a.BaseProvider.RandomElementFromStringSlice(a.GetPostCodes())
 	if err != nil {
 		panic(err.Error())
@@ -281,7 +281,7 @@ func (a *Address) PostCode() string {
 	return a.BaseProvider.ToLower(postCode)
 }
 
-func (a *Address) StreetName() string {
+func (a *BaseAddress) StreetName() string {
 	formats := a.GetStreetNameFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var streetName string
@@ -290,7 +290,7 @@ func (a *Address) StreetName() string {
 	return streetName
 }
 
-func (a *Address) StreetAddress() string {
+func (a *BaseAddress) StreetAddress() string {
 	formats := a.GetStreetAddressFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	var streetAddress string
@@ -299,7 +299,7 @@ func (a *Address) StreetAddress() string {
 	return streetAddress
 }
 
-func (a *Address) BuildingNumber() string {
+func (a *BaseAddress) BuildingNumber() string {
 	randomBuildNumber, err := a.BaseProvider.RandomElementFromStringSlice(a.GetBuildingNumber())
 	if err != nil {
 		panic(err.Error())
@@ -327,7 +327,7 @@ func (a *Address) BuildingNumber() string {
 // Returns:
 //
 //	map[string]float64{"latitude": 40.7128, "longitude": -74.0060}
-func (a *Address) LocalCoordinates() map[string]float64 {
+func (a *BaseAddress) LocalCoordinates() map[string]float64 {
 	latitude := a.Latitude()
 	longitude := a.Longitude()
 	coordinate := map[string]float64{
@@ -337,7 +337,7 @@ func (a *Address) LocalCoordinates() map[string]float64 {
 	return coordinate
 }
 
-func (a *Address) Longitude() float64 {
+func (a *BaseAddress) Longitude() float64 {
 	options := RandomFloatOptions{
 		NumberOfMaxDecimals: 6,
 		Min:                 -180,
@@ -351,7 +351,7 @@ func (a *Address) Longitude() float64 {
 	return long
 }
 
-func (a *Address) Latitude() float64 {
+func (a *BaseAddress) Latitude() float64 {
 	options := RandomFloatOptions{
 		NumberOfMaxDecimals: 6,
 		Min:                 -90,
@@ -366,7 +366,7 @@ func (a *Address) Latitude() float64 {
 }
 
 // <=============End Implementations=============>//
-func (a *Address) combineMultipleFormats(formats []func(*Address) string, item string, space bool) string {
+func (a *BaseAddress) combineMultipleFormats(formats []func(*BaseAddress) string, item string, space bool) string {
 	for i := range formats {
 		selectedMethod := formats[i]
 		currentName := a.invokeSelectedMethodAddress(selectedMethod)
@@ -384,6 +384,6 @@ func (a *Address) combineMultipleFormats(formats []func(*Address) string, item s
 	return strings.Trim(item, " ")
 }
 
-func (a *Address) invokeSelectedMethodAddress(fn func(*Address) string) string {
+func (a *BaseAddress) invokeSelectedMethodAddress(fn func(*BaseAddress) string) string {
 	return fn(a)
 }

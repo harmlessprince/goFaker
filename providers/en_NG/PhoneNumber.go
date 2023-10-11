@@ -5,7 +5,7 @@ import (
 )
 
 type EnNGPhoneNumber struct {
-	providers.PhoneNumber
+	providers.BasePhoneNumber
 	formats []string
 }
 
@@ -142,5 +142,5 @@ func (p *EnNGPhoneNumber) SetFormats() {
 		"+234 908 ### ####",
 		"+234 909 ### ####",
 	}
-	p.PhoneNumber.SetFormats(formats)
+	p.BasePhoneNumber.SetFormats(formats)
 }

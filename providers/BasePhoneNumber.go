@@ -4,13 +4,13 @@ import (
 	"github.com/harmlessprince/goFaker/calculator"
 )
 
-type PhoneNumber struct {
+type BasePhoneNumber struct {
 	BaseProvider
 	formats     []string
 	e164Formats []string
 }
 
-func (p *PhoneNumber) SetFormats(param ...[]string) {
+func (p *BasePhoneNumber) SetFormats(param ...[]string) {
 	if len(param) > 0 {
 		p.formats = param[0]
 	} else {
@@ -18,14 +18,14 @@ func (p *PhoneNumber) SetFormats(param ...[]string) {
 	}
 }
 
-func (p *PhoneNumber) GetFormats() []string {
+func (p *BasePhoneNumber) GetFormats() []string {
 	return p.formats
 }
 
 // GetE164Formats
 // see https://github.com/giggsey/libphonenumber-for-php/blob/master/src/CountryCodeToRegionCodeMap.php
 // see https://libphonenumber.appspot.com/phonenumberparser?number=%2B4576597442
-func (p *PhoneNumber) GetE164Formats() []string {
+func (p *BasePhoneNumber) GetE164Formats() []string {
 	p.e164Formats = []string{
 		"+1##########",
 		"+7##########",
@@ -246,7 +246,7 @@ func (p *PhoneNumber) GetE164Formats() []string {
 	return p.e164Formats
 }
 
-func (p *PhoneNumber) PhoneNumber() string {
+func (p *BasePhoneNumber) PhoneNumber() string {
 	format, err := p.BaseProvider.RandomElementFromStringSlice(p.GetFormats())
 	if err != nil {
 		panic(err.Error())
@@ -258,7 +258,7 @@ func (p *PhoneNumber) PhoneNumber() string {
 	return phoneNumber
 }
 
-func (p *PhoneNumber) E164PhoneNumber() string {
+func (p *BasePhoneNumber) E164PhoneNumber() string {
 	format, err := p.BaseProvider.RandomElementFromStringSlice(p.GetE164Formats())
 	if err != nil {
 		panic(err.Error())
@@ -270,7 +270,7 @@ func (p *PhoneNumber) E164PhoneNumber() string {
 	return phoneNumber
 }
 
-func (p *PhoneNumber) Imei() string {
+func (p *BasePhoneNumber) Imei() string {
 	imei, err := p.BaseProvider.Numerify("##############")
 	if err != nil {
 		panic(err.Error())

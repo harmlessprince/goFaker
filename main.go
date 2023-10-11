@@ -10,7 +10,7 @@ func main() {
 
 	locality := "en_NG"
 	generator := GeneratorFactory(locality)
-	fmt.Println(generator.GenerateFirstNameMale())
+	fmt.Println(generator.GenerateCountry())
 }
 
 func GeneratorFactory(locality string) providers.DataGenerator {

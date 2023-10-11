@@ -3,6 +3,7 @@ package providers
 type DataGenerator interface {
 	GenerateAddress() string
 	GenerateCity() string
+	GenerateCountry() string
 	GeneratePostCode() string
 	GenerateStreetName() string
 	GenerateStreetAddress() string
