@@ -1,7 +1,6 @@
 package providers
 
 import (
-	"fmt"
 	"math/rand"
 	"strings"
 	"time"
@@ -23,6 +22,17 @@ type BasePerson struct {
 	femaleTitles      []string
 	genderMale        string
 	genderFemale      string
+}
+
+func NewBasePerson() *BasePerson {
+	p := &BasePerson{}
+	p.SetMaleNameFormats()
+	p.SetFemaleNameFormats()
+	p.SetFirstNameFormats()
+	p.SetMaleFirstNames()
+	p.SetFemaleFirstNames()
+	p.SetLastNames()
+	return p
 }
 
 // GetTitleFormats is a method that provides access to the titleFormats.
@@ -252,9 +262,9 @@ func (p *BasePerson) Title(gender ...string) string {
 			title = p.TitleFemale()
 		}
 	} else {
-		randomIndex := rand.Intn(len(p.GetFirstNameFormats()))
-		selectedMethod := p.GetTitleFormats()[randomIndex]
-		fmt.Println(randomIndex)
+		formats := p.GetTitleFormats()
+		randomIndex := rand.Intn(len(formats))
+		selectedMethod := formats[randomIndex]
 		title = p.invokeSelectedMethod(selectedMethod)
 	}
 	return title

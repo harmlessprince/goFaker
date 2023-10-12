@@ -5,19 +5,19 @@ import (
 	"github.com/harmlessprince/goFaker/providers"
 )
 
-type NGAddress struct {
+type EnNGAddress struct {
 	providers.BaseAddress
 }
 
-func (a *NGAddress) SetCountry() {
+func (a *EnNGAddress) SetCountry() {
 	a.BaseAddress.SetCountry(constants.CountryNamesEnglish)
 }
-func (a *NGAddress) SetPostCodes() {
+func (a *EnNGAddress) SetPostCodes() {
 	a.BaseAddress.SetPostCodes([]string{"## ###", "#####"})
 }
 
-func NewAddress() *NGAddress {
-	address := &NGAddress{}
+func NewAddress() *EnNGAddress {
+	address := &EnNGAddress{}
 	address.SetStreetSuffix()
 	address.SetPostCodes()
 	address.SetBuildingNumber()

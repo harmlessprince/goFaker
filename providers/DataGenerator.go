@@ -1,6 +1,7 @@
 package providers
 
 type DataGenerator interface {
+	//extensions.InternetExtension
 	GenerateAddress() string
 	GenerateCity() string
 	GenerateCountry() string
@@ -30,9 +31,9 @@ type DataGenerator interface {
 	//ColorName() string
 	//HslColor() string
 	//HslColorAsArray() []int
-	//Company() string
-	//CompanySuffix() string
-	//JobTitle() string
+	GenerateCompany() string
+	GenerateCompanySuffix() string
+	GenerateJobTitle() string
 	GenerateName(gender ...string) string
 	GenerateFirstName(gender ...string) string
 	GenerateFirstNameMale() string
@@ -44,6 +45,25 @@ type DataGenerator interface {
 	GeneratePhoneNumber() string
 	GenerateE164PhoneNumber() string
 	GenerateImei() string
+	GenerateEmail() string
+	GenerateSafeEmail() string
+	GenerateFreeEmail() string
+	GenerateCompanyEmail() string
+	GenerateFreeEmailDomain() string
+	GenerateSafeEmailDomain() string
+	GenerateUserName() string
+	GeneratePassword(params ...int) string
+	GenerateDomainName() string
+	GenerateDomainWord() string
+	GenerateUrl() string
+	GenerateTld() string
+	GenerateIpv4() string
+	GenerateIpv6() string
+	GenerateLocalIpv4() string
+	GenerateMacAddress() string
+	GenerateTransliterate(inputString string) string
+	GenerateToAscii(inputString string) string
+	GenerateSlug(numberOfWords int, variableNumberOfWords bool) string
 	//Uuid3() string
 	//Semver(params ...bool)
 	//MimeType() string

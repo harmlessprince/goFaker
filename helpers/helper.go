@@ -1,10 +1,12 @@
 package helpers
 
 import (
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"math"
 	"math/rand"
+	"net"
 	"regexp"
 	"strconv"
 	"time"
@@ -206,4 +208,30 @@ func (h Helper) StringToInt(numberString string) []int {
 		digits = append(digits, digit)
 	}
 	return digits
+}
+func (h Helper) DecimalToHexDecimal(number int64) string {
+	return strconv.FormatInt(number, 16)
+}
+
+func (h Helper) Ip2long(ip string) (uint32, error) {
+	parsedIP := net.ParseIP(ip)
+	if parsedIP == nil {
+		return 0, errors.New("invalid IP address")
+	}
+	ipBytes := parsedIP.To4()
+	if ipBytes == nil {
+		return 0, errors.New("IPv6 address not supported")
+	}
+	return binary.BigEndian.Uint32(ipBytes), nil
+}
+
+func (h Helper) Long2ip(ipInt uint32) (string, error) {
+	ipBytes := make([]byte, 4)
+	binary.BigEndian.PutUint32(ipBytes, ipInt)
+	ip := net.IP(ipBytes)
+	ip = ip.To4()
+	if ip == nil {
+		return "", errors.New("invalid IP integer")
+	}
+	return ip.String(), nil
 }

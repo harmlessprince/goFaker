@@ -8,9 +8,16 @@ import (
 
 func main() {
 
+	//data := &en_NG.EnNGGenerator{}
+	//input := "{{GenerateAddress}}.{{GenerateCity}}"
+	//result, err := providers.BaseProvider{}.Parse(input, data)
+	//if err != nil {
+	//	fmt.Println(err.Error())
+	//}
+	//fmt.Println(result)
 	locality := "en_NG"
 	generator := GeneratorFactory(locality)
-	fmt.Println(generator.GenerateCountry())
+	fmt.Println(generator.GenerateName("male"))
 }
 
 func GeneratorFactory(locality string) providers.DataGenerator {

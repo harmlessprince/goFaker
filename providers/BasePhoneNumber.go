@@ -10,6 +10,11 @@ type BasePhoneNumber struct {
 	e164Formats []string
 }
 
+func NewBasePhoneNumber() *BasePhoneNumber {
+	ph := &BasePhoneNumber{}
+	ph.SetFormats()
+	return ph
+}
 func (p *BasePhoneNumber) SetFormats(param ...[]string) {
 	if len(param) > 0 {
 		p.formats = param[0]
