@@ -2,6 +2,8 @@ package providers
 
 import (
 	"github.com/harmlessprince/goFaker/constants"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 	"strings"
 )
 
@@ -48,7 +50,7 @@ func (bl *BaseLorem) Sentence(numberOfWords int, variableNumberOfWords bool) str
 		numberOfWords = bl.randomizeNbElements(numberOfWords)
 	}
 	words := bl.WordsAsList(numberOfWords)
-	words[0] = strings.ToTitle(words[0])
+	words[0] = cases.Title(language.Und).String(words[0])
 	return strings.Join(words, " ") + "."
 }
 
@@ -154,7 +156,7 @@ func (bl *BaseLorem) Text(maxNumberOfCharacters ...int) string {
 
 	if texType == "word" {
 		// capitalize first letter
-		text[0] = strings.ToTitle(text[0])
+		text[0] = cases.Title(language.Und).String(text[0])
 		// end sentence with full stop
 		text[len(text)-1] += "."
 	}

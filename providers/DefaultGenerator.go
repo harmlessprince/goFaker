@@ -14,6 +14,8 @@ type DefaultGenerator struct {
 	BaseLorem
 	BaseInternet
 	BaseMiscellaneous
+	BaseMedical
+	BaseColor
 }
 
 func (e *DefaultGenerator) GenerateAddress() string {
@@ -193,4 +195,136 @@ func (e *DefaultGenerator) GenerateToAscii(inputString string) string {
 
 func (e *DefaultGenerator) GenerateSlug(numberOfWords int, variableNumberOfWords bool) string {
 	return newBaseIternet.Slug(numberOfWords, variableNumberOfWords)
+}
+
+func (e *DefaultGenerator) GenerateBoolean(chanceOfGettingTrue ...int) bool {
+	return e.BaseMiscellaneous.Boolean(chanceOfGettingTrue...)
+}
+
+func (e *DefaultGenerator) GenerateMd5() string {
+	return e.BaseMiscellaneous.Md5()
+}
+
+func (e *DefaultGenerator) GenerateSha1() string {
+	return e.BaseMiscellaneous.Sha1()
+}
+
+func (e *DefaultGenerator) GenerateSha256() string {
+	return e.BaseMiscellaneous.Sha256()
+}
+
+func (e *DefaultGenerator) GenerateLocale() string {
+	return e.BaseMiscellaneous.Locale()
+}
+
+func (e *DefaultGenerator) GenerateCountryCode() string {
+	return e.BaseMiscellaneous.CountryCode()
+}
+
+func (e *DefaultGenerator) GenerateCountryISOAlpha3() string {
+	return e.BaseMiscellaneous.CountryISOAlpha3()
+}
+
+func (e *DefaultGenerator) GenerateLanguageCode() string {
+	return e.BaseMiscellaneous.LanguageCode()
+}
+
+func (e *DefaultGenerator) GenerateCurrencyCode() string {
+	return e.BaseMiscellaneous.CurrencyCode()
+}
+
+func (e *DefaultGenerator) GenerateEmoji() string {
+	return e.BaseMiscellaneous.Emoji()
+}
+
+func (e *DefaultGenerator) GenerateWord() string {
+	return e.BaseLorem.Word()
+}
+
+func (e *DefaultGenerator) GenerateWordsAsText(numberOfWords int) string {
+	return e.BaseLorem.WordsAsText(numberOfWords)
+}
+
+func (e *DefaultGenerator) GenerateWordsAsList(numberOfWords int) []string {
+	return e.BaseLorem.WordsAsList(numberOfWords)
+}
+
+func (e *DefaultGenerator) GenerateSentence(numberOfWords int, variableNumberOfWords bool) string {
+	return e.BaseLorem.Sentence(numberOfWords, variableNumberOfWords)
+}
+
+func (e *DefaultGenerator) GenerateSentencesAsText(numberOfSentences int, variableNumberOfWords bool) string {
+	return e.BaseLorem.SentencesAsText(numberOfSentences, variableNumberOfWords)
+}
+
+func (e *DefaultGenerator) GenerateSentencesAsList(numberOfSentences int, variableNumberOfWords bool) []string {
+	return e.BaseLorem.SentencesAsList(numberOfSentences, variableNumberOfWords)
+}
+
+func (e *DefaultGenerator) GenerateParagraph(numberOfSentences int, variableNumberOfSentences bool) string {
+	return e.BaseLorem.Paragraph(numberOfSentences, variableNumberOfSentences)
+}
+
+func (e *DefaultGenerator) GenerateParagraphsAsList(numberOfParagraphs ...int) []string {
+	return e.BaseLorem.ParagraphsAsList(numberOfParagraphs...)
+}
+
+func (e *DefaultGenerator) GenerateParagraphsAsText(numberOfParagraphs ...int) string {
+	return e.BaseLorem.ParagraphsAsText(numberOfParagraphs...)
+}
+
+func (e *DefaultGenerator) GenerateText(maxNumberOfCharacters ...int) string {
+	return e.BaseLorem.Text(maxNumberOfCharacters...)
+}
+
+func (e *DefaultGenerator) GenerateBloodGroup() string {
+	return e.BaseMedical.BloodGroup()
+}
+
+func (e *DefaultGenerator) GenerateBloodRh() string {
+	return e.BaseMedical.BloodRh()
+}
+
+func (e *DefaultGenerator) GenerateBloodType() string {
+	return e.BaseMedical.BloodType()
+}
+
+func (e *DefaultGenerator) GenerateHexColor() string {
+	return e.HexColor()
+}
+
+func (e *DefaultGenerator) GenerateSafeHexColor() string {
+	return e.SafeHexColor()
+}
+
+func (e *DefaultGenerator) GenerateRgbColorAsArray() []string {
+	return e.RgbColorAsArray()
+}
+
+func (e *DefaultGenerator) GenerateRgbColor() string {
+	return e.RgbColor()
+}
+
+func (e *DefaultGenerator) GenerateRgbCssColor() string {
+	return e.RgbCssColor()
+}
+
+func (e *DefaultGenerator) GenerateRgbaCssColor() string {
+	return e.RgbaCssColor()
+}
+
+func (e *DefaultGenerator) GenerateSafeColorName() string {
+	return e.SafeColorName()
+}
+
+func (e *DefaultGenerator) GenerateColorName() string {
+	return e.ColorName()
+}
+
+func (e *DefaultGenerator) GenerateHslColor() string {
+	return e.HslColor()
+}
+
+func (e *DefaultGenerator) GenerateHslColorAsArray() []int {
+	return e.HslColorAsArray()
 }

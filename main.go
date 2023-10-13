@@ -14,10 +14,10 @@ func main() {
 	//if err != nil {
 	//	fmt.Println(err.Error())
 	//}
-	//fmt.Println(result)
+
 	locality := "en_NG"
 	generator := GeneratorFactory(locality)
-	fmt.Println(generator.GenerateName("male"))
+	fmt.Println(generator.GenerateRgbaCssColor())
 }
 
 func GeneratorFactory(locality string) providers.DataGenerator {

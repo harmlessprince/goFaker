@@ -1,7 +1,6 @@
 package providers
 
 type DataGenerator interface {
-	//extensions.InternetExtension
 	GenerateAddress() string
 	GenerateCity() string
 	GenerateCountry() string
@@ -18,19 +17,16 @@ type DataGenerator interface {
 	//Ean8() string
 	//Isbn10() string
 	//Isbn13() string
-	//BloodType() string
-	//BloodRh() string
-	//BloodGroup() string
-	//HexColor() string
-	//SafeHexColor() string
-	//RgbColorAsArray() string
-	//RgbColor() string
-	//RgbCssColor() string
-	//RgbaCssColor() string
-	//SafeColorName() string
-	//ColorName() string
-	//HslColor() string
-	//HslColorAsArray() []int
+	GenerateHexColor() string
+	GenerateSafeHexColor() string
+	GenerateRgbColorAsArray() []string
+	GenerateRgbColor() string
+	GenerateRgbCssColor() string
+	GenerateRgbaCssColor() string
+	GenerateSafeColorName() string
+	GenerateColorName() string
+	GenerateHslColor() string
+	GenerateHslColorAsArray() []int
 	GenerateCompany() string
 	GenerateCompanySuffix() string
 	GenerateJobTitle() string
@@ -64,6 +60,29 @@ type DataGenerator interface {
 	GenerateTransliterate(inputString string) string
 	GenerateToAscii(inputString string) string
 	GenerateSlug(numberOfWords int, variableNumberOfWords bool) string
+	GenerateBoolean(chanceOfGettingTrue ...int) bool
+	GenerateMd5() string
+	GenerateSha1() string
+	GenerateSha256() string
+	GenerateLocale() string
+	GenerateCountryCode() string
+	GenerateCountryISOAlpha3() string
+	GenerateLanguageCode() string
+	GenerateCurrencyCode() string
+	GenerateEmoji() string
+	GenerateWord() string
+	GenerateWordsAsText(numberOfWords int) string
+	GenerateWordsAsList(numberOfWords int) []string
+	GenerateSentence(numberOfWords int, variableNumberOfWords bool) string
+	GenerateSentencesAsText(numberOfSentences int, variableNumberOfWords bool) string
+	GenerateSentencesAsList(numberOfSentences int, variableNumberOfWords bool) []string
+	GenerateParagraph(numberOfSentences int, variableNumberOfSentences bool) string
+	GenerateParagraphsAsList(numberOfParagraphs ...int) []string
+	GenerateParagraphsAsText(numberOfParagraphs ...int) string
+	GenerateText(maxNumberOfCharacters ...int) string
+	GenerateBloodGroup() string
+	GenerateBloodRh() string
+	GenerateBloodType() string
 	//Uuid3() string
 	//Semver(params ...bool)
 	//MimeType() string

@@ -212,6 +212,14 @@ func (h Helper) StringToInt(numberString string) []int {
 func (h Helper) DecimalToHexDecimal(number int64) string {
 	return strconv.FormatInt(number, 16)
 }
+func (h Helper) HexDecimalToDecimal(str string) int64 {
+	value, err := strconv.ParseInt(str, 16, 0)
+	if err != nil {
+		panic(err.Error())
+		return 0
+	}
+	return value
+}
 
 func (h Helper) Ip2long(ip string) (uint32, error) {
 	parsedIP := net.ParseIP(ip)
@@ -234,4 +242,48 @@ func (h Helper) Long2ip(ipInt uint32) (string, error) {
 		return "", errors.New("invalid IP integer")
 	}
 	return ip.String(), nil
+}
+
+func (h Helper) StrPadLeft(input string, padLength int, padString string) string {
+	output := ""
+	inputLen := len(input)
+	if inputLen >= padLength {
+		return input
+	}
+	padCount := padLength - inputLen
+	for i := 1; i <= padCount; i = i + len(padString) {
+		output += padString
+	}
+	return output + input
+}
+func (h Helper) StrPadRight(input string, padLength int, padString string) string {
+	output := input
+	inputLen := len(input)
+
+	if inputLen >= padLength {
+		return input
+	}
+
+	padCount := padLength - inputLen
+	padStringLen := len(padString)
+
+	for i := 0; i < padCount; i += padStringLen {
+		output += padString
+	}
+
+	// Trim any excess padding to ensure the result is exactly padLength long
+	if len(output) > padLength {
+		output = output[:padLength]
+	}
+
+	return output
+}
+
+// Substr Return part of a string
+// params
+//   - string $string — The input string.
+//   - int $offset
+//   - int $length
+func (h Helper) Substr(str string, start int, length int) string {
+	return str[start : start+length]
 }
