@@ -1,0 +1,1 @@
+https://www.php2golang.com/method/function.substr.html

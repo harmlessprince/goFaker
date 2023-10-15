@@ -4,7 +4,7 @@ var addressGenerator = NewAddress()
 var newPhoneNumber = NewBasePhoneNumber()
 var newPerson = NewBasePerson()
 var newBaseCompany = NewBaseCompany()
-var newBaseIternet = NewBaseInternet()
+var newBaseInternet = NewBaseInternet()
 
 type DefaultGenerator struct {
 	BaseAddress
@@ -16,6 +16,7 @@ type DefaultGenerator struct {
 	BaseMiscellaneous
 	BaseMedical
 	BaseColor
+	BaseDateTime
 }
 
 func (e *DefaultGenerator) GenerateAddress() string {
@@ -122,79 +123,79 @@ func (e *DefaultGenerator) GenerateJobTitle() string {
 }
 
 func (e *DefaultGenerator) GenerateEmail() string {
-	return newBaseIternet.Email()
+	return newBaseInternet.Email()
 }
 
 func (e *DefaultGenerator) GenerateSafeEmail() string {
-	return newBaseIternet.SafeEmail()
+	return newBaseInternet.SafeEmail()
 }
 
 func (e *DefaultGenerator) GenerateFreeEmail() string {
-	return newBaseIternet.FreeEmail()
+	return newBaseInternet.FreeEmail()
 }
 
 func (e *DefaultGenerator) GenerateCompanyEmail() string {
-	return newBaseIternet.CompanyEmail()
+	return newBaseInternet.CompanyEmail()
 }
 
 func (e *DefaultGenerator) GenerateFreeEmailDomain() string {
-	return newBaseIternet.FreeEmailDomain()
+	return newBaseInternet.FreeEmailDomain()
 }
 
 func (e *DefaultGenerator) GenerateSafeEmailDomain() string {
-	return newBaseIternet.SafeEmailDomain()
+	return newBaseInternet.SafeEmailDomain()
 }
 
 func (e *DefaultGenerator) GenerateUserName() string {
-	return newBaseIternet.UserName()
+	return newBaseInternet.UserName()
 }
 
 func (e *DefaultGenerator) GeneratePassword(params ...int) string {
-	return newBaseIternet.Password(params...)
+	return newBaseInternet.Password(params...)
 }
 
 func (e *DefaultGenerator) GenerateDomainName() string {
-	return newBaseIternet.DomainName()
+	return newBaseInternet.DomainName()
 }
 
 func (e *DefaultGenerator) GenerateDomainWord() string {
-	return newBaseIternet.DomainWord()
+	return newBaseInternet.DomainWord()
 }
 
 func (e *DefaultGenerator) GenerateUrl() string {
-	return newBaseIternet.Url()
+	return newBaseInternet.Url()
 }
 
 func (e *DefaultGenerator) GenerateTld() string {
-	return newBaseIternet.Tld()
+	return newBaseInternet.Tld()
 }
 
 func (e *DefaultGenerator) GenerateIpv4() string {
-	return newBaseIternet.Ipv4()
+	return newBaseInternet.Ipv4()
 }
 
 func (e *DefaultGenerator) GenerateIpv6() string {
-	return newBaseIternet.Ipv6()
+	return newBaseInternet.Ipv6()
 }
 
 func (e *DefaultGenerator) GenerateLocalIpv4() string {
-	return newBaseIternet.LocalIpv4()
+	return newBaseInternet.LocalIpv4()
 }
 
 func (e *DefaultGenerator) GenerateMacAddress() string {
-	return newBaseIternet.MacAddress()
+	return newBaseInternet.MacAddress()
 }
 
 func (e *DefaultGenerator) GenerateTransliterate(inputString string) string {
-	return newBaseIternet.Transliterate(inputString)
+	return newBaseInternet.Transliterate(inputString)
 }
 
 func (e *DefaultGenerator) GenerateToAscii(inputString string) string {
-	return newBaseIternet.ToAscii(inputString)
+	return newBaseInternet.ToAscii(inputString)
 }
 
 func (e *DefaultGenerator) GenerateSlug(numberOfWords int, variableNumberOfWords bool) string {
-	return newBaseIternet.Slug(numberOfWords, variableNumberOfWords)
+	return newBaseInternet.Slug(numberOfWords, variableNumberOfWords)
 }
 
 func (e *DefaultGenerator) GenerateBoolean(chanceOfGettingTrue ...int) bool {

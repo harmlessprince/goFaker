@@ -279,7 +279,7 @@ func (h Helper) StrPadRight(input string, padLength int, padString string) strin
 	return output
 }
 
-// Substr Return part of a string
+// Substr returns the portion of string specified by the start and length parameters.
 // params
 //   - string $string — The input string.
 //   - int $offset

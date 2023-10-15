@@ -1,5 +1,7 @@
 package providers
 
+import "github.com/harmlessprince/goFaker/extensions"
+
 type DataGenerator interface {
 	GenerateAddress() string
 	GenerateCity() string
@@ -88,25 +90,5 @@ type DataGenerator interface {
 	//MimeType() string
 	//Extension() string
 	//FilePath() string
-	//DateTime(params ...string) time.Time
-	//DateTimeAD(params ...string) time.Time
-	//DateTimeBetween(params ...string) time.Time
-	//DateTimeInterval(params ...string) time.Time
-	//DateTimeThisWeek(params ...string) time.Time
-	//DateTimeThisMonth(params ...string) time.Time
-	//DateTimeThisYear(params ...string) time.Time
-	//DateTimeThisDecade(params ...string) time.Time
-	//DateTimeThisCentury(params ...string) time.Time
-	//Date(params ...string) string
-	//Time(params ...string) string
-	//UnixTime(until ...string) string
-	//ISO8602(until ...string) string
-	//AmPm(until ...string) string
-	//DayOfMonth(until ...string) string
-	//DayOfWeek(until ...string) string
-	//Month(until ...string) string
-	//MonthName(until ...string) string
-	//Year(until ...string) string
-	//Century() string
-	//Timezone(countryCode ...string) string
+	extensions.DateTimeExtension
 }
