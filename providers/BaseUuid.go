@@ -1,14 +1,13 @@
-package extensions
+package providers
 
 import (
 	"crypto/md5"
 	"encoding/binary"
 	"fmt"
-	"github.com/harmlessprince/goFaker/providers"
 )
 
 type BaseUuid struct {
-	providers.BaseProvider
+	BaseProvider
 }
 
 func (b *BaseUuid) Uuid3() string {

@@ -19,6 +19,7 @@ type DefaultGenerator struct {
 	BaseMedical
 	BaseColor
 	BaseDateTime
+	BaseUuid
 }
 
 func (e *DefaultGenerator) GenerateAddress() string {

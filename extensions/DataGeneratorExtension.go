@@ -5,6 +5,8 @@ import (
 )
 
 type DataGeneratorExtension interface {
+	// GenerateAddress
+	//
 	GenerateAddress() string
 	GenerateCity() string
 	GenerateCountry() string
