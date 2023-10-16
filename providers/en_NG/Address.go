@@ -26,7 +26,7 @@ func (a *EnNGAddress) SetCitySuffix() {
 	}
 	a.BaseAddress.SetCitySuffix(cityNames)
 }
-func (a *EnNGAddress) SetStreetPrefix(param ...[]string) {
+func (a *EnNGAddress) SetStreetPrefix() {
 	streetNames := []string{"Broad", "Bode Thomas", "Adeola Odeku",
 		"Allen Avenue", "Toyin",
 		"Adetokubo Ademola", "Adeniran Ogunsanya",
@@ -36,6 +36,13 @@ func (a *EnNGAddress) SetStreetPrefix(param ...[]string) {
 		"Akanni", "Alakoro Marina", "Ashogbon", "Epe",
 	}
 	a.BaseAddress.SetStreetPrefix(streetNames)
+}
+
+func (a *EnNGAddress) SetAddressFormats() {
+	addressFormats := [][]func(*providers.BaseAddress) string{
+		{(*EnNGAddress).StreetAddress, (*EnNGAddress).City},
+	}
+	a.BaseAddress.SetAddressFormats(addressFormats)
 }
 
 func NewAddress() *EnNGAddress {
