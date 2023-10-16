@@ -120,7 +120,7 @@ func (a *BaseAddress) SetStreetNameFormats(param ...[][]func(*BaseAddress) strin
 		a.streetNameFormats = param[0]
 	} else {
 		a.streetNameFormats = [][]func(*BaseAddress) string{
-			{(*BaseAddress).CitySuffix, (*BaseAddress).StreetPrefix},
+			{(*BaseAddress).StreetPrefix, (*BaseAddress).CitySuffix},
 		}
 	}
 
