@@ -1,3 +1,0 @@
-
-test:
-	 gotest ./tests/... -v
