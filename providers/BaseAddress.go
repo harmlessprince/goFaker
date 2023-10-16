@@ -44,7 +44,7 @@ func (a *BaseAddress) SetStreetSuffix(param ...[]string) {
 		a.streetSuffix = param[0]
 	} else {
 		a.streetSuffix = []string{
-			"Street",
+			"Street", "Avenue", "Way", "Drive", "Road",
 		}
 	}
 }
