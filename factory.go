@@ -6,8 +6,12 @@ import (
 	"github.com/harmlessprince/goFaker/providers/en_NG"
 )
 
-func MakeFactory(locality string) extensions.DataGeneratorExtension {
-	switch locality {
+func MakeFactory(locality ...string) extensions.DataGeneratorExtension {
+	var localityCode string
+	if len(locality) > 0 {
+		localityCode = locality[0]
+	}
+	switch localityCode {
 	case "en_NG":
 		return &en_NG.EnNGGenerator{}
 	default:
