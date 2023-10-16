@@ -17,6 +17,10 @@ func (e *EnNGGenerator) GenerateAddress() string {
 	return newAddress.BaseAddress.Address()
 }
 
+func (e *EnNGGenerator) GenerateStreetAddress() string {
+	return newAddress.BaseAddress.StreetAddress()
+}
+
 func (e *EnNGGenerator) GenerateCity() string {
 	return newAddress.BaseAddress.City()
 }
