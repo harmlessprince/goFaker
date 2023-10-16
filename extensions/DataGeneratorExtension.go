@@ -1,10 +1,10 @@
-package providers
+package extensions
 
 import (
 	"time"
 )
 
-type DataGenerator interface {
+type DataGeneratorExtension interface {
 	GenerateAddress() string
 	GenerateCity() string
 	GenerateCountry() string
