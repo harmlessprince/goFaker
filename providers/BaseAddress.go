@@ -1,6 +1,7 @@
 package providers
 
 import (
+	"fmt"
 	"math/rand"
 	"strings"
 	"time"
@@ -110,7 +111,7 @@ func (a *BaseAddress) SetCityFormats(param ...[]string) {
 		a.cityFormats = param[0]
 	} else {
 		a.cityFormats = []string{
-			"{{CityName CitySuffix}}",
+			"{{CityName}} {{CitySuffix}}",
 		}
 	}
 
@@ -120,7 +121,7 @@ func (a *BaseAddress) SetStreetNameFormats(param ...[]string) {
 		a.streetNameFormats = param[0]
 	} else {
 		a.streetNameFormats = []string{
-			"{{StreetName}} {{StreetSuffix}}",
+			"{{StreetPrefix}} {{StreetSuffix}}",
 		}
 	}
 
@@ -262,6 +263,7 @@ func (a *BaseAddress) Address() string {
 }
 
 func (a *BaseAddress) City() string {
+	fmt.Println("City")
 	formats := a.GetCityFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	randomIndex := rand.Intn(len(formats))
@@ -274,6 +276,7 @@ func (a *BaseAddress) City() string {
 }
 
 func (a *BaseAddress) PostCode() string {
+	fmt.Println("PostCode")
 	randomCode, err := a.BaseProvider.RandomElementFromStringSlice(a.GetPostCodes())
 	if err != nil {
 		panic(err.Error())
@@ -300,6 +303,7 @@ func (a *BaseAddress) StreetName() string {
 }
 
 func (a *BaseAddress) StreetAddress() string {
+	fmt.Println("StreetAddress")
 	formats := a.GetStreetAddressFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	randomIndex := rand.Intn(len(formats))

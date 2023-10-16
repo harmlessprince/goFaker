@@ -718,6 +718,7 @@ func (b BaseProvider) Parse(input string, data interface{}, args ...map[string]i
 			if len(methodArgs) > 0 {
 				result = field.Call(methodArgs)
 			} else {
+
 				result = field.Call(nil)
 			}
 
