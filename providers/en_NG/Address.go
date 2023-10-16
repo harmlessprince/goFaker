@@ -51,6 +51,5 @@ func NewAddress() *EnNGAddress {
 	address.SetStreetAddressFormats()
 	address.SetAddressFormats()
 	address.SetStreetPrefix()
-
 	return address
 }
