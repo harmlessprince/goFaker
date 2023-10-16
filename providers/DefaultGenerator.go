@@ -1,5 +1,7 @@
 package providers
 
+import "time"
+
 var addressGenerator = NewAddress()
 var newPhoneNumber = NewBasePhoneNumber()
 var newPerson = NewBasePerson()
@@ -328,4 +330,88 @@ func (e *DefaultGenerator) GenerateHslColor() string {
 
 func (e *DefaultGenerator) GenerateHslColorAsArray() []int {
 	return e.HslColorAsArray()
+}
+
+func (e *DefaultGenerator) GenerateDateTime(max interface{}, timezone string) time.Time {
+	return e.DateTime(max, timezone)
+}
+
+func (e *DefaultGenerator) GenerateDateTimeAD(max interface{}, timezone string) time.Time {
+	return e.DateTimeAD(max, timezone)
+}
+
+func (e *DefaultGenerator) GenerateDateTimeBetween(startDate interface{}, endDate interface{}, timezone string) time.Time {
+	return e.DateTimeBetween(startDate, endDate, timezone)
+}
+
+func (e *DefaultGenerator) GenerateDateTimeInterval(dateString string, intervalString string, timezone string) time.Time {
+	return e.DateTimeInterval(dateString, intervalString, timezone)
+}
+
+func (e *DefaultGenerator) GenerateDateTimeThisWeek(max string, timezone string) time.Time {
+	return e.DateTimeThisWeek(max, timezone)
+}
+
+func (e *DefaultGenerator) GenerateDateTimeThisMonth(max string, timezone string) time.Time {
+	return e.DateTimeThisMonth(max, timezone)
+}
+
+func (e *DefaultGenerator) GenerateDateTimeThisYear(max string, timezone string) time.Time {
+	return e.DateTimeThisYear(max, timezone)
+}
+
+func (e *DefaultGenerator) GenerateDateTimeThisDecade(max string, timezone string) time.Time {
+	return e.DateTimeThisDecade(max, timezone)
+}
+
+func (e *DefaultGenerator) GenerateDateTimeThisCentury(max string, timezone string) time.Time {
+	return e.DateTimeThisCentury(max, timezone)
+}
+
+func (e *DefaultGenerator) GenerateDate(format string, max interface{}) string {
+	return e.Date(format, max)
+}
+
+func (e *DefaultGenerator) GenerateTime(format string, max interface{}) string {
+	return e.Time(format, max)
+}
+
+func (e *DefaultGenerator) GenerateUnixTime(max interface{}) int {
+	return e.UnixTime(max)
+}
+
+func (e *DefaultGenerator) GenerateISO8602(max interface{}) string {
+	return e.ISO8602(max)
+}
+
+func (e *DefaultGenerator) GenerateAmPm(max interface{}) string {
+	return e.AmPm(max)
+}
+
+func (e *DefaultGenerator) GenerateDayOfMonth(max interface{}) int {
+	return e.DayOfMonth(max)
+}
+
+func (e *DefaultGenerator) GenerateDayOfWeek(max interface{}) time.Weekday {
+	return e.DayOfWeek(max)
+}
+
+func (e *DefaultGenerator) GenerateMonth(max interface{}) int {
+	return e.Month(max)
+}
+
+func (e *DefaultGenerator) GenerateMonthName(max interface{}) string {
+	return e.MonthName(max)
+}
+
+func (e *DefaultGenerator) GenerateYear(max interface{}) string {
+	return e.Year(max)
+}
+
+func (e *DefaultGenerator) GenerateCentury() string {
+	return e.Century()
+}
+
+func (e *DefaultGenerator) GenerateTimezone(countryCode string) *time.Location {
+	return e.Timezone(countryCode)
 }

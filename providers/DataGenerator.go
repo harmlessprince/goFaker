@@ -1,6 +1,8 @@
 package providers
 
-import "github.com/harmlessprince/goFaker/extensions"
+import (
+	"time"
+)
 
 type DataGenerator interface {
 	GenerateAddress() string
@@ -90,5 +92,26 @@ type DataGenerator interface {
 	//MimeType() string
 	//Extension() string
 	//FilePath() string
-	extensions.DateTimeExtension
+	SetDefaultTimeZone(timeZone string)
+	GenerateDateTime(max interface{}, timezone string) time.Time
+	GenerateDateTimeAD(max interface{}, timezone string) time.Time
+	GenerateDateTimeBetween(startDate interface{}, endDate interface{}, timezone string) time.Time
+	GenerateDateTimeInterval(dateString string, intervalString string, timezone string) time.Time
+	GenerateDateTimeThisWeek(max string, timezone string) time.Time
+	GenerateDateTimeThisMonth(max string, timezone string) time.Time
+	GenerateDateTimeThisYear(max string, timezone string) time.Time
+	GenerateDateTimeThisDecade(max string, timezone string) time.Time
+	GenerateDateTimeThisCentury(max string, timezone string) time.Time
+	GenerateDate(format string, max interface{}) string
+	GenerateTime(format string, max interface{}) string
+	GenerateUnixTime(max interface{}) int
+	GenerateISO8602(max interface{}) string
+	GenerateAmPm(max interface{}) string
+	GenerateDayOfMonth(max interface{}) int
+	GenerateDayOfWeek(max interface{}) time.Weekday
+	GenerateMonth(max interface{}) int
+	GenerateMonthName(max interface{}) string
+	GenerateYear(max interface{}) string
+	GenerateCentury() string
+	GenerateTimezone(countryCode string) *time.Location
 }
