@@ -16,7 +16,7 @@ func (a *EnNGAddress) SetPostCodes() {
 	a.BaseAddress.SetPostCodes([]string{"## ###", "#####"})
 }
 
-func (a *EnNGAddress) SetCityPrefix() {
+func (a *EnNGAddress) SetCitySuffix() {
 	cityNames := []string{
 		"Ikeja", "Agege", "Iyana Ipaja", "Ohafia", "Umu Nneochi", "Jimeta",
 		"Mubi", "Numan", "Yola", "Uyo", "Oron", "Akwa", "Onitsha", "Azare",
@@ -24,7 +24,7 @@ func (a *EnNGAddress) SetCityPrefix() {
 		"Gusau", "Kaura Namoda", "Mushin", "Shomolu", "Gombe", "Kumo", "Enugu", "Nsuka",
 		"Sapele", "Burutu", "Ughelli", "Warri", "Calabar", "Ogoja",
 	}
-	a.BaseAddress.SetCityPrefix(cityNames)
+	a.BaseAddress.SetCitySuffix(cityNames)
 }
 func (a *EnNGAddress) SetStreetPrefix(param ...[]string) {
 	streetNames := []string{"Broad", "Bode Thomas", "Adeola Odeku",
