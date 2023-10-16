@@ -8,10 +8,10 @@ import (
 
 type BaseAddress struct {
 	BaseProvider
-	cityFormats          [][]func(*BaseAddress) string
-	streetNameFormats    [][]func(*BaseAddress) string
-	streetAddressFormats [][]func(*BaseAddress) string
-	addressFormats       [][]func(*BaseAddress) string
+	cityFormats          []string
+	streetNameFormats    []string
+	streetAddressFormats []string
+	addressFormats       []string
 	postcode             []string
 	country              []string
 	buildingNumber       []string
@@ -105,43 +105,43 @@ func (a *BaseAddress) SetCountry(param ...[]string) {
 
 }
 
-func (a *BaseAddress) SetCityFormats(param ...[][]func(*BaseAddress) string) {
+func (a *BaseAddress) SetCityFormats(param ...[]string) {
 	if len(param) > 0 {
 		a.cityFormats = param[0]
 	} else {
-		a.cityFormats = [][]func(*BaseAddress) string{
-			{(*BaseAddress).CityName, (*BaseAddress).CitySuffix},
+		a.cityFormats = []string{
+			"{{CityName CitySuffix}}",
 		}
 	}
 
 }
-func (a *BaseAddress) SetStreetNameFormats(param ...[][]func(*BaseAddress) string) {
+func (a *BaseAddress) SetStreetNameFormats(param ...[]string) {
 	if len(param) > 0 {
 		a.streetNameFormats = param[0]
 	} else {
-		a.streetNameFormats = [][]func(*BaseAddress) string{
-			{(*BaseAddress).StreetPrefix, (*BaseAddress).CitySuffix},
+		a.streetNameFormats = []string{
+			"{{StreetName}} {{StreetSuffix}}",
 		}
 	}
 
 }
-func (a *BaseAddress) SetStreetAddressFormats(param ...[][]func(*BaseAddress) string) {
+func (a *BaseAddress) SetStreetAddressFormats(param ...[]string) {
 	if len(param) > 0 {
 		a.streetAddressFormats = param[0]
 	} else {
-		a.streetAddressFormats = [][]func(*BaseAddress) string{
-			{(*BaseAddress).BuildingNumber, (*BaseAddress).StreetName},
+		a.streetAddressFormats = []string{
+			"{{BuildingNumber}}, {{StreetName}}",
 		}
 	}
 
 }
 
-func (a *BaseAddress) SetAddressFormats(param ...[][]func(*BaseAddress) string) {
+func (a *BaseAddress) SetAddressFormats(param ...[]string) {
 	if len(param) > 0 {
 		a.addressFormats = param[0]
 	} else {
-		a.addressFormats = [][]func(*BaseAddress) string{
-			{(*BaseAddress).StreetAddress, (*BaseAddress).PostCode, (*BaseAddress).City},
+		a.addressFormats = []string{
+			"{{StreetAddress}} {{PostCode}} {{City}}",
 		}
 	}
 
@@ -176,24 +176,24 @@ func (a *BaseAddress) GetCountry() []string {
 }
 
 // GetCityFormats is a method that provides access to the cityFormats.
-func (a *BaseAddress) GetCityFormats() [][]func(*BaseAddress) string {
+func (a *BaseAddress) GetCityFormats() []string {
 	return a.cityFormats
 }
 
 // GetStreetNameFormats is a method that provides access to the streetNameFormats.
-func (a *BaseAddress) GetStreetNameFormats() [][]func(*BaseAddress) string {
+func (a *BaseAddress) GetStreetNameFormats() []string {
 
 	return a.streetNameFormats
 }
 
 // GetStreetAddressFormats is a method that provides access to the streetAddressFormats.
-func (a *BaseAddress) GetStreetAddressFormats() [][]func(*BaseAddress) string {
+func (a *BaseAddress) GetStreetAddressFormats() []string {
 
 	return a.streetAddressFormats
 }
 
 // GetAddressFormats is a method that provides access to the addressFormats.
-func (a *BaseAddress) GetAddressFormats() [][]func(*BaseAddress) string {
+func (a *BaseAddress) GetAddressFormats() []string {
 	return a.addressFormats
 }
 
@@ -252,18 +252,24 @@ func (a *BaseAddress) Country() string {
 func (a *BaseAddress) Address() string {
 	formats := a.GetAddressFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
-	var address string
 	randomIndex := rand.Intn(len(formats))
-	address = a.combineMultipleFormats(formats[randomIndex], address, true)
+	address, err := a.BaseProvider.Parse(formats[randomIndex], a)
+	if err != nil {
+		panic(err.Error())
+		return ""
+	}
 	return address
 }
 
 func (a *BaseAddress) City() string {
 	formats := a.GetCityFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
-	var city string
 	randomIndex := rand.Intn(len(formats))
-	city = a.combineMultipleFormats(formats[randomIndex], city, false)
+	city, err := a.BaseProvider.Parse(formats[randomIndex], a)
+	if err != nil {
+		panic(err.Error())
+		return ""
+	}
 	return city
 }
 
@@ -284,18 +290,24 @@ func (a *BaseAddress) PostCode() string {
 func (a *BaseAddress) StreetName() string {
 	formats := a.GetStreetNameFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
-	var streetName string
 	randomIndex := rand.Intn(len(formats))
-	streetName = a.combineMultipleFormats(formats[randomIndex], streetName, true)
+	streetName, err := a.BaseProvider.Parse(formats[randomIndex], a)
+	if err != nil {
+		panic(err.Error())
+		return ""
+	}
 	return streetName
 }
 
 func (a *BaseAddress) StreetAddress() string {
 	formats := a.GetStreetAddressFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
-	var streetAddress string
 	randomIndex := rand.Intn(len(formats))
-	streetAddress = a.combineMultipleFormats(formats[randomIndex], streetAddress, true)
+	streetAddress, err := a.BaseProvider.Parse(formats[randomIndex], a)
+	if err != nil {
+		panic(err.Error())
+		return ""
+	}
 	return streetAddress
 }
 

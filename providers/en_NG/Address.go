@@ -39,8 +39,8 @@ func (a *EnNGAddress) SetStreetPrefix() {
 }
 
 func (a *EnNGAddress) SetAddressFormats() {
-	addressFormats := [][]func(*providers.BaseAddress) string{
-		{(*EnNGAddress).StreetAddress, (*EnNGAddress).City},
+	addressFormats := []string{
+		"{{StreetAddress}}, {{City}}",
 	}
 	a.BaseAddress.SetAddressFormats(addressFormats)
 }
