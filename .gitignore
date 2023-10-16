@@ -1,3 +1,4 @@
 .idea
 main.go
 Makefile
+facory_test.go
