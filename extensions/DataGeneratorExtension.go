@@ -48,7 +48,7 @@ type DataGeneratorExtension interface {
 	//
 	// Returns:
 	// - A string representing a randomly generated street address.
-	GenerateStreetAddress()
+	GenerateStreetAddress() string
 	// GenerateBuildingNumber generates a random building number.
 	//
 	// This method generates a random building number that can be used for testing, example data, or placeholders.
