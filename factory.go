@@ -1,4 +1,4 @@
-package factory
+package goFaker
 
 import (
 	"github.com/harmlessprince/goFaker/extensions"
