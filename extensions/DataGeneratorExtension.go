@@ -178,7 +178,6 @@ type DataGeneratorExtension interface {
 	//
 	// Returns:
 	// - A string representing a randomly generated job title.
-
 	GenerateJobTitle() string
 
 	// GenerateName generates a random full name.
@@ -248,7 +247,6 @@ type DataGeneratorExtension interface {
 	//
 	// Returns:
 	// - A string representing a randomly generated E.164 formatted phone number.
-
 	GenerateE164PhoneNumber() string
 
 	// GenerateImei generates a random IMEI (International Mobile Equipment Identity) number.
@@ -272,16 +270,19 @@ type DataGeneratorExtension interface {
 	// Returns:
 	// - A string representing a randomly generated free email address.
 	GenerateFreeEmail() string
+
 	// GenerateCompanyEmail generates a random company email address.
 	//
 	// Returns:
 	// - A string representing a randomly generated company email address.
 	GenerateCompanyEmail() string
+
 	// GenerateFreeEmailDomain generates a random domain for free email addresses.
 	//
 	// Returns:
 	// - A string representing a randomly generated domain for free email addresses.
 	GenerateFreeEmailDomain() string
+
 	// GenerateSafeEmailDomain generates a random safe domain for email addresses.
 	//
 	// Returns:
@@ -293,6 +294,7 @@ type DataGeneratorExtension interface {
 	// Returns:
 	// - A string representing a randomly generated username.
 	GenerateUserName() string
+
 	// GeneratePassword generates a random password.
 	//
 	// Parameters:

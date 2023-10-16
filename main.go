@@ -11,7 +11,7 @@ func main() {
 	locality := "en_NG"
 	generator := GeneratorFactory(locality)
 	fmt.Println(generator.GenerateDate("", "2020-08-10 15:04:05"))
-	fmt.Println(generator.GenerateCountryCode())
+	fmt.Println(generator.GenerateBloodType())
 }
 
 func GeneratorFactory(locality string) extensions.DataGeneratorExtension {
