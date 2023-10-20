@@ -20,7 +20,7 @@ var addressInstance = providers.NewAddress()
 //}
 
 func TestCityName(t *testing.T) {
-	t.Run("Validate city name is generated", func(t *testing.T) {
+	t.Run("Validate CityName is generated", func(t *testing.T) {
 
 		cityName := addressInstance.CityName()
 		assert.True(t, len(cityName) > 0)
@@ -74,14 +74,14 @@ func TestLatitude(t *testing.T) {
 	})
 }
 func TestLongitude(t *testing.T) {
-	t.Run("Validate Longitude is generated", func(t *testing.T) {
+	t.Run("Validate Valid Longitude is generated", func(t *testing.T) {
 		expected := addressInstance.Longitude()
 		assert.True(t, expected <= 180 && expected >= -180)
 	})
 }
 
 func TestAddress(t *testing.T) {
-	t.Run("Validate Address is generated", func(t *testing.T) {
+	t.Run("Validate Valid Address is generated", func(t *testing.T) {
 		expected := addressInstance.Address()
 		assert.True(t, len(expected) > 0)
 	})

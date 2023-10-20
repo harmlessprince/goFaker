@@ -3,6 +3,7 @@ package providers
 import (
 	"fmt"
 	"github.com/rainycape/unidecode"
+	"log"
 	"math/rand"
 	"regexp"
 	"strconv"
@@ -128,12 +129,12 @@ func (b *BaseInternet) GetTld() []string {
 func (b *BaseInternet) Email() string {
 	fomart, err := b.RandomElementFromStringSlice(b.GetEmailFormats())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	parsed, parsedErr := b.Parse(fomart, b)
 	if parsedErr != nil {
-		panic(parsedErr.Error())
+		log.Fatal(parsedErr.Error())
 		return ""
 	}
 	return parsed
@@ -166,7 +167,7 @@ func (b *BaseInternet) CompanyEmail() string {
 func (b *BaseInternet) FreeEmailDomain() string {
 	freeEmailDomain, err := b.RandomElementFromStringSlice(b.GetFreeEmailDomain())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return freeEmailDomain
@@ -180,7 +181,7 @@ func (b *BaseInternet) SafeEmailDomain() string {
 	}
 	safeEmailDomain, err := b.RandomElementFromStringSlice(domains)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return safeEmailDomain
@@ -189,17 +190,17 @@ func (b *BaseInternet) SafeEmailDomain() string {
 func (b *BaseInternet) UserName() string {
 	format, randomErr := b.RandomElementFromStringSlice(b.GetUserNameFormats())
 	if randomErr != nil {
-		panic(randomErr.Error())
+		log.Fatal(randomErr.Error())
 		return ""
 	}
 	parsed, parseErr := b.Parse(format, b)
 	if parseErr != nil {
-		panic(parseErr.Error())
+		log.Fatal(parseErr.Error())
 		return ""
 	}
 	userName, bothifyErr := b.Bothify(parsed)
 	if bothifyErr != nil {
-		panic(bothifyErr.Error())
+		log.Fatal(bothifyErr.Error())
 		return ""
 	}
 	userName = strings.ToLower(b.Transliterate(userName))
@@ -223,13 +224,13 @@ func (b *BaseInternet) Password(params ...int) string {
 	}
 	numberBetween, err := b.NumberBetween()
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	pattern := strings.Repeat("*", numberBetween)
 	password, asciifyErr := b.Asciify(pattern)
 	if asciifyErr != nil {
-		panic(asciifyErr.Error())
+		log.Fatal(asciifyErr.Error())
 		return ""
 	}
 	return password
@@ -242,13 +243,13 @@ func (b *BaseInternet) DomainName() string {
 func (b *BaseInternet) DomainWord() string {
 	lastName, err := b.BaseProvider.Parse("{{LastName}}", newPerson)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	lastName = b.BaseProvider.ToLower(b.Transliterate(lastName))
 	lastName = strings.Trim(lastName, "._")
 	if lastName == "" {
-		panic("DomainWord failed")
+		log.Fatal("DomainWord failed")
 		return ""
 	}
 	lastName = strings.TrimSuffix(lastName, ".")
@@ -259,7 +260,7 @@ func (b *BaseInternet) Url() string {
 	format, _ := b.RandomElementFromStringSlice(b.GetUrlFormats())
 	url, err := b.Parse(format, b)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return url
@@ -268,7 +269,7 @@ func (b *BaseInternet) Url() string {
 func (b *BaseInternet) Tld() string {
 	tld, err := b.RandomElementFromStringSlice(b.GetTld())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return tld
@@ -285,12 +286,12 @@ func (b *BaseInternet) Ipv4() string {
 		number, err = b.NumberBetween(16777216, 2147483647)
 	}
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	ip, errLong2ip := helperInstance.Long2ip(uint32(number))
 	if errLong2ip != nil {
-		panic(errLong2ip.Error())
+		log.Fatal(errLong2ip.Error())
 		return ""
 	}
 	return ip
@@ -301,7 +302,7 @@ func (b *BaseInternet) Ipv6() string {
 	for i := 0; i < 8; i++ {
 		numberBetween, err := b.NumberBetween(0, 65535)
 		if err != nil {
-			panic(err.Error())
+			log.Fatal(err.Error())
 			return ""
 		}
 		inHexDecimal := helperInstance.DecimalToHexDecimal(int64(numberBetween))
@@ -317,23 +318,23 @@ func (b *BaseInternet) LocalIpv4() string {
 	selectedFormat := formats[randomIndex]
 	IpToLongBlock1, err1 := helperInstance.Ip2long(selectedFormat[0])
 	if err1 != nil {
-		panic(err1.Error())
+		log.Fatal(err1.Error())
 		return ""
 	}
 	IpToLongBlock2, err2 := helperInstance.Ip2long(selectedFormat[1])
 	if err2 != nil {
-		panic(err2.Error())
+		log.Fatal(err2.Error())
 		return ""
 	}
 
 	numberBetweenBlocks, err3 := b.NumberBetween(int(IpToLongBlock1), int(IpToLongBlock2))
 	if err3 != nil {
-		panic(err3.Error())
+		log.Fatal(err3.Error())
 		return ""
 	}
 	localIpV4, err5 := helperInstance.Long2ip(uint32(numberBetweenBlocks))
 	if err5 != nil {
-		panic(err5.Error())
+		log.Fatal(err5.Error())
 		return ""
 	}
 	return localIpV4
@@ -345,7 +346,7 @@ func (b *BaseInternet) MacAddress() string {
 		//0xff is 255 in hexadecimal
 		number, err := b.NumberBetween(0, 0xff)
 		if err != nil {
-			panic(err.Error())
+			log.Fatal(err.Error())
 			return ""
 		}
 		mac = append(mac, fmt.Sprintf("%2X", number))
@@ -356,7 +357,7 @@ func (b *BaseInternet) MacAddress() string {
 func (b *BaseInternet) Transliterate(inputString string) string {
 	matched, err := regexp.MatchString("^[A-Za-z0-9_.]+$", inputString)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	if !matched {
@@ -382,4 +383,22 @@ func (b *BaseInternet) Slug(numberOfWords int, variableNumberOfWords bool) strin
 
 func (b *BaseInternet) ToAscii(inputString string) string {
 	return strconv.QuoteToASCII(inputString)
+}
+
+func (b *BaseInternet) UserAgent() string {
+	//TODO Implement user agent
+	panic("implement me")
+	//randNum := randIntRange(0, 4)
+	//switch randNum {
+	//case 0:
+	//	return ChromeUserAgent()
+	//case 1:
+	//	return FirefoxUserAgent()
+	//case 2:
+	//	return SafariUserAgent()
+	//case 3:
+	//	return OperaUserAgent()
+	//default:
+	//	return ChromeUserAgent()
+	//}
 }

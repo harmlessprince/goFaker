@@ -1,6 +1,7 @@
 package providers
 
 import (
+	"log"
 	"math/rand"
 	"strings"
 	"time"
@@ -208,7 +209,7 @@ func (p *BasePerson) FirstName(gender ...string) string {
 func (p *BasePerson) FirstNameMale() string {
 	firstName, err := p.RandomElementFromStringSlice(p.GetMaleFirstNames())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 	return firstName
 }
@@ -217,7 +218,7 @@ func (p *BasePerson) FirstNameMale() string {
 func (p *BasePerson) FirstNameFemale() string {
 	firstName, err := p.BaseProvider.RandomElementFromStringSlice(p.GetFemaleFirstNames())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 	return firstName
 }
@@ -226,7 +227,7 @@ func (p *BasePerson) FirstNameFemale() string {
 func (p *BasePerson) LastName() string {
 	lastName, err := p.BaseProvider.RandomElementFromStringSlice(p.GetLastNames())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 	return lastName
 }
@@ -235,7 +236,7 @@ func (p *BasePerson) LastName() string {
 func (p *BasePerson) TitleMale() string {
 	title, err := p.BaseProvider.RandomElementFromStringSlice(p.GetMaleTitles())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 	return title
 }
@@ -244,7 +245,7 @@ func (p *BasePerson) TitleMale() string {
 func (p *BasePerson) TitleFemale() string {
 	title, err := p.BaseProvider.RandomElementFromStringSlice(p.GetFemaleTitles())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 	return title
 }

@@ -3,6 +3,7 @@ package providers
 import (
 	"fmt"
 	"github.com/harmlessprince/goFaker/constants"
+	"log"
 	"strconv"
 	"strings"
 )
@@ -14,7 +15,7 @@ type BaseColor struct {
 func (b *BaseColor) HexColor() string {
 	numberBtw, errNumberBtw := b.NumberBetween(1, 16777215)
 	if errNumberBtw != nil {
-		panic(errNumberBtw.Error())
+		log.Fatal(errNumberBtw.Error())
 		return ""
 	}
 	numberBtwToHex := helperInstance.DecimalToHexDecimal(int64(numberBtw))
@@ -25,7 +26,7 @@ func (b *BaseColor) HexColor() string {
 func (b *BaseColor) SafeHexColor() string {
 	numberBtw, errNumberBtw := b.NumberBetween(0, 255)
 	if errNumberBtw != nil {
-		panic(errNumberBtw.Error())
+		log.Fatal(errNumberBtw.Error())
 		return ""
 	}
 	numberBtwToHex := helperInstance.DecimalToHexDecimal(int64(numberBtw))
@@ -59,7 +60,7 @@ func (b *BaseColor) RgbaCssColor() string {
 	}
 	randomFloat, err := b.RandomFloat(floatOptions)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	randomFloatToString := strconv.FormatFloat(randomFloat, 'f', -1, 64)
@@ -70,7 +71,7 @@ func (b *BaseColor) RgbaCssColor() string {
 func (b *BaseColor) SafeColorName() string {
 	color, err := b.RandomElementFromStringSlice(constants.SafeColorNames)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return color
@@ -79,7 +80,7 @@ func (b *BaseColor) SafeColorName() string {
 func (b *BaseColor) ColorName() string {
 	color, err := b.RandomElementFromStringSlice(constants.AllColorNames)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return color
@@ -90,15 +91,15 @@ func (b *BaseColor) HslColor() string {
 	second, errSecond := b.NumberBetween(0, 100)
 	third, errThird := b.NumberBetween(0, 100)
 	if errFirst != nil {
-		panic(errFirst.Error())
+		log.Fatal(errFirst.Error())
 		return ""
 	}
 	if errSecond != nil {
-		panic(errSecond.Error())
+		log.Fatal(errSecond.Error())
 		return ""
 	}
 	if errThird != nil {
-		panic(errThird.Error())
+		log.Fatal(errThird.Error())
 		return ""
 	}
 	return fmt.Sprintf("%d,%d,%d", first, second, third)
@@ -109,15 +110,15 @@ func (b *BaseColor) HslColorAsArray() []int {
 	second, errSecond := b.NumberBetween(0, 100)
 	third, errThird := b.NumberBetween(0, 100)
 	if errFirst != nil {
-		panic(errFirst.Error())
+		log.Fatal(errFirst.Error())
 		return []int{}
 	}
 	if errSecond != nil {
-		panic(errSecond.Error())
+		log.Fatal(errSecond.Error())
 		return []int{}
 	}
 	if errThird != nil {
-		panic(errThird.Error())
+		log.Fatal(errThird.Error())
 		return []int{}
 	}
 	return []int{

@@ -4,6 +4,7 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"fmt"
+	"log"
 )
 
 type BaseUuid struct {
@@ -13,12 +14,12 @@ type BaseUuid struct {
 func (b *BaseUuid) Uuid3() string {
 	seedOne, err := b.NumberBetween(0, 2147483647)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 		return ""
 	}
 	seedTwo, err := b.NumberBetween(0, 2147483647)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 		return ""
 	}
 	seed := []byte{

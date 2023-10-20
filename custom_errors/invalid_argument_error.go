@@ -1,4 +1,4 @@
-package exceptions
+package custom_errors
 
 type InvalidArgumentError struct {
 	Message string

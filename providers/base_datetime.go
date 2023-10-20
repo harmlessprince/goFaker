@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/harmlessprince/goFaker/constants"
 	"github.com/harmlessprince/goFaker/helpers"
+	"log"
 	"math"
 	"strconv"
 	"time"
@@ -33,7 +34,7 @@ func (bdt *BaseDateTime) getMaxTimestamp(max interface{}) (int, error) {
 		}
 		timestamp, err := time.Parse(time.DateTime, maxType)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 		return int(timestamp.Unix()), nil
 	case time.Time:
@@ -45,7 +46,7 @@ func (bdt *BaseDateTime) getMaxTimestamp(max interface{}) (int, error) {
 func (bdt *BaseDateTime) setTimezone(dt time.Time, timezone string) time.Time {
 	location, err := time.LoadLocation(bdt.resolveTimezone(timezone))
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	return dt.In(location)
 }
@@ -103,11 +104,11 @@ func (bdt *BaseDateTime) DateTime(max interface{}, timezone string) time.Time {
 func (bdt *BaseDateTime) DateTimeAD(max interface{}, timezone string) time.Time {
 	maxTimeStamp, err := bdt.getMaxTimestamp(max)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	numberBTw, errNumbBtw := bdt.NumberBetween(math.MinInt64, maxTimeStamp)
 	if errNumbBtw != nil {
-		panic(errNumbBtw)
+		log.Fatal(errNumbBtw)
 	}
 	return bdt.setTimezone(time.Unix(int64(numberBTw), 0), timezone)
 }
@@ -134,7 +135,7 @@ func (bdt *BaseDateTime) DateTimeBetween(startDate interface{}, endDate interfac
 	case string:
 		timestamp, err := time.Parse(time.DateTime, startDateType)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 			return time.Time{}
 		}
 		startTimestamp = timestamp.Unix()
@@ -144,16 +145,16 @@ func (bdt *BaseDateTime) DateTimeBetween(startDate interface{}, endDate interfac
 	}
 	endTimeStamp, err := bdt.getMaxTimestamp(endDate)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 		return time.Time{}
 	}
 	if startTimestamp > int64(endTimeStamp) {
-		panic("start date must be anterior to end date")
+		log.Fatal("start date must be anterior to end date")
 		return time.Time{}
 	}
 	timestampBtw, errBtw := bdt.NumberBetween(int(startTimestamp), endTimeStamp)
 	if errBtw != nil {
-		panic(errBtw)
+		log.Fatal(errBtw)
 	}
 	return bdt.setTimezone(time.Unix(int64(timestampBtw), 0), timezone)
 }
@@ -179,20 +180,20 @@ func (bdt *BaseDateTime) DateTimeInterval(dateString string, intervalString stri
 	if dateString == "" {
 		interval, err := helpers.StringToDuration{}.ParseDuration("-30years")
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 			return time.Time{}
 		}
 		dateString = time.Now().Add(interval).Format(time.RFC3339)
 	}
 	datetime, err := time.Parse(time.RFC3339, dateString)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 		return time.Time{}
 	}
 
 	interval, err := helpers.StringToDuration{}.ParseDuration(intervalString)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 		return time.Time{}
 	}
 	otherDatetime := datetime.Add(interval)
@@ -224,7 +225,7 @@ func (bdt *BaseDateTime) DateTimeThisWeek(max string, timezone string) time.Time
 	}
 	startDateDuration, err := helpers.StringToDuration{}.ParseDuration("-1w")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	startDateTime := time.Now().Add(startDateDuration)
 	return bdt.DateTimeBetween(startDateTime, max, timezone)
@@ -250,7 +251,7 @@ func (bdt *BaseDateTime) DateTimeThisMonth(max string, timezone string) time.Tim
 	}
 	startDateDuration, err := helpers.StringToDuration{}.ParseDuration("-1months")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	startDateTime := time.Now().Add(startDateDuration)
 	return bdt.DateTimeBetween(startDateTime, max, timezone)
@@ -299,7 +300,7 @@ func (bdt *BaseDateTime) DateTimeThisDecade(max string, timezone string) time.Ti
 	}
 	startDateDuration, err := helpers.StringToDuration{}.ParseDuration("-10years")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	startDateTime := time.Now().Add(startDateDuration)
 	return bdt.DateTimeBetween(startDateTime, max, timezone)
@@ -325,7 +326,7 @@ func (bdt *BaseDateTime) DateTimeThisCentury(max string, timezone string) time.T
 	}
 	startDateDuration, err := helpers.StringToDuration{}.ParseDuration("-100years")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	startDateTime := time.Now().Add(startDateDuration)
 	return bdt.DateTimeBetween(startDateTime, max, timezone)
@@ -384,11 +385,11 @@ func (bdt *BaseDateTime) Time(format string, max interface{}) string {
 func (bdt *BaseDateTime) UnixTime(max interface{}) int {
 	maxTimeStamp, errMaxT := bdt.getMaxTimestamp(max)
 	if errMaxT != nil {
-		panic(errMaxT)
+		log.Fatal(errMaxT)
 	}
 	numberBtw, errBtw := bdt.NumberBetween(0, maxTimeStamp)
 	if errBtw != nil {
-		panic(errBtw)
+		log.Fatal(errBtw)
 	}
 	return numberBtw
 }
@@ -508,7 +509,7 @@ func (bdt *BaseDateTime) Year(max interface{}) string {
 func (bdt *BaseDateTime) Century() string {
 	century, err := bdt.RandomElementFromStringSlice(constants.Century)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	return century
 }
@@ -535,11 +536,11 @@ func (bdt *BaseDateTime) Timezone(countryCode string) *time.Location {
 	if countryCode == "" {
 		randomTimeZone, err := bdt.RandomElementFromStringSlice(timeZones)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 		timezoneLocation, err = time.LoadLocation(randomTimeZone)
 		if err != nil {
-			panic(err)
+			log.Fatal(err)
 		}
 	} else {
 		timezoneLocation, _ = time.LoadLocation(countryCode)

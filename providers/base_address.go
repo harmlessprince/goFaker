@@ -1,7 +1,7 @@
 package providers
 
 import (
-	"fmt"
+	"log"
 	"math/rand"
 	"strings"
 	"time"
@@ -205,7 +205,7 @@ func (a *BaseAddress) GetAddressFormats() []string {
 func (a *BaseAddress) CityName() string {
 	cityPrefix, err := a.BaseProvider.RandomElementFromStringSlice(a.GetCityPrefix())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return cityPrefix
@@ -213,7 +213,7 @@ func (a *BaseAddress) CityName() string {
 func (a *BaseAddress) CityPrefix() string {
 	citySuffix, err := a.BaseProvider.RandomElementFromStringSlice(a.GetCitySuffix())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return citySuffix
@@ -221,7 +221,7 @@ func (a *BaseAddress) CityPrefix() string {
 func (a *BaseAddress) StreetPrefix() string {
 	streetPrefix, err := a.BaseProvider.RandomElementFromStringSlice(a.GetStreetPrefix())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return streetPrefix
@@ -229,7 +229,7 @@ func (a *BaseAddress) StreetPrefix() string {
 func (a *BaseAddress) CitySuffix() string {
 	citySuffix, err := a.BaseProvider.RandomElementFromStringSlice(a.GetCitySuffix())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 	return citySuffix
 }
@@ -237,7 +237,7 @@ func (a *BaseAddress) CitySuffix() string {
 func (a *BaseAddress) StreetSuffix() string {
 	citySuffix, err := a.BaseProvider.RandomElementFromStringSlice(a.GetStreetSuffix())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 	return citySuffix
 }
@@ -245,7 +245,7 @@ func (a *BaseAddress) StreetSuffix() string {
 func (a *BaseAddress) Country() string {
 	country, err := a.BaseProvider.RandomElementFromStringSlice(a.GetCountry())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return country
@@ -256,35 +256,33 @@ func (a *BaseAddress) Address() string {
 	randomIndex := rand.Intn(len(formats))
 	address, err := a.BaseProvider.Parse(formats[randomIndex], a)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return address
 }
 
 func (a *BaseAddress) City() string {
-	fmt.Println("City")
 	formats := a.GetCityFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	randomIndex := rand.Intn(len(formats))
 	city, err := a.BaseProvider.Parse(formats[randomIndex], a)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return city
 }
 
 func (a *BaseAddress) PostCode() string {
-	fmt.Println("PostCode")
 	randomCode, err := a.BaseProvider.RandomElementFromStringSlice(a.GetPostCodes())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	postCode, err := a.BaseProvider.Bothify(randomCode)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return a.BaseProvider.ToLower(postCode)
@@ -296,20 +294,19 @@ func (a *BaseAddress) StreetName() string {
 	randomIndex := rand.Intn(len(formats))
 	streetName, err := a.BaseProvider.Parse(formats[randomIndex], a)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return streetName
 }
 
 func (a *BaseAddress) StreetAddress() string {
-	fmt.Println("StreetAddress")
 	formats := a.GetStreetAddressFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	randomIndex := rand.Intn(len(formats))
 	streetAddress, err := a.BaseProvider.Parse(formats[randomIndex], a)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return streetAddress
@@ -318,12 +315,12 @@ func (a *BaseAddress) StreetAddress() string {
 func (a *BaseAddress) BuildingNumber() string {
 	randomBuildNumber, err := a.BaseProvider.RandomElementFromStringSlice(a.GetBuildingNumber())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	generatedBuildNumber, err := a.BaseProvider.Numerify(randomBuildNumber)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 
@@ -361,7 +358,7 @@ func (a *BaseAddress) Longitude() float64 {
 	}
 	long, err := a.BaseProvider.RandomFloat(options)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return 0.0
 	}
 	return long
@@ -375,7 +372,7 @@ func (a *BaseAddress) Latitude() float64 {
 	}
 	lat, err := a.BaseProvider.RandomFloat(options)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return 0.0
 	}
 	return lat

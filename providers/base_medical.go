@@ -1,6 +1,9 @@
 package providers
 
-import "github.com/harmlessprince/goFaker/constants"
+import (
+	"github.com/harmlessprince/goFaker/constants"
+	"log"
+)
 
 type BaseMedical struct {
 	BaseProvider
@@ -13,7 +16,7 @@ func (m *BaseMedical) getBloodGroupFormat() string {
 func (m *BaseMedical) BloodType() string {
 	bloodType, err := m.BaseProvider.RandomElementFromStringSlice(constants.BloodTypes)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return bloodType
@@ -22,7 +25,7 @@ func (m *BaseMedical) BloodType() string {
 func (m *BaseMedical) BloodRh() string {
 	bloodRh, err := m.BaseProvider.RandomElementFromStringSlice(constants.BloodRhFactors)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return bloodRh
@@ -31,7 +34,7 @@ func (m *BaseMedical) BloodRh() string {
 func (m *BaseMedical) BloodGroup() string {
 	bloodGroup, err := m.BaseProvider.Parse(m.getBloodGroupFormat(), m)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return bloodGroup

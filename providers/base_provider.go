@@ -3,7 +3,7 @@ package providers
 import (
 	"errors"
 	"fmt"
-	"github.com/harmlessprince/goFaker/exceptions"
+	"github.com/harmlessprince/goFaker/custom_errors"
 	"github.com/harmlessprince/goFaker/helpers"
 	"github.com/samber/lo"
 	"math"
@@ -81,7 +81,7 @@ func (b BaseProvider) RandomNumber(numberOfDigits uint, strict bool) (int, error
 	}
 	max := int(math.Pow(10, float64(numberOfDigits))) - 1
 	if max > helperInstance.LargestRandomNumber() {
-		return 0, &exceptions.InvalidArgumentError{Message: "RandomNumber() can only generate numbers up to math.MaxInt"}
+		return 0, &custom_errors.InvalidArgumentError{Message: "RandomNumber() can only generate numbers up to math.MaxInt"}
 	}
 	if strict {
 		number, err := helperInstance.RandomNumberBetween(int(math.Pow(10, float64(numberOfDigits-1))), max)

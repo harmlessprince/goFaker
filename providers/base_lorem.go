@@ -4,6 +4,7 @@ import (
 	"github.com/harmlessprince/goFaker/constants"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+	"log"
 	"strings"
 )
 
@@ -20,7 +21,7 @@ func (bl *BaseLorem) GetWordList() []string {
 func (bl *BaseLorem) Word() string {
 	word, err := bl.RandomElementFromStringSlice(bl.GetWordList())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return word
@@ -121,7 +122,7 @@ func (bl *BaseLorem) Text(maxNumberOfCharacters ...int) string {
 	if len(maxNumberOfCharacters) > 0 {
 		maxN = maxNumberOfCharacters[0]
 		if maxN < 5 {
-			panic("Text() can only generate text of at least 5 characters")
+			log.Fatal("Text() can only generate text of at least 5 characters")
 			return ""
 		}
 	} else {
@@ -165,7 +166,7 @@ func (bl *BaseLorem) Text(maxNumberOfCharacters ...int) string {
 func (bl *BaseLorem) randomizeNbElements(numberOfElements int) int {
 	numberBetween, err := bl.NumberBetween(60, 140)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return 1
 	}
 

@@ -6,6 +6,7 @@ import (
 	"crypto/sha256"
 	"encoding/binary"
 	"github.com/harmlessprince/goFaker/constants"
+	"log"
 )
 
 type BaseMiscellaneous struct {
@@ -41,7 +42,7 @@ func (m *BaseMiscellaneous) Boolean(chanceOfGettingTrue ...int) bool {
 	}
 	number, err := m.NumberBetween(1, 100)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return false
 	}
 	return number <= defaultChanceOfGettingTrue
@@ -50,7 +51,7 @@ func (m *BaseMiscellaneous) Boolean(chanceOfGettingTrue ...int) bool {
 func (m *BaseMiscellaneous) Md5() string {
 	number, err := m.NumberBetween()
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	h := md5.New()
@@ -62,7 +63,7 @@ func (m *BaseMiscellaneous) Md5() string {
 func (m *BaseMiscellaneous) Sha1() string {
 	number, err := m.NumberBetween()
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	h := sha1.New()
@@ -74,7 +75,7 @@ func (m *BaseMiscellaneous) Sha1() string {
 func (m *BaseMiscellaneous) Sha256() string {
 	number, err := m.NumberBetween()
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	h := sha256.New()
@@ -86,7 +87,7 @@ func (m *BaseMiscellaneous) Sha256() string {
 func (m *BaseMiscellaneous) Locale() string {
 	localeData, err := m.RandomElementFromStringSlice(m.GetLocaleData())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return localeData
@@ -95,7 +96,7 @@ func (m *BaseMiscellaneous) Locale() string {
 func (m *BaseMiscellaneous) CountryCode() string {
 	countryCode, err := m.RandomElementFromStringSlice(m.CountryCodes())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return countryCode
@@ -104,7 +105,7 @@ func (m *BaseMiscellaneous) CountryCode() string {
 func (m *BaseMiscellaneous) CountryISOAlpha3() string {
 	countryCode, err := m.RandomElementFromStringSlice(m.GetCountryISOAlpha3())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return countryCode
@@ -113,7 +114,7 @@ func (m *BaseMiscellaneous) CountryISOAlpha3() string {
 func (m *BaseMiscellaneous) LanguageCode() string {
 	langCode, err := m.RandomElementFromStringSlice(m.GetLanguageCodes())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return langCode
@@ -122,7 +123,7 @@ func (m *BaseMiscellaneous) LanguageCode() string {
 func (m *BaseMiscellaneous) CurrencyCode() string {
 	currencyCode, err := m.RandomElementFromStringSlice(m.GetCurrencyCodes())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return currencyCode
@@ -131,7 +132,7 @@ func (m *BaseMiscellaneous) CurrencyCode() string {
 func (m *BaseMiscellaneous) Emoji() string {
 	emoji, err := m.RandomElementFromStringSlice(m.GetEmojis())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return emoji

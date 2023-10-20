@@ -65,3 +65,4 @@ fmt.Println(generator.GenerateCountryCode()) // LU
 fmt.Println(generator.GenerateName()) // Titilayo Ebiere Olaoluwa
 
 ```
+

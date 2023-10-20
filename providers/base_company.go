@@ -1,5 +1,7 @@
 package providers
 
+import "log"
+
 type BaseCompany struct {
 	BaseProvider
 	formats        []string
@@ -77,12 +79,12 @@ func (bc *BaseCompany) GetJobTitleFormats() []string {
 func (bc *BaseCompany) Company() string {
 	format, err := bc.RandomElementFromStringSlice(bc.GetFormats())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	parse, err := bc.BaseProvider.Parse(format, bc)
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return parse
@@ -91,7 +93,7 @@ func (bc *BaseCompany) Company() string {
 func (bc *BaseCompany) CompanySuffix() string {
 	suffix, err := bc.RandomElementFromStringSlice(bc.GetCompanySuffix())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return suffix
@@ -99,7 +101,7 @@ func (bc *BaseCompany) CompanySuffix() string {
 func (bc *BaseCompany) CompanyName() string {
 	name, err := bc.RandomElementFromStringSlice(bc.GetCompanyName())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return name
@@ -108,7 +110,7 @@ func (bc *BaseCompany) CompanyName() string {
 func (bc *BaseCompany) CompanyPrefix() string {
 	prefix, err := bc.RandomElementFromStringSlice(bc.GetCompanySuffix())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return prefix
@@ -117,12 +119,12 @@ func (bc *BaseCompany) CompanyPrefix() string {
 func (bc *BaseCompany) JobTitle() string {
 	format, err := bc.RandomElementFromStringSlice(bc.GetJobTitleFormats())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	parse, err := bc.BaseProvider.Parse(format, &BaseLorem{})
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 		return ""
 	}
 	return parse

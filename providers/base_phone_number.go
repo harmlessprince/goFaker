@@ -2,6 +2,7 @@ package providers
 
 import (
 	"github.com/harmlessprince/goFaker/calculator"
+	"log"
 )
 
 type BasePhoneNumber struct {
@@ -254,11 +255,11 @@ func (p *BasePhoneNumber) GetE164Formats() []string {
 func (p *BasePhoneNumber) PhoneNumber() string {
 	format, err := p.BaseProvider.RandomElementFromStringSlice(p.GetFormats())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 	phoneNumber, numerifyErr := p.BaseProvider.Numerify(format)
 	if numerifyErr != nil {
-		panic(numerifyErr.Error())
+		log.Fatal(numerifyErr.Error())
 	}
 	return phoneNumber
 }
@@ -266,11 +267,11 @@ func (p *BasePhoneNumber) PhoneNumber() string {
 func (p *BasePhoneNumber) E164PhoneNumber() string {
 	format, err := p.BaseProvider.RandomElementFromStringSlice(p.GetE164Formats())
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 	phoneNumber, numerifyErr := p.BaseProvider.Numerify(format)
 	if numerifyErr != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 	return phoneNumber
 }
@@ -278,7 +279,7 @@ func (p *BasePhoneNumber) E164PhoneNumber() string {
 func (p *BasePhoneNumber) Imei() string {
 	imei, err := p.BaseProvider.Numerify("##############")
 	if err != nil {
-		panic(err.Error())
+		log.Fatal(err.Error())
 	}
 	Luhn := calculator.Luhn{}
 	checkDigit := Luhn.ComputeCheckDigit(imei)
