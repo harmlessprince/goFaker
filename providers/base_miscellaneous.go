@@ -43,7 +43,6 @@ func (m *BaseMiscellaneous) Boolean(chanceOfGettingTrue ...int) bool {
 	number, err := m.NumberBetween(1, 100)
 	if err != nil {
 		log.Fatal(err.Error())
-		return false
 	}
 	return number <= defaultChanceOfGettingTrue
 }
@@ -52,7 +51,6 @@ func (m *BaseMiscellaneous) Md5() string {
 	number, err := m.NumberBetween()
 	if err != nil {
 		log.Fatal(err.Error())
-		return ""
 	}
 	h := md5.New()
 	byteData := m.intToBytes(number)
@@ -64,7 +62,6 @@ func (m *BaseMiscellaneous) Sha1() string {
 	number, err := m.NumberBetween()
 	if err != nil {
 		log.Fatal(err.Error())
-		return ""
 	}
 	h := sha1.New()
 	byteData := m.intToBytes(number)
@@ -76,7 +73,6 @@ func (m *BaseMiscellaneous) Sha256() string {
 	number, err := m.NumberBetween()
 	if err != nil {
 		log.Fatal(err.Error())
-		return ""
 	}
 	h := sha256.New()
 	byteData := m.intToBytes(number)
@@ -88,7 +84,6 @@ func (m *BaseMiscellaneous) Locale() string {
 	localeData, err := m.RandomElementFromStringSlice(m.GetLocaleData())
 	if err != nil {
 		log.Fatal(err.Error())
-		return ""
 	}
 	return localeData
 }
@@ -97,7 +92,6 @@ func (m *BaseMiscellaneous) CountryCode() string {
 	countryCode, err := m.RandomElementFromStringSlice(m.CountryCodes())
 	if err != nil {
 		log.Fatal(err.Error())
-		return ""
 	}
 	return countryCode
 }
@@ -106,7 +100,6 @@ func (m *BaseMiscellaneous) CountryISOAlpha3() string {
 	countryCode, err := m.RandomElementFromStringSlice(m.GetCountryISOAlpha3())
 	if err != nil {
 		log.Fatal(err.Error())
-		return ""
 	}
 	return countryCode
 }
@@ -115,7 +108,6 @@ func (m *BaseMiscellaneous) LanguageCode() string {
 	langCode, err := m.RandomElementFromStringSlice(m.GetLanguageCodes())
 	if err != nil {
 		log.Fatal(err.Error())
-		return ""
 	}
 	return langCode
 }
@@ -124,7 +116,6 @@ func (m *BaseMiscellaneous) CurrencyCode() string {
 	currencyCode, err := m.RandomElementFromStringSlice(m.GetCurrencyCodes())
 	if err != nil {
 		log.Fatal(err.Error())
-		return ""
 	}
 	return currencyCode
 }
@@ -133,7 +124,6 @@ func (m *BaseMiscellaneous) Emoji() string {
 	emoji, err := m.RandomElementFromStringSlice(m.GetEmojis())
 	if err != nil {
 		log.Fatal(err.Error())
-		return ""
 	}
 	return emoji
 }

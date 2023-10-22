@@ -32,10 +32,9 @@ func NewBaseInternet() *BaseInternet {
 	return baseInternet
 }
 func (b *BaseInternet) SetFreeEmailDomain(params ...[]string) {
+	b.freeMailDomain = []string{"gmail.com", "yahoo.com", "hotmail.com"}
 	if len(params) > 0 {
 		b.freeMailDomain = params[0]
-	} else {
-		b.freeMailDomain = []string{"gmail.com", "yahoo.com", "hotmail.com"}
 	}
 }
 
@@ -44,15 +43,14 @@ func (b *BaseInternet) GetFreeEmailDomain() []string {
 }
 
 func (b *BaseInternet) SetUserNameFormats(params ...[]string) {
+	b.userNameFormats = []string{
+		"{{LastName}}.{{FirstName}}",
+		"{{FirstName}}.{{LastName}}",
+		"{{FirstName}}##",
+		"?{{LastName}}",
+	}
 	if len(params) > 0 {
 		b.userNameFormats = params[0]
-	} else {
-		b.userNameFormats = []string{
-			"{{LastName}}.{{FirstName}}",
-			"{{FirstName}}.{{LastName}}",
-			"{{FirstName}}##",
-			"?{{LastName}}",
-		}
 	}
 }
 
@@ -61,13 +59,12 @@ func (b *BaseInternet) GetUserNameFormats() []string {
 }
 
 func (b *BaseInternet) SetEmailFormats(params ...[]string) {
+	b.emailFormats = []string{
+		"{{UserName}}@{{DomainName}}",
+		"{{UserName}}@{{FreeEmailDomain}}",
+	}
 	if len(params) > 0 {
 		b.emailFormats = params[0]
-	} else {
-		b.emailFormats = []string{
-			"{{UserName}}@{{DomainName}}",
-			"{{UserName}}@{{FreeEmailDomain}}",
-		}
 	}
 }
 
@@ -76,21 +73,20 @@ func (b *BaseInternet) GetEmailFormats() []string {
 }
 
 func (b *BaseInternet) SetUrlFormats(params ...[]string) {
+	b.urlFormats = []string{
+		"http://www.{{DomainName}}/",
+		"http://{{DomainName}}/",
+		"http://www.{{DomainName}}/{{Slug}}",
+		"http://www.{{DomainName}}/{{Slug}}",
+		"https://www.{{DomainName}}/{{Slug}}",
+		"http://www.{{DomainName}}/{{Slug}}.html",
+		"http://{{DomainName}}/{{Slug}}",
+		"http://{{DomainName}}/{{Slug}}",
+		"http://{{DomainName}}/{{Slug}}.html",
+		"https://{{DomainName}}/{{Slug}}.html",
+	}
 	if len(params) > 0 {
 		b.urlFormats = params[0]
-	} else {
-		b.urlFormats = []string{
-			"http://www.{{DomainName}}/",
-			"http://{{DomainName}}/",
-			"http://www.{{DomainName}}/{{Slug}}",
-			"http://www.{{DomainName}}/{{Slug}}",
-			"https://www.{{DomainName}}/{{Slug}}",
-			"http://www.{{DomainName}}/{{Slug}}.html",
-			"http://{{DomainName}}/{{Slug}}",
-			"http://{{DomainName}}/{{Slug}}",
-			"http://{{DomainName}}/{{Slug}}.html",
-			"https://{{DomainName}}/{{Slug}}.html",
-		}
 	}
 }
 
@@ -99,14 +95,13 @@ func (b *BaseInternet) GetUrlFormats() []string {
 }
 
 func (b *BaseInternet) SetLocalIPBlocks(params ...[][]string) {
+	b.localIpBlocks = [][]string{
+		{"10.0.0.0", "10.255.255.255"},
+		{"172.16.0.0", "172.31.255.255"},
+		{"192.168.0.0", "192.168.255.255"},
+	}
 	if len(params) > 0 {
 		b.localIpBlocks = params[0]
-	} else {
-		b.localIpBlocks = [][]string{
-			{"10.0.0.0", "10.255.255.255"},
-			{"172.16.0.0", "172.31.255.255"},
-			{"192.168.0.0", "192.168.255.255"},
-		}
 	}
 }
 
@@ -115,10 +110,9 @@ func (b *BaseInternet) GetLocalIPBlocks() [][]string {
 }
 
 func (b *BaseInternet) SetTld(params ...[]string) {
+	b.tld = []string{"com", "com", "com", "com", "com", "com", "biz", "info", "net", "org"}
 	if len(params) > 0 {
 		b.tld = params[0]
-	} else {
-		b.tld = []string{"com", "com", "com", "com", "com", "com", "biz", "info", "net", "org"}
 	}
 }
 
@@ -280,19 +274,16 @@ func (b *BaseInternet) Ipv4() string {
 	var number int
 	var err error
 	booleanValue := bm.Boolean()
-	if booleanValue {
+	number, err = b.NumberBetween(16777216, 2147483647)
+	if booleanValue == true {
 		number, err = b.NumberBetween(-2147483648, -2)
-	} else {
-		number, err = b.NumberBetween(16777216, 2147483647)
 	}
 	if err != nil {
 		log.Fatal(err.Error())
-		return ""
 	}
 	ip, errLong2ip := helperInstance.Long2ip(uint32(number))
 	if errLong2ip != nil {
 		log.Fatal(errLong2ip.Error())
-		return ""
 	}
 	return ip
 }
@@ -303,7 +294,6 @@ func (b *BaseInternet) Ipv6() string {
 		numberBetween, err := b.NumberBetween(0, 65535)
 		if err != nil {
 			log.Fatal(err.Error())
-			return ""
 		}
 		inHexDecimal := helperInstance.DecimalToHexDecimal(int64(numberBetween))
 		res = append(res, inHexDecimal)
@@ -319,23 +309,19 @@ func (b *BaseInternet) LocalIpv4() string {
 	IpToLongBlock1, err1 := helperInstance.Ip2long(selectedFormat[0])
 	if err1 != nil {
 		log.Fatal(err1.Error())
-		return ""
 	}
 	IpToLongBlock2, err2 := helperInstance.Ip2long(selectedFormat[1])
 	if err2 != nil {
 		log.Fatal(err2.Error())
-		return ""
 	}
 
 	numberBetweenBlocks, err3 := b.NumberBetween(int(IpToLongBlock1), int(IpToLongBlock2))
 	if err3 != nil {
 		log.Fatal(err3.Error())
-		return ""
 	}
 	localIpV4, err5 := helperInstance.Long2ip(uint32(numberBetweenBlocks))
 	if err5 != nil {
 		log.Fatal(err5.Error())
-		return ""
 	}
 	return localIpV4
 }
@@ -347,7 +333,6 @@ func (b *BaseInternet) MacAddress() string {
 		number, err := b.NumberBetween(0, 0xff)
 		if err != nil {
 			log.Fatal(err.Error())
-			return ""
 		}
 		mac = append(mac, fmt.Sprintf("%2X", number))
 	}
@@ -358,7 +343,6 @@ func (b *BaseInternet) Transliterate(inputString string) string {
 	matched, err := regexp.MatchString("^[A-Za-z0-9_.]+$", inputString)
 	if err != nil {
 		log.Fatal(err.Error())
-		return ""
 	}
 	if !matched {
 		return inputString

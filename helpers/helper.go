@@ -7,6 +7,7 @@ import (
 	"math"
 	"math/rand"
 	"net"
+	"os"
 	"regexp"
 	"strconv"
 	"time"
@@ -286,4 +287,34 @@ func (h Helper) StrPadRight(input string, padLength int, padString string) strin
 //   - int $length
 func (h Helper) Substr(str string, start int, length int) string {
 	return str[start : start+length]
+}
+
+func (h Helper) IsWritable(path string) (bool, error) {
+	// Try to create and delete a temporary file in the directory
+	testFilePath := path + string(os.PathSeparator) + "test.tmp"
+	file, err := os.Create(testFilePath)
+	if err != nil {
+		return false, err
+	}
+	err = file.Close()
+	if err != nil {
+		return false, err
+	}
+	err = os.Remove(testFilePath)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
+}
+func (h Helper) IsDirectory(path string) (bool, error) {
+	// Check if the path exists and is a directory
+	fileInfo, err := os.Stat(path)
+	if err != nil {
+		return false, err
+	}
+
+	if !fileInfo.IsDir() {
+		return false, fmt.Errorf("%s is not a directory", path)
+	}
+	return true, nil
 }

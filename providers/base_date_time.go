@@ -532,7 +532,7 @@ func (bdt *BaseDateTime) Timezone(countryCode string) *time.Location {
 		"Africa/Nairobi",
 		"Africa/Lagos",
 	}
-	var timezoneLocation *time.Location
+	timezoneLocation, _ := time.LoadLocation(countryCode)
 	if countryCode == "" {
 		randomTimeZone, err := bdt.RandomElementFromStringSlice(timeZones)
 		if err != nil {
@@ -542,8 +542,6 @@ func (bdt *BaseDateTime) Timezone(countryCode string) *time.Location {
 		if err != nil {
 			log.Fatal(err)
 		}
-	} else {
-		timezoneLocation, _ = time.LoadLocation(countryCode)
 	}
 	return timezoneLocation
 }

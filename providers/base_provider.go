@@ -143,17 +143,13 @@ func (b BaseProvider) RandomFloat(options ...RandomFloatOptions) (float64, error
 // - An integer representing the randomly generated value between the specified range.
 // - An error if there was an issue generating the random number.
 func (b BaseProvider) NumberBetween(params ...int) (int, error) {
-	var min int
-	var max int
+	min := 0
+	max := 2147483647
 	if len(params) > 0 {
 		min = params[0]
-	} else {
-		min = 0
 	}
 	if len(params) > 1 {
 		max = params[1]
-	} else {
-		max = 2147483647
 	}
 	if max < min {
 		tmp := min
@@ -450,14 +446,13 @@ func (b BaseProvider) replaceWildcardInt(input string, wildcard string, callback
 	builder.WriteString(input[:pos])
 
 	for i := pos; i < last; i++ {
+		builder.WriteByte(input[i])
 		if string(input[i]) == wildcard {
 			result, err := callback()
 			if err != nil {
 				return "", err
 			}
 			builder.WriteString(fmt.Sprintf("%d", result))
-		} else {
-			builder.WriteByte(input[i])
 		}
 	}
 
@@ -478,14 +473,13 @@ func (b BaseProvider) replaceWildcardString(input string, wildcard string, callb
 	builder.WriteString(input[:pos])
 
 	for i := pos; i < last; i++ {
+		builder.WriteByte(input[i])
 		if string(input[i]) == wildcard {
 			result, err := callback()
 			if err != nil {
 				return "", err
 			}
 			builder.WriteString(result)
-		} else {
-			builder.WriteByte(input[i])
 		}
 	}
 
@@ -582,11 +576,9 @@ func (b BaseProvider) Numerify(item string) (string, error) {
 //	result := BaseProvider{}.Lexify(originalString)
 //	fmt.Println("result string:", result)
 func (b BaseProvider) Lexify(item ...string) (string, error) {
-	var itemToBeParsed string
+	itemToBeParsed := "???"
 	if len(item) > 0 {
 		itemToBeParsed = item[0]
-	} else {
-		itemToBeParsed = "???"
 	}
 	parsedString, err := b.replaceWildcardString(itemToBeParsed, "?", b.RandomLetter)
 	if err != nil {
@@ -609,11 +601,9 @@ func (b BaseProvider) Lexify(item ...string) (string, error) {
 //	result := BaseProvider{}.Bothify(originalString)
 //	fmt.Println("result string:", result)
 func (b BaseProvider) Bothify(item ...string) (string, error) {
-	var itemToBeParsed string
+	itemToBeParsed := "## ?? **"
 	if len(item) > 0 {
 		itemToBeParsed = item[0]
-	} else {
-		itemToBeParsed = "## ?? **"
 	}
 	parsedString, err := b.replaceWildcardString(itemToBeParsed, "*", func() (string, error) {
 		number, err := helperInstance.RandomNumberBetween(0, 2)
@@ -658,10 +648,8 @@ func (b BaseProvider) Bothify(item ...string) (string, error) {
 //	result, _ := BaseProvider{}.Asciify(originalString)
 //	fmt.Println("result string:", result)
 func (b BaseProvider) Asciify(item ...string) (string, error) {
-	var itemToBeParsed string
-	if len(item) <= 0 {
-		itemToBeParsed = "****"
-	} else {
+	itemToBeParsed := "****"
+	if len(item) > 0 {
 		itemToBeParsed = item[0]
 	}
 	re := regexp.MustCompile(`\*`)
@@ -704,30 +692,28 @@ func (b BaseProvider) Parse(input string, data interface{}, args ...map[string]i
 		fieldName := parsed[start+2 : end]
 
 		field := structValue.MethodByName(fieldName)
-
-		// Check if the method exists and is a function.
-		if field.IsValid() && field.Type().Kind() == reflect.Func {
-			methodArgs := make([]reflect.Value, 0)
-			// Check if an argument exists for the current method, and add it if found.
-			if len(args) > 0 {
-				if arg, argExists := args[0][fieldName]; argExists {
-					methodArgs = append(methodArgs, reflect.ValueOf(arg))
-				}
-			}
-			var result []reflect.Value
-			if len(methodArgs) > 0 {
-				result = field.Call(methodArgs)
-			} else {
-
-				result = field.Call(nil)
-			}
-
-			if len(result) > 0 {
-				parsed = strings.Replace(parsed, "{{"+fieldName+"}}", result[0].Interface().(string), 1)
-			}
-		} else {
+		// Check if the method does not exist and is  not a function.
+		if field.IsValid() == false && field.Type().Kind() != reflect.Func {
 			return "", fmt.Errorf("method '%s' does not exist on the struct", fieldName)
 		}
+		methodArgs := make([]reflect.Value, 0)
+		// Check if an argument exists for the current method, and add it if found.
+		if len(args) > 0 {
+			if arg, argExists := args[0][fieldName]; argExists {
+				methodArgs = append(methodArgs, reflect.ValueOf(arg))
+			}
+		}
+		var result []reflect.Value
+		if len(methodArgs) > 0 {
+			result = field.Call(methodArgs)
+		} else {
+			result = field.Call(nil)
+		}
+
+		if len(result) > 0 {
+			parsed = strings.Replace(parsed, "{{"+fieldName+"}}", result[0].Interface().(string), 1)
+		}
+
 	}
 
 	return parsed, nil

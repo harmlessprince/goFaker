@@ -88,11 +88,9 @@ func (bl *BaseLorem) Paragraph(numberOfSentences int, variableNumberOfSentences 
 }
 
 func (bl *BaseLorem) ParagraphsAsList(numberOfParagraphs ...int) []string {
-	var n int
+	n := 3
 	if len(numberOfParagraphs) > 0 {
 		n = numberOfParagraphs[0]
-	} else {
-		n = 3
 	}
 
 	var paragraphs []string
@@ -104,11 +102,9 @@ func (bl *BaseLorem) ParagraphsAsList(numberOfParagraphs ...int) []string {
 }
 
 func (bl *BaseLorem) ParagraphsAsText(numberOfParagraphs ...int) string {
-	var n int
+	n := 3
 	if len(numberOfParagraphs) > 0 {
 		n = numberOfParagraphs[0]
-	} else {
-		n = 3
 	}
 	var paragraphs []string
 	for i := 0; i < n; i++ {
@@ -118,15 +114,13 @@ func (bl *BaseLorem) ParagraphsAsText(numberOfParagraphs ...int) string {
 	return strings.Join(paragraphs, "\n\n")
 }
 func (bl *BaseLorem) Text(maxNumberOfCharacters ...int) string {
-	var maxN int
+	maxN := 200
 	if len(maxNumberOfCharacters) > 0 {
 		maxN = maxNumberOfCharacters[0]
 		if maxN < 5 {
 			log.Fatal("Text() can only generate text of at least 5 characters")
 			return ""
 		}
-	} else {
-		maxN = 200
 	}
 
 	texType := "paragraph"
@@ -143,11 +137,9 @@ func (bl *BaseLorem) Text(maxNumberOfCharacters ...int) string {
 		size := 0
 		// until maxN is reached
 		for size < maxN {
-			var word string
+			word := "" + texType
 			if size > 0 {
 				word = " " + texType
-			} else {
-				word = "" + texType
 			}
 			text = append(text, word)
 			size += len(word)
@@ -167,7 +159,6 @@ func (bl *BaseLorem) randomizeNbElements(numberOfElements int) int {
 	numberBetween, err := bl.NumberBetween(60, 140)
 	if err != nil {
 		log.Fatal(err.Error())
-		return 1
 	}
 
 	return (numberOfElements * numberBetween / 100) + 1

@@ -17,10 +17,9 @@ func NewBasePhoneNumber() *BasePhoneNumber {
 	return ph
 }
 func (p *BasePhoneNumber) SetFormats(param ...[]string) {
+	p.formats = []string{"###-###-###"}
 	if len(param) > 0 {
 		p.formats = param[0]
-	} else {
-		p.formats = []string{"###-###-###"}
 	}
 }
 
