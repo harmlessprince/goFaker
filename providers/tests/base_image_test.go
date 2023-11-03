@@ -2,7 +2,6 @@ package tests
 
 import (
 	"fmt"
-	"github.com/harmlessprince/goFaker/extensions"
 	"github.com/harmlessprince/goFaker/providers"
 	"github.com/stretchr/testify/assert"
 	"image"
@@ -16,29 +15,29 @@ import (
 	"time"
 )
 
-var baseImageInstance = &providers.BaseImage{}
+var baseImageInstanceTest = &providers.BaseImage{}
 
 func TestImageUrl(t *testing.T) {
 	t.Run("validate image url is generated without supplying any options", func(t *testing.T) {
-		expected := baseImageInstance.ImageUrl()
+		expected, _ := baseImageInstanceTest.ImageUrl()
 		assert.True(t, len(expected) > 0)
 	})
 	t.Run("validate image url is valid", func(t *testing.T) {
-		expected := baseImageInstance.ImageUrl()
+		expected, _ := baseImageInstanceTest.ImageUrl()
 		_, err := url.ParseRequestURI(expected)
 		assert.Nil(t, err)
 	})
 	t.Run("validate ImageUrl response is reachable", func(t *testing.T) {
-		expected := baseImageInstance.ImageUrl()
+		expected, _ := baseImageInstanceTest.ImageUrl()
 		assert.True(t, isURLReachable(expected))
 	})
 	t.Run("validate ImageUrl is uses 640x480 as default size", func(t *testing.T) {
-		expected := baseImageInstance.ImageUrl()
+		expected, _ := baseImageInstanceTest.ImageUrl()
 		pattern := `^https://via.placeholder.com/640x480.png/.*$`
 		assert.Regexp(t, pattern, expected)
 	})
 	t.Run("validate ImageUrl is uses custom with and height", func(t *testing.T) {
-		expected := baseImageInstance.ImageUrl(extensions.ImageUrlParams{
+		expected, _ := baseImageInstanceTest.ImageUrl(providers.ImageUrlParams{
 			Width:  800,
 			Height: 600,
 		})
@@ -46,7 +45,7 @@ func TestImageUrl(t *testing.T) {
 		assert.Regexp(t, pattern, expected)
 	})
 	t.Run("validate ImageUrl is uses custom category", func(t *testing.T) {
-		expected := baseImageInstance.ImageUrl(extensions.ImageUrlParams{
+		expected, _ := baseImageInstanceTest.ImageUrl(providers.ImageUrlParams{
 			Width:    800,
 			Height:   600,
 			Category: "nature",
@@ -57,7 +56,7 @@ func TestImageUrl(t *testing.T) {
 	})
 
 	t.Run("validate ImageUrl is uses custom text", func(t *testing.T) {
-		expected := baseImageInstance.ImageUrl(extensions.ImageUrlParams{
+		expected, _ := baseImageInstanceTest.ImageUrl(providers.ImageUrlParams{
 			Width:    800,
 			Height:   600,
 			Category: "nature",
@@ -75,7 +74,7 @@ func TestImage(t *testing.T) {
 		if err != nil {
 			return
 		}
-		file := baseImageInstance.Image()
+		file, _ := baseImageInstanceTest.Image()
 		fmt.Println(file)
 		assert.FileExists(t, file)
 		checkImageProperties(t, file, 640, 480, "png")
@@ -86,7 +85,7 @@ func TestImage(t *testing.T) {
 			t.Error(err)
 			return
 		}
-		file := baseImageInstance.Image()
+		file, _ := baseImageInstanceTest.Image()
 		fmt.Println(file)
 		assert.FileExists(t, file)
 		checkImageProperties(t, "dd", 640, 480, "png")
@@ -148,7 +147,7 @@ func checkImageProperties(t *testing.T, file string, width int, height int, form
 		return
 	}
 	imageInfo := pathInfo(file)
-	imageFormats := baseImageInstance.GetImageFormatConstants()
+	imageFormats := baseImageInstanceTest.GetImageFormatConstants()
 	assert.Equal(t, width, imgConfig.Width)
 	assert.Equal(t, height, imgConfig.Height)
 	assert.Equal(t, width, imgConfig.Width)

@@ -1,6 +1,10 @@
 package providers
 
-import "log"
+type CompanyInterface interface {
+	Company() (string, error)
+	CompanySuffix() (string, error)
+	JobTitle() (string, error)
+}
 
 type BaseCompany struct {
 	BaseProvider
@@ -71,52 +75,34 @@ func (bc *BaseCompany) GetJobTitleFormats() []string {
 	return bc.jobTitleFormat
 }
 
-func (bc *BaseCompany) Company() string {
-	format, err := bc.RandomElementFromStringSlice(bc.GetFormats())
-	if err != nil {
-		log.Fatal(err.Error())
-		return ""
-	}
+func (bc *BaseCompany) Company() (string, error) {
+	format := helperInstance.RandomElementString(bc.GetFormats())
 	parse, err := bc.BaseProvider.Parse(format, bc)
 	if err != nil {
-		log.Fatal(err.Error())
-		return ""
+		return "", err
 	}
-	return parse
+	return parse, nil
 }
 
-func (bc *BaseCompany) CompanySuffix() string {
-	suffix, err := bc.RandomElementFromStringSlice(bc.GetCompanySuffix())
-	if err != nil {
-		log.Fatal(err.Error())
-		return ""
-	}
-	return suffix
+func (bc *BaseCompany) CompanySuffix() (string, error) {
+	suffix := helperInstance.RandomElementString(bc.GetCompanySuffix())
+	return suffix, nil
 }
-func (bc *BaseCompany) CompanyName() string {
-	name, err := bc.RandomElementFromStringSlice(bc.GetCompanyName())
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	return name
+func (bc *BaseCompany) CompanyName() (string, error) {
+	name := helperInstance.RandomElementString(bc.GetCompanyName())
+	return name, nil
 }
 
-func (bc *BaseCompany) CompanyPrefix() string {
-	prefix, err := bc.RandomElementFromStringSlice(bc.GetCompanySuffix())
-	if err != nil {
-		log.Fatal(err.Error())
-	}
-	return prefix
+func (bc *BaseCompany) CompanyPrefix() (string, error) {
+	prefix := helperInstance.RandomElementString(bc.GetCompanySuffix())
+	return prefix, nil
 }
 
-func (bc *BaseCompany) JobTitle() string {
-	format, err := bc.RandomElementFromStringSlice(bc.GetJobTitleFormats())
-	if err != nil {
-		log.Fatal(err.Error())
-	}
+func (bc *BaseCompany) JobTitle() (string, error) {
+	format := helperInstance.RandomElementString(bc.GetJobTitleFormats())
 	parse, err := bc.BaseProvider.Parse(format, &BaseLorem{})
 	if err != nil {
-		log.Fatal(err.Error())
+		return "", err
 	}
-	return parse
+	return parse, nil
 }

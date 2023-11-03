@@ -1,6 +1,7 @@
 package providers
 
 import (
+	"errors"
 	"github.com/harmlessprince/goFaker/constants"
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
@@ -13,81 +14,109 @@ type BaseLorem struct {
 	wordList []string
 }
 
+type LoremInterface interface {
+	Word() (string, error)
+	WordsAsText(numberOfWords int) (string, error)
+	WordsAsList(numberOfWords int) ([]string, error)
+	Sentence(numberOfWords int, variableNumberOfWords bool) (string, error)
+	SentencesAsText(numberOfSentences int, variableNumberOfWords bool) (string, error)
+	SentencesAsList(numberOfSentences int, variableNumberOfWords bool) ([]string, error)
+	Paragraph(numberOfSentences int, variableNumberOfSentences bool) (string, error)
+	ParagraphsAsList(numberOfParagraphs ...int) ([]string, error)
+	ParagraphsAsText(numberOfParagraphs ...int) (string, error)
+	Text(maxNumberOfCharacters ...int) (string, error)
+}
+
 func (bl *BaseLorem) GetWordList() []string {
 	bl.wordList = constants.LoremWordList
 	return bl.wordList
 }
 
-func (bl *BaseLorem) Word() string {
+func (bl *BaseLorem) Word() (string, error) {
 	word, err := bl.RandomElementFromStringSlice(bl.GetWordList())
 	if err != nil {
-		log.Fatal(err.Error())
-		return ""
+		return "", err
 	}
-	return word
+	return word, nil
 }
 
-func (bl *BaseLorem) WordsAsText(numberOfWords int) string {
+func (bl *BaseLorem) WordsAsText(numberOfWords int) (string, error) {
 	var words []string
 	for i := 0; i < numberOfWords; i++ {
-		words = append(words, bl.Word())
+		word, _ := bl.Word()
+		words = append(words, word)
 	}
-	return strings.Join(words, " ")
+	return strings.Join(words, " "), nil
 }
 
-func (bl *BaseLorem) WordsAsList(numberOfWords int) []string {
+func (bl *BaseLorem) WordsAsList(numberOfWords int) ([]string, error) {
 	var words []string
 	for i := 0; i < numberOfWords; i++ {
-		words = append(words, bl.Word())
+		word, _ := bl.Word()
+		words = append(words, word)
 	}
-	return words
+	return words, nil
 }
 
-func (bl *BaseLorem) Sentence(numberOfWords int, variableNumberOfWords bool) string {
+func (bl *BaseLorem) Sentence(numberOfWords int, variableNumberOfWords bool) (string, error) {
 	if numberOfWords <= 0 {
-		return ""
+		return "", errors.New("numberOfWords should be greater than 0")
 	}
 	if variableNumberOfWords {
 		numberOfWords = bl.randomizeNbElements(numberOfWords)
 	}
-	words := bl.WordsAsList(numberOfWords)
+	words, err := bl.WordsAsList(numberOfWords)
+	if err != nil {
+		return "", err
+	}
 	words[0] = cases.Title(language.Und).String(words[0])
-	return strings.Join(words, " ") + "."
+	return strings.Join(words, " ") + ".", nil
 }
 
-func (bl *BaseLorem) SentencesAsText(numberOfSentences int, variableNumberOfWords bool) string {
+func (bl *BaseLorem) SentencesAsText(numberOfSentences int, variableNumberOfWords bool) (string, error) {
 	if numberOfSentences <= 0 {
-		return ""
+		return "", errors.New("numberOfSentences should be greater than 0")
 	}
 	var sentences []string
 	for i := 0; i < numberOfSentences; i++ {
-		sentences = append(sentences, bl.Sentence(6, variableNumberOfWords))
+		sentence, err := bl.Sentence(6, variableNumberOfWords)
+		if err != nil {
+			return "", err
+		}
+		sentences = append(sentences, sentence)
 	}
-	return strings.Join(sentences, " ")
+	return strings.Join(sentences, " "), nil
 }
-func (bl *BaseLorem) SentencesAsList(numberOfSentences int, variableNumberOfWords bool) []string {
+func (bl *BaseLorem) SentencesAsList(numberOfSentences int, variableNumberOfWords bool) ([]string, error) {
 	if numberOfSentences <= 0 {
-		return []string{}
+		return nil, errors.New("numberOfSentences should be greater than 0")
 	}
 	var sentences []string
 	for i := 0; i < numberOfSentences; i++ {
-		sentences = append(sentences, bl.Sentence(6, variableNumberOfWords))
+		sentence, err := bl.Sentence(6, variableNumberOfWords)
+		if err != nil {
+			return nil, err
+		}
+		sentences = append(sentences, sentence)
 	}
-	return sentences
+	return sentences, nil
 }
 
-func (bl *BaseLorem) Paragraph(numberOfSentences int, variableNumberOfSentences bool) string {
+func (bl *BaseLorem) Paragraph(numberOfSentences int, variableNumberOfSentences bool) (string, error) {
 	if numberOfSentences <= 0 {
-		return ""
+		return "", errors.New("numberOfSentences should be greater than 0")
 	}
 	if variableNumberOfSentences {
 		numberOfSentences = bl.randomizeNbElements(numberOfSentences)
 	}
-	sentences := bl.SentencesAsList(numberOfSentences, false)
-	return strings.Join(sentences, " ")
+	sentences, err := bl.SentencesAsList(numberOfSentences, false)
+	if err != nil {
+		return "", err
+	}
+	return strings.Join(sentences, " "), nil
 }
 
-func (bl *BaseLorem) ParagraphsAsList(numberOfParagraphs ...int) []string {
+func (bl *BaseLorem) ParagraphsAsList(numberOfParagraphs ...int) ([]string, error) {
 	n := 3
 	if len(numberOfParagraphs) > 0 {
 		n = numberOfParagraphs[0]
@@ -95,31 +124,36 @@ func (bl *BaseLorem) ParagraphsAsList(numberOfParagraphs ...int) []string {
 
 	var paragraphs []string
 	for i := 0; i < n; i++ {
-		sentences := bl.Paragraph(3, true)
-		paragraphs = append(paragraphs, sentences)
+		paragraph, err := bl.Paragraph(3, true)
+		if err != nil {
+			return nil, err
+		}
+		paragraphs = append(paragraphs, paragraph)
 	}
-	return paragraphs
+	return paragraphs, nil
 }
 
-func (bl *BaseLorem) ParagraphsAsText(numberOfParagraphs ...int) string {
+func (bl *BaseLorem) ParagraphsAsText(numberOfParagraphs ...int) (string, error) {
 	n := 3
 	if len(numberOfParagraphs) > 0 {
 		n = numberOfParagraphs[0]
 	}
 	var paragraphs []string
 	for i := 0; i < n; i++ {
-		sentences := bl.Paragraph(3, true)
-		paragraphs = append(paragraphs, sentences)
+		paragraph, err := bl.Paragraph(3, true)
+		if err != nil {
+			return "", err
+		}
+		paragraphs = append(paragraphs, paragraph)
 	}
-	return strings.Join(paragraphs, "\n\n")
+	return strings.Join(paragraphs, "\n\n"), nil
 }
-func (bl *BaseLorem) Text(maxNumberOfCharacters ...int) string {
+func (bl *BaseLorem) Text(maxNumberOfCharacters ...int) (string, error) {
 	maxN := 200
 	if len(maxNumberOfCharacters) > 0 {
 		maxN = maxNumberOfCharacters[0]
 		if maxN < 5 {
-			log.Fatal("Text() can only generate text of at least 5 characters")
-			return ""
+			return "", errors.New("Text() can only generate text of at least 5 characters")
 		}
 	}
 
@@ -153,7 +187,7 @@ func (bl *BaseLorem) Text(maxNumberOfCharacters ...int) string {
 		// end sentence with full stop
 		text[len(text)-1] += "."
 	}
-	return strings.Join(text, "")
+	return strings.Join(text, ""), nil
 }
 func (bl *BaseLorem) randomizeNbElements(numberOfElements int) int {
 	numberBetween, err := bl.NumberBetween(60, 140)

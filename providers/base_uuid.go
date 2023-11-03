@@ -4,23 +4,23 @@ import (
 	"crypto/md5"
 	"encoding/binary"
 	"fmt"
-	"log"
 )
 
+type UuidInterface interface {
+	Uuid3() (string, error)
+}
 type BaseUuid struct {
 	BaseProvider
 }
 
-func (b *BaseUuid) Uuid3() string {
+func (b *BaseUuid) Uuid3() (string, error) {
 	seedOne, err := b.NumberBetween(0, 2147483647)
 	if err != nil {
-		log.Fatal(err)
-		return ""
+		return "", err
 	}
 	seedTwo, err := b.NumberBetween(0, 2147483647)
 	if err != nil {
-		log.Fatal(err)
-		return ""
+		return "", err
 	}
 	seed := []byte{
 		byte(seedOne >> 24), byte(seedOne >> 16), byte(seedOne >> 8), byte(seedOne),
@@ -41,5 +41,5 @@ func (b *BaseUuid) Uuid3() string {
 	return fmt.Sprintf(
 		"%08x-%04x-%04x-%02x%02x-%02x%02x%02x%02x%02x%02x",
 		tLo, tMi, tHi, csHi, csLo, hash[10], hash[11], hash[12], hash[13], hash[14], hash[15],
-	)
+	), err
 }

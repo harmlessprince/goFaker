@@ -1,9 +1,9 @@
 package providers
 
 import (
+	"errors"
 	"fmt"
 	"github.com/harmlessprince/goFaker/constants"
-	"log"
 	"strconv"
 	"strings"
 )
@@ -11,48 +11,69 @@ import (
 type BaseColor struct {
 	BaseProvider
 }
+type ColorInterface interface {
+	HexColor() (string, error)
+	SafeHexColor() (string, error)
+	RgbColorAsArray() ([]string, error)
+	RgbColor() (string, error)
+	RgbCssColor() (string, error)
+	RgbaCssColor() (string, error)
+	SafeColorName() (string, error)
+	ColorName() (string, error)
+	HslColor() (string, error)
+	HslColorAsArray() ([]int, error)
+}
 
-func (b *BaseColor) HexColor() string {
+func (b *BaseColor) HexColor() (string, error) {
 	numberBtw, errNumberBtw := b.NumberBetween(1, 16777215)
 	if errNumberBtw != nil {
-		log.Fatal(errNumberBtw.Error())
-		return ""
+		return "", errors.New(errNumberBtw.Error())
 	}
 	numberBtwToHex := helperInstance.DecimalToHexDecimal(int64(numberBtw))
 	paddedNumberBtwToHex := helperInstance.StrPadLeft(numberBtwToHex, 6, "0")
-	return "#" + paddedNumberBtwToHex
+	return "#" + paddedNumberBtwToHex, nil
 }
 
-func (b *BaseColor) SafeHexColor() string {
+func (b *BaseColor) SafeHexColor() (string, error) {
 	numberBtw, errNumberBtw := b.NumberBetween(0, 255)
 	if errNumberBtw != nil {
-		log.Fatal(errNumberBtw.Error())
-		return ""
+		return "", errors.New(errNumberBtw.Error())
 	}
 	numberBtwToHex := helperInstance.DecimalToHexDecimal(int64(numberBtw))
 	color := helperInstance.StrPadLeft(numberBtwToHex, 3, "0")
 	split := strings.Split(color, "")
-	return "#" + split[0] + split[0] + split[1] + split[1] + split[2] + split[2]
+	return "#" + split[0] + split[0] + split[1] + split[1] + split[2] + split[2], nil
 }
 
-func (b *BaseColor) RgbColorAsArray() []string {
-	color := b.HexColor()
+func (b *BaseColor) RgbColorAsArray() ([]string, error) {
+	color, err := b.HexColor()
+	if err != nil {
+		return nil, err
+	}
 	return []string{
 		strconv.FormatInt(helperInstance.HexDecimalToDecimal(helperInstance.Substr(color, 1, 2)), 10),
 		strconv.FormatInt(helperInstance.HexDecimalToDecimal(helperInstance.Substr(color, 3, 2)), 10),
 		strconv.FormatInt(helperInstance.HexDecimalToDecimal(helperInstance.Substr(color, 5, 2)), 10),
+	}, nil
+}
+
+func (b *BaseColor) RgbColor() (string, error) {
+	rgbColorAsArray, err := b.RgbColorAsArray()
+	if err != nil {
+		return "", err
 	}
+	return strings.Join(rgbColorAsArray, ","), nil
 }
 
-func (b *BaseColor) RgbColor() string {
-	return strings.Join(b.RgbColorAsArray(), ",")
+func (b *BaseColor) RgbCssColor() (string, error) {
+	rgbColor, err := b.RgbColor()
+	if err != nil {
+		return "", err
+	}
+	return "rgb(" + rgbColor + ")", nil
 }
 
-func (b *BaseColor) RgbCssColor() string {
-	return "rgb(" + b.RgbColor() + ")"
-}
-
-func (b *BaseColor) RgbaCssColor() string {
+func (b *BaseColor) RgbaCssColor() (string, error) {
 	floatOptions := RandomFloatOptions{
 		NumberOfMaxDecimals: 1,
 		Min:                 0,
@@ -60,68 +81,62 @@ func (b *BaseColor) RgbaCssColor() string {
 	}
 	randomFloat, err := b.RandomFloat(floatOptions)
 	if err != nil {
-		log.Fatal(err.Error())
-		return ""
+		return "", err
 	}
 	randomFloatToString := strconv.FormatFloat(randomFloat, 'f', -1, 64)
-
-	return "rgb(" + b.RgbColor() + "," + randomFloatToString + ")"
+	rgbColor, err := b.RgbColor()
+	if err != nil {
+		return "", err
+	}
+	return "rgb(" + rgbColor + "," + randomFloatToString + ")", nil
 }
 
-func (b *BaseColor) SafeColorName() string {
+func (b *BaseColor) SafeColorName() (string, error) {
 	color, err := b.RandomElementFromStringSlice(constants.SafeColorNames)
 	if err != nil {
-		log.Fatal(err.Error())
-		return ""
+		return "", err
 	}
-	return color
+	return color, nil
 }
 
-func (b *BaseColor) ColorName() string {
+func (b *BaseColor) ColorName() (string, error) {
 	color, err := b.RandomElementFromStringSlice(constants.AllColorNames)
 	if err != nil {
-		log.Fatal(err.Error())
-		return ""
+		return "", err
 	}
-	return color
+	return color, nil
 }
 
-func (b *BaseColor) HslColor() string {
-	first, errFirst := b.NumberBetween(0, 360)
-	second, errSecond := b.NumberBetween(0, 100)
-	third, errThird := b.NumberBetween(0, 100)
-	if errFirst != nil {
-		log.Fatal(errFirst.Error())
-		return ""
+func (b *BaseColor) HslColor() (string, error) {
+	first, err := b.NumberBetween(0, 360)
+	if err != nil {
+		return "", err
 	}
-	if errSecond != nil {
-		log.Fatal(errSecond.Error())
-		return ""
+	second, err := b.NumberBetween(0, 100)
+	if err != nil {
+		return "", err
 	}
-	if errThird != nil {
-		log.Fatal(errThird.Error())
-		return ""
+	third, err := b.NumberBetween(0, 100)
+	if err != nil {
+		return "", err
 	}
-	return fmt.Sprintf("%d,%d,%d", first, second, third)
+	return fmt.Sprintf("%d,%d,%d", first, second, third), nil
 }
 
-func (b *BaseColor) HslColorAsArray() []int {
-	first, errFirst := b.NumberBetween(0, 360)
-	second, errSecond := b.NumberBetween(0, 100)
-	third, errThird := b.NumberBetween(0, 100)
-	if errFirst != nil {
-		log.Fatal(errFirst.Error())
-		return []int{}
+func (b *BaseColor) HslColorAsArray() ([]int, error) {
+	first, err := b.NumberBetween(0, 360)
+	if err != nil {
+		return nil, err
 	}
-	if errSecond != nil {
-		log.Fatal(errSecond.Error())
-		return []int{}
+	second, err := b.NumberBetween(0, 100)
+	if err != nil {
+		return nil, err
 	}
-	if errThird != nil {
-		log.Fatal(errThird.Error())
-		return []int{}
+	third, err := b.NumberBetween(0, 100)
+	if err != nil {
+		return nil, err
 	}
 	return []int{
 		first, second, third,
-	}
+	}, nil
 }

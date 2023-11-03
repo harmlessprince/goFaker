@@ -4,7 +4,7 @@ import "github.com/harmlessprince/goFaker/providers"
 
 var newAddress = NewAddress()
 var newPhoneNumber = NewPhoneNumber()
-var newPerson = NewPerson()
+var newPerson = NewEnNGPerson()
 
 type EnNGGenerator struct {
 	providers.DefaultGenerator
@@ -13,50 +13,50 @@ type EnNGGenerator struct {
 	EnNGPhoneNumber
 }
 
-func (e *EnNGGenerator) GenerateAddress() string {
+func (e *EnNGGenerator) Address() (string, error) {
 	return newAddress.BaseAddress.Address()
 }
 
-func (e *EnNGGenerator) GenerateStreetAddress() string {
+func (e *EnNGGenerator) StreetAddress() (string, error) {
 	return newAddress.BaseAddress.StreetAddress()
 }
 
-func (e *EnNGGenerator) GenerateCity() string {
+func (e *EnNGGenerator) City() (string, error) {
 	return newAddress.BaseAddress.City()
 }
 
-func (e *EnNGGenerator) GenerateCountry() string {
+func (e *EnNGGenerator) Country() (string, error) {
 	return newAddress.Country()
 }
 
-func (e *EnNGGenerator) GeneratePostCode() string {
+func (e *EnNGGenerator) PostCode() (string, error) {
 	return newAddress.BaseAddress.PostCode()
 }
 
-func (e *EnNGGenerator) GenerateCityName() string {
+func (e *EnNGGenerator) CityName() (string, error) {
 	return newAddress.BaseAddress.CityName()
 }
 
-func (e *EnNGGenerator) GenerateName(gender ...string) string {
-	return newPerson.BasePerson.Name()
+func (e *EnNGGenerator) Name(gender ...string) (string, error) {
+	return newPerson.BasePerson.Name(gender...)
 }
 
-func (e *EnNGGenerator) GenerateFirstName(gender ...string) string {
+func (e *EnNGGenerator) FirstName(gender ...string) (string, error) {
 	return newPerson.BasePerson.FirstName(gender...)
 }
 
-func (e *EnNGGenerator) GenerateFirstNameMale() string {
+func (e *EnNGGenerator) FirstNameMale() (string, error) {
 	return newPerson.BasePerson.FirstNameMale()
 }
 
-func (e *EnNGGenerator) GenerateFirstNameFemale() string {
+func (e *EnNGGenerator) FirstNameFemale() (string, error) {
 	return newPerson.BasePerson.FirstNameFemale()
 }
 
-func (e *EnNGGenerator) GenerateLastName() string {
+func (e *EnNGGenerator) LastName() (string, error) {
 	return newPerson.BasePerson.LastName()
 }
 
-func (e *EnNGGenerator) GeneratePhoneNumber() string {
+func (e *EnNGGenerator) PhoneNumber() (string, error) {
 	return newPhoneNumber.BasePhoneNumber.PhoneNumber()
 }

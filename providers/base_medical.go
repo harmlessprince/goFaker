@@ -2,9 +2,13 @@ package providers
 
 import (
 	"github.com/harmlessprince/goFaker/constants"
-	"log"
 )
 
+type BloodInterface interface {
+	BloodType() (string, error)
+	BloodRh() (string, error)
+	BloodGroup() (string, error)
+}
 type BaseMedical struct {
 	BaseProvider
 }
@@ -13,26 +17,26 @@ func (m *BaseMedical) getBloodGroupFormat() string {
 	return "{{BloodType}}{{BloodRh}}"
 }
 
-func (m *BaseMedical) BloodType() string {
+func (m *BaseMedical) BloodType() (string, error) {
 	bloodType, err := m.BaseProvider.RandomElementFromStringSlice(constants.BloodTypes)
 	if err != nil {
-		log.Fatal(err.Error())
+		return "", err
 	}
-	return bloodType
+	return bloodType, nil
 }
 
-func (m *BaseMedical) BloodRh() string {
+func (m *BaseMedical) BloodRh() (string, error) {
 	bloodRh, err := m.BaseProvider.RandomElementFromStringSlice(constants.BloodRhFactors)
 	if err != nil {
-		log.Fatal(err.Error())
+		return "", err
 	}
-	return bloodRh
+	return bloodRh, nil
 }
 
-func (m *BaseMedical) BloodGroup() string {
+func (m *BaseMedical) BloodGroup() (string, error) {
 	bloodGroup, err := m.BaseProvider.Parse(m.getBloodGroupFormat(), m)
 	if err != nil {
-		log.Fatal(err.Error())
+		return "", err
 	}
-	return bloodGroup
+	return bloodGroup, nil
 }

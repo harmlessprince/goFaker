@@ -2,9 +2,13 @@ package providers
 
 import (
 	"github.com/harmlessprince/goFaker/calculator"
-	"log"
 )
 
+type PhoneNumberInterface interface {
+	PhoneNumber() (string, error)
+	E164PhoneNumber() (string, error)
+	Imei() (string, error)
+}
 type BasePhoneNumber struct {
 	BaseProvider
 	formats     []string
@@ -251,36 +255,36 @@ func (p *BasePhoneNumber) GetE164Formats() []string {
 	return p.e164Formats
 }
 
-func (p *BasePhoneNumber) PhoneNumber() string {
+func (p *BasePhoneNumber) PhoneNumber() (string, error) {
 	format, err := p.BaseProvider.RandomElementFromStringSlice(p.GetFormats())
 	if err != nil {
-		log.Fatal(err.Error())
+		return "", err
 	}
 	phoneNumber, numerifyErr := p.BaseProvider.Numerify(format)
 	if numerifyErr != nil {
-		log.Fatal(numerifyErr.Error())
+		return "", numerifyErr
 	}
-	return phoneNumber
+	return phoneNumber, nil
 }
 
-func (p *BasePhoneNumber) E164PhoneNumber() string {
+func (p *BasePhoneNumber) E164PhoneNumber() (string, error) {
 	format, err := p.BaseProvider.RandomElementFromStringSlice(p.GetE164Formats())
 	if err != nil {
-		log.Fatal(err.Error())
+		return "", err
 	}
 	phoneNumber, numerifyErr := p.BaseProvider.Numerify(format)
 	if numerifyErr != nil {
-		log.Fatal(err.Error())
+		return "", numerifyErr
 	}
-	return phoneNumber
+	return phoneNumber, nil
 }
 
-func (p *BasePhoneNumber) Imei() string {
+func (p *BasePhoneNumber) Imei() (string, error) {
 	imei, err := p.BaseProvider.Numerify("##############")
 	if err != nil {
-		log.Fatal(err.Error())
+		return "", err
 	}
 	Luhn := calculator.Luhn{}
 	checkDigit := Luhn.ComputeCheckDigit(imei)
-	return imei + checkDigit
+	return imei + checkDigit, nil
 }

@@ -1,15 +1,39 @@
 package providers
 
 import (
+	"errors"
 	"fmt"
 	"github.com/harmlessprince/goFaker/constants"
-	"github.com/harmlessprince/goFaker/helpers"
-	"log"
+	"github.com/harmlessprince/goFaker/parsers"
 	"math"
 	"strconv"
 	"time"
 )
 
+type DateTimeInterface interface {
+	SetDefaultTimeZone(timeZone string)
+	DateTime(max interface{}, timezone string) (time.Time, error)
+	DateTimeAD(max interface{}, timezone string) (time.Time, error)
+	DateTimeBetween(startDate interface{}, endDate interface{}, timezone string) (time.Time, error)
+	DateTimeInterval(dateString string, intervalString string, timezone string) (time.Time, error)
+	DateTimeThisWeek(max string, timezone string) (time.Time, error)
+	DateTimeThisMonth(max string, timezone string) (time.Time, error)
+	DateTimeThisYear(max string, timezone string) (time.Time, error)
+	DateTimeThisDecade(max string, timezone string) (time.Time, error)
+	DateTimeThisCentury(max string, timezone string) (time.Time, error)
+	Date(format string, max interface{}) (string, error)
+	Time(format string, max interface{}) (string, error)
+	UnixTime(max interface{}) (int, error)
+	ISO8602(max interface{}) (string, error)
+	AmPm(max interface{}) (string, error)
+	DayOfMonth(max interface{}) (int, error)
+	DayOfWeek(max interface{}) (time.Weekday, error)
+	Month(max interface{}) (int, error)
+	MonthName(max interface{}) (string, error)
+	Year(max interface{}) (string, error)
+	Century() (string, error)
+	Timezone(countryCode string) (*time.Location, error)
+}
 type BaseDateTime struct {
 	BaseProvider
 	defaultTimeZone string
@@ -22,33 +46,33 @@ func (bdt *BaseDateTime) getDefaultTimeZone() string {
 	return bdt.defaultTimeZone
 }
 
-func (bdt *BaseDateTime) getMaxTimestamp(max interface{}) (int, error) {
+func (bdt *BaseDateTime) getMaxTimestamp(max interface{}) (int64, error) {
 	switch maxType := max.(type) {
 	case int:
-		return maxType, nil
+		return int64(maxType), nil
 	case float64:
-		return int(maxType), nil
+		return int64(maxType), nil
 	case string:
 		if max == "" {
-			return int(time.Now().UnixNano()), nil
+			return time.Now().UnixNano(), nil
 		}
 		timestamp, err := time.Parse(time.DateTime, maxType)
 		if err != nil {
-			log.Fatal(err)
+			return 0, err
 		}
-		return int(timestamp.Unix()), nil
+		return timestamp.Unix(), nil
 	case time.Time:
-		return int(maxType.Unix()), nil
+		return maxType.Unix(), nil
 	default:
 		return 0, fmt.Errorf("unsupported type for max: %T", max)
 	}
 }
-func (bdt *BaseDateTime) setTimezone(dt time.Time, timezone string) time.Time {
+func (bdt *BaseDateTime) setTimezone(dt time.Time, timezone string) (time.Time, error) {
 	location, err := time.LoadLocation(bdt.resolveTimezone(timezone))
 	if err != nil {
-		log.Fatal(err)
+		return time.Time{}, err
 	}
-	return dt.In(location)
+	return dt.In(location), nil
 }
 
 // resolveTimezone
@@ -82,8 +106,11 @@ func (bdt *BaseDateTime) resolveTimezone(timezone string) string {
 //	baseDateTime.DateTime("2024-01-01", "Africa/lagos")
 //
 // See https://www.ibm.com/docs/en/ts7650g-protectier/3.4.0?topic=reference-worldwide-time-zone-codes
-func (bdt *BaseDateTime) DateTime(max interface{}, timezone string) time.Time {
-	unixTimestamp := bdt.UnixTime(max)
+func (bdt *BaseDateTime) DateTime(max interface{}, timezone string) (time.Time, error) {
+	unixTimestamp, err := bdt.UnixTime(max)
+	if err != nil {
+		return time.Time{}, err
+	}
 	return bdt.setTimezone(time.Unix(int64(unixTimestamp), 0), timezone)
 }
 
@@ -101,14 +128,14 @@ func (bdt *BaseDateTime) DateTime(max interface{}, timezone string) time.Time {
 //	baseDateTime.DateTimeAD("2024-01-01", "Africa/lagos")
 //
 // See https://www.ibm.com/docs/en/ts7650g-protectier/3.4.0?topic=reference-worldwide-time-zone-codes
-func (bdt *BaseDateTime) DateTimeAD(max interface{}, timezone string) time.Time {
+func (bdt *BaseDateTime) DateTimeAD(max interface{}, timezone string) (time.Time, error) {
 	maxTimeStamp, err := bdt.getMaxTimestamp(max)
 	if err != nil {
-		log.Fatal(err)
+		return time.Time{}, err
 	}
-	numberBTw, errNumbBtw := bdt.NumberBetween(math.MinInt64, maxTimeStamp)
-	if errNumbBtw != nil {
-		log.Fatal(errNumbBtw)
+	numberBTw, err := bdt.NumberBetween(math.MinInt64, int(maxTimeStamp))
+	if err != nil {
+		return time.Time{}, err
 	}
 	return bdt.setTimezone(time.Unix(int64(numberBTw), 0), timezone)
 }
@@ -127,34 +154,47 @@ func (bdt *BaseDateTime) DateTimeAD(max interface{}, timezone string) time.Time 
 //   - baseDateTime.DateTimeBetween("2026-01-02", "2036-01-02", "Africa/lagos")
 //
 // See https://www.ibm.com/docs/en/ts7650g-protectier/3.4.0?topic=reference-worldwide-time-zone-codes
-func (bdt *BaseDateTime) DateTimeBetween(startDate interface{}, endDate interface{}, timezone string) time.Time {
+func (bdt *BaseDateTime) DateTimeBetween(startDate interface{}, endDate interface{}, timezone string) (time.Time, error) {
+
 	var startTimestamp int64
+	var endTimeStamp int64
 	switch startDateType := startDate.(type) {
 	case time.Time:
 		startTimestamp = startDateType.Unix()
 	case string:
 		timestamp, err := time.Parse(time.DateTime, startDateType)
 		if err != nil {
-			log.Fatal(err)
-			return time.Time{}
+			return time.Time{}, err
 		}
 		startTimestamp = timestamp.Unix()
 	default:
 		thirtyYearsAgo := time.Now().AddDate(-30, 0, 0)
 		startTimestamp = thirtyYearsAgo.Unix()
 	}
-	endTimeStamp, err := bdt.getMaxTimestamp(endDate)
-	if err != nil {
-		log.Fatal(err)
-		return time.Time{}
+
+	switch endDateType := endDate.(type) {
+	case time.Time:
+		endTimeStamp = endDateType.Unix()
+	case string:
+		timestamp, err := time.Parse(time.DateTime, endDateType)
+		if err != nil {
+			return time.Time{}, err
+		}
+		endTimeStamp = timestamp.Unix()
+	default:
+		var err error
+		endTimeStamp, err = bdt.getMaxTimestamp(endDate)
+		if err != nil {
+			return time.Time{}, err
+		}
 	}
-	if startTimestamp > int64(endTimeStamp) {
-		log.Fatal("start date must be anterior to end date")
-		return time.Time{}
+
+	if startTimestamp > endTimeStamp {
+		return time.Time{}, errors.New("start date must be anterior to end date")
 	}
-	timestampBtw, errBtw := bdt.NumberBetween(int(startTimestamp), endTimeStamp)
+	timestampBtw, errBtw := bdt.NumberBetween(int(startTimestamp), int(endTimeStamp))
 	if errBtw != nil {
-		log.Fatal(errBtw)
+		return time.Time{}, errBtw
 	}
 	return bdt.setTimezone(time.Unix(int64(timestampBtw), 0), timezone)
 }
@@ -175,26 +215,23 @@ func (bdt *BaseDateTime) DateTimeBetween(startDate interface{}, endDate interfac
 //   - baseDateTime.DateTimeInterval(time.Now().Format(time.RFC3339), "-5d", "Africa/lagos")
 //
 // See https://www.ibm.com/docs/en/ts7650g-protectier/3.4.0?topic=reference-worldwide-time-zone-codes
-func (bdt *BaseDateTime) DateTimeInterval(dateString string, intervalString string, timezone string) time.Time {
+func (bdt *BaseDateTime) DateTimeInterval(dateString string, intervalString string, timezone string) (time.Time, error) {
 
 	if dateString == "" {
-		interval, err := helpers.StringToDuration{}.ParseDuration("-30years")
+		interval, err := parsers.StringToDuration{}.ParseDuration("-30years")
 		if err != nil {
-			log.Fatal(err)
-			return time.Time{}
+			return time.Time{}, err
 		}
 		dateString = time.Now().Add(interval).Format(time.RFC3339)
 	}
 	datetime, err := time.Parse(time.RFC3339, dateString)
 	if err != nil {
-		log.Fatal(err)
-		return time.Time{}
+		return time.Time{}, err
 	}
 
-	interval, err := helpers.StringToDuration{}.ParseDuration(intervalString)
+	interval, err := parsers.StringToDuration{}.ParseDuration(intervalString)
 	if err != nil {
-		log.Fatal(err)
-		return time.Time{}
+		return time.Time{}, err
 	}
 	otherDatetime := datetime.Add(interval)
 	begin := datetime
@@ -219,13 +256,13 @@ func (bdt *BaseDateTime) DateTimeInterval(dateString string, intervalString stri
 //   - baseDateTime.DateTimeThisCentury(time.Now().Format(time.DateTime), "")
 //
 // See https://www.ibm.com/docs/en/ts7650g-protectier/3.4.0?topic=reference-worldwide-time-zone-codes
-func (bdt *BaseDateTime) DateTimeThisWeek(max string, timezone string) time.Time {
+func (bdt *BaseDateTime) DateTimeThisWeek(max string, timezone string) (time.Time, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
 	}
-	startDateDuration, err := helpers.StringToDuration{}.ParseDuration("-1w")
+	startDateDuration, err := parsers.StringToDuration{}.ParseDuration("-1w")
 	if err != nil {
-		log.Fatal(err)
+		return time.Time{}, err
 	}
 	startDateTime := time.Now().Add(startDateDuration)
 	return bdt.DateTimeBetween(startDateTime, max, timezone)
@@ -245,13 +282,13 @@ func (bdt *BaseDateTime) DateTimeThisWeek(max string, timezone string) time.Time
 //   - baseDateTime.DateTimeThisMonth(time.Now().Format(time.DateTime), "")
 //
 // See https://www.ibm.com/docs/en/ts7650g-protectier/3.4.0?topic=reference-worldwide-time-zone-codes
-func (bdt *BaseDateTime) DateTimeThisMonth(max string, timezone string) time.Time {
+func (bdt *BaseDateTime) DateTimeThisMonth(max string, timezone string) (time.Time, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
 	}
-	startDateDuration, err := helpers.StringToDuration{}.ParseDuration("-1months")
+	startDateDuration, err := parsers.StringToDuration{}.ParseDuration("-1months")
 	if err != nil {
-		log.Fatal(err)
+		return time.Time{}, err
 	}
 	startDateTime := time.Now().Add(startDateDuration)
 	return bdt.DateTimeBetween(startDateTime, max, timezone)
@@ -271,7 +308,7 @@ func (bdt *BaseDateTime) DateTimeThisMonth(max string, timezone string) time.Tim
 //   - baseDateTime.DateTimeThisYear(time.Now().Format(time.DateTime), "")
 //
 // See https://www.ibm.com/docs/en/ts7650g-protectier/3.4.0?topic=reference-worldwide-time-zone-codes
-func (bdt *BaseDateTime) DateTimeThisYear(max string, timezone string) time.Time {
+func (bdt *BaseDateTime) DateTimeThisYear(max string, timezone string) (time.Time, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
 	}
@@ -294,13 +331,13 @@ func (bdt *BaseDateTime) DateTimeThisYear(max string, timezone string) time.Time
 //   - baseDateTime.DateTimeThisDecade(time.Now().Format(time.DateTime), "")
 //
 // See https://www.ibm.com/docs/en/ts7650g-protectier/3.4.0?topic=reference-worldwide-time-zone-codes
-func (bdt *BaseDateTime) DateTimeThisDecade(max string, timezone string) time.Time {
+func (bdt *BaseDateTime) DateTimeThisDecade(max string, timezone string) (time.Time, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
 	}
-	startDateDuration, err := helpers.StringToDuration{}.ParseDuration("-10years")
+	startDateDuration, err := parsers.StringToDuration{}.ParseDuration("-10years")
 	if err != nil {
-		log.Fatal(err)
+		return time.Time{}, err
 	}
 	startDateTime := time.Now().Add(startDateDuration)
 	return bdt.DateTimeBetween(startDateTime, max, timezone)
@@ -320,13 +357,13 @@ func (bdt *BaseDateTime) DateTimeThisDecade(max string, timezone string) time.Ti
 //   - baseDateTime.DateTimeThisCentury(time.Now().Format(time.DateTime), "")
 //
 // See https://www.ibm.com/docs/en/ts7650g-protectier/3.4.0?topic=reference-worldwide-time-zone-codes
-func (bdt *BaseDateTime) DateTimeThisCentury(max string, timezone string) time.Time {
+func (bdt *BaseDateTime) DateTimeThisCentury(max string, timezone string) (time.Time, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
 	}
-	startDateDuration, err := helpers.StringToDuration{}.ParseDuration("-100years")
+	startDateDuration, err := parsers.StringToDuration{}.ParseDuration("-100years")
 	if err != nil {
-		log.Fatal(err)
+		return time.Time{}, err
 	}
 	startDateTime := time.Now().Add(startDateDuration)
 	return bdt.DateTimeBetween(startDateTime, max, timezone)
@@ -344,13 +381,16 @@ func (bdt *BaseDateTime) DateTimeThisCentury(max string, timezone string) time.T
 // Example usage:
 //
 //	baseDateTime.Date("2006-01-01", "")
-func (bdt *BaseDateTime) Date(format string, max interface{}) string {
+func (bdt *BaseDateTime) Date(format string, max interface{}) (string, error) {
 	if format == "" {
 		format = "2006-01-02" //Y-m-d
 	}
 
-	dateTime := bdt.DateTime(max, "")
-	return dateTime.Format(format)
+	dateTime, err := bdt.DateTime(max, "")
+	if err != nil {
+		return "", err
+	}
+	return dateTime.Format(format), nil
 }
 
 // Time return a time string (24h format by default)
@@ -364,11 +404,15 @@ func (bdt *BaseDateTime) Date(format string, max interface{}) string {
 //
 // Example usage:
 //   - baseDateTime.Time("15:04:05", "")
-func (bdt *BaseDateTime) Time(format string, max interface{}) string {
+func (bdt *BaseDateTime) Time(format string, max interface{}) (string, error) {
 	if format == "" {
 		format = time.TimeOnly
 	}
-	return bdt.DateTime(max, "").Format(format)
+	dateTime, err := bdt.DateTime(max, "")
+	if err != nil {
+		return "", err
+	}
+	return dateTime.Format(format), nil
 }
 
 // UnixTime Get a timestamp between January 1, 1970, and now
@@ -382,19 +426,19 @@ func (bdt *BaseDateTime) Time(format string, max interface{}) string {
 //
 // Example usage:
 //   - baseDateTime.UnixTime("")
-func (bdt *BaseDateTime) UnixTime(max interface{}) int {
+func (bdt *BaseDateTime) UnixTime(max interface{}) (int, error) {
 	maxTimeStamp, errMaxT := bdt.getMaxTimestamp(max)
 	if errMaxT != nil {
-		log.Fatal(errMaxT)
+		return 0, errMaxT
 	}
-	numberBtw, errBtw := bdt.NumberBetween(0, maxTimeStamp)
+	numberBtw, errBtw := bdt.NumberBetween(0, int(maxTimeStamp))
 	if errBtw != nil {
-		log.Fatal(errBtw)
+		return 0, errBtw
 	}
-	return numberBtw
+	return numberBtw, nil
 }
 
-func (bdt *BaseDateTime) ISO8602(max interface{}) string {
+func (bdt *BaseDateTime) ISO8602(max interface{}) (string, error) {
 	return bdt.Date(time.RFC3339, max)
 }
 
@@ -409,11 +453,15 @@ func (bdt *BaseDateTime) ISO8602(max interface{}) string {
 //
 // Example usage:
 //   - baseDateTime.DateTimeThisMonth("")
-func (bdt *BaseDateTime) AmPm(max interface{}) string {
+func (bdt *BaseDateTime) AmPm(max interface{}) (string, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
 	}
-	return bdt.DateTime(max, "").Format("PM")
+	dateTime, err := bdt.DateTime(max, "")
+	if err != nil {
+		return "", err
+	}
+	return dateTime.Format("PM"), nil
 }
 
 // DayOfMonth
@@ -427,11 +475,15 @@ func (bdt *BaseDateTime) AmPm(max interface{}) string {
 //
 // Example usage:
 //   - baseDateTime.DayOfMonth("")
-func (bdt *BaseDateTime) DayOfMonth(max interface{}) int {
+func (bdt *BaseDateTime) DayOfMonth(max interface{}) (int, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
 	}
-	return bdt.DateTime(max, "").Day()
+	dateTime, err := bdt.DateTime(max, "")
+	if err != nil {
+		return 0, err
+	}
+	return dateTime.Day(), nil
 }
 
 // DayOfWeek
@@ -445,11 +497,15 @@ func (bdt *BaseDateTime) DayOfMonth(max interface{}) int {
 //
 // Example usage:
 //   - baseDateTime.DayOfWeek("")
-func (bdt *BaseDateTime) DayOfWeek(max interface{}) time.Weekday {
+func (bdt *BaseDateTime) DayOfWeek(max interface{}) (time.Weekday, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
 	}
-	return bdt.DateTime(max, "").Weekday()
+	dateTime, err := bdt.DateTime(max, "")
+	if err != nil {
+		return 0, err
+	}
+	return dateTime.Weekday(), nil
 }
 
 // Month
@@ -463,11 +519,15 @@ func (bdt *BaseDateTime) DayOfWeek(max interface{}) time.Weekday {
 //
 // Example usage:
 //   - baseDateTime.Month("")
-func (bdt *BaseDateTime) Month(max interface{}) int {
+func (bdt *BaseDateTime) Month(max interface{}) (int, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
 	}
-	return int(bdt.DateTime(max, "").Month())
+	dateTime, err := bdt.DateTime(max, "")
+	if err != nil {
+		return 0, err
+	}
+	return int(dateTime.Month()), nil
 }
 
 // MonthName
@@ -481,11 +541,15 @@ func (bdt *BaseDateTime) Month(max interface{}) int {
 //
 // Example usage:
 //   - baseDateTime.MonthName("")
-func (bdt *BaseDateTime) MonthName(max interface{}) string {
+func (bdt *BaseDateTime) MonthName(max interface{}) (string, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
 	}
-	return bdt.DateTime(max, "").Month().String()
+	dateTime, err := bdt.DateTime(max, "")
+	if err != nil {
+		return "", err
+	}
+	return dateTime.Month().String(), nil
 }
 
 // Year
@@ -499,22 +563,26 @@ func (bdt *BaseDateTime) MonthName(max interface{}) string {
 //
 // Example usage:
 //   - baseDateTime.Year("")
-func (bdt *BaseDateTime) Year(max interface{}) string {
+func (bdt *BaseDateTime) Year(max interface{}) (string, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
 	}
-	return strconv.Itoa(bdt.DateTime(max, "").Year())
+	dateTime, err := bdt.DateTime(max, "")
+	if err != nil {
+		return "", err
+	}
+	return strconv.Itoa(dateTime.Year()), nil
 }
 
-func (bdt *BaseDateTime) Century() string {
+func (bdt *BaseDateTime) Century() (string, error) {
 	century, err := bdt.RandomElementFromStringSlice(constants.Century)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
-	return century
+	return century, nil
 }
 
-func (bdt *BaseDateTime) Timezone(countryCode string) *time.Location {
+func (bdt *BaseDateTime) Timezone(countryCode string) (*time.Location, error) {
 	timeZones := []string{
 		"America/New_York",
 		"America/Los_Angeles",
@@ -536,12 +604,12 @@ func (bdt *BaseDateTime) Timezone(countryCode string) *time.Location {
 	if countryCode == "" {
 		randomTimeZone, err := bdt.RandomElementFromStringSlice(timeZones)
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
 		timezoneLocation, err = time.LoadLocation(randomTimeZone)
 		if err != nil {
-			log.Fatal(err)
+			return nil, err
 		}
 	}
-	return timezoneLocation
+	return timezoneLocation, nil
 }

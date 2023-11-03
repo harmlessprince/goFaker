@@ -282,9 +282,9 @@ func (h Helper) StrPadRight(input string, padLength int, padString string) strin
 
 // Substr returns the portion of string specified by the start and length parameters.
 // params
-//   - string $string — The input string.
-//   - int $offset
-//   - int $length
+//   - str string — The input string.
+//   - start int
+//   - length int
 func (h Helper) Substr(str string, start int, length int) string {
 	return str[start : start+length]
 }
@@ -317,4 +317,33 @@ func (h Helper) IsDirectory(path string) (bool, error) {
 		return false, fmt.Errorf("%s is not a directory", path)
 	}
 	return true, nil
+}
+
+// SliceShift shifts the first value of the slice off and returns it
+// params
+//   - slice []interface{} — The input string.
+func (h Helper) SliceShift(slice *[]interface{}) interface{} {
+	if len(*slice) == 0 {
+		return nil
+	}
+	first := (*slice)[0]
+	*slice = (*slice)[1:]
+	return first
+}
+func (h Helper) SliceShiftString(slice *[]string) string {
+	if len(*slice) == 0 {
+		return ""
+	}
+	first := (*slice)[0]
+	*slice = (*slice)[1:]
+	return first
+}
+
+func (h Helper) RandomElementString(strings []string) string {
+	if len(strings) == 0 {
+		return "" // Return an empty string if the slice is empty
+	}
+	rand.New(rand.NewSource(Seed))
+	randomIndex := rand.Intn(len(strings))
+	return strings[randomIndex]
 }

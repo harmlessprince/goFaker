@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/harmlessprince/goFaker/helpers"
+	"log"
 	"regexp"
 	"strconv"
 	"strings"
@@ -16,14 +17,14 @@ func (l *Luhn) checkSum(number string) float64 {
 	numberInDigits := []rune(number)
 	length := len(number)
 	sum := 0
-
+	fmt.Println(number)
 	for i := length - 1; i >= 0; i -= 2 {
 		digit := numberInDigits[i]
 		digitAsString := string(digit)
 		digitValue, err := strconv.Atoi(digitAsString)
 		if err != nil {
 			message := fmt.Sprintf("Error converting digit %s to integer: %v\n", digitAsString, err)
-			panic(message)
+			log.Fatal(message)
 		}
 		sum += digitValue
 	}
@@ -34,7 +35,7 @@ func (l *Luhn) checkSum(number string) float64 {
 		digitValue, err := strconv.Atoi(digitAsString)
 		if err != nil {
 			message := fmt.Sprintf("Error converting digit %s to integer: %v\n", digitAsString, err)
-			panic(message)
+			log.Fatal(message)
 		}
 		doubledDigit := digitValue * 2
 		digitAsStringSplit := strings.Split(strconv.Itoa(doubledDigit), "")

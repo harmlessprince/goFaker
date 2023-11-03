@@ -3,12 +3,10 @@ package providers
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"errors"
 	"fmt"
-	"github.com/harmlessprince/goFaker/extensions"
 	"golang.org/x/exp/slices"
-	"image"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"os"
@@ -16,6 +14,121 @@ import (
 	"strings"
 	"time"
 )
+
+type ImageUrlParams struct {
+	Width     int
+	Height    int
+	Category  string
+	Randomize bool
+	Word      string
+	Gray      bool
+	Format    string
+}
+type ImageParams struct {
+	Width     int
+	Height    int
+	Category  string
+	Randomize bool
+	Word      string
+	Gray      bool
+	Format    string
+	Dir       string
+	FullPath  bool
+}
+type ImageInterface interface {
+	ImageUrl(params ...ImageUrlParams) (string, error)
+
+	Image(params ...ImageParams) (string, error)
+}
+
+// DefaultImageUrlParams returns default options for ImageUrl
+func defaultImageUrlParams() ImageUrlParams {
+	return ImageUrlParams{
+		Width:     640,
+		Height:    480,
+		Category:  "",
+		Randomize: true,
+		Word:      "",
+		Gray:      false,
+		Format:    "png",
+	}
+}
+
+func defaultImageParams() ImageParams {
+	return ImageParams{
+		Width:     640,
+		Height:    480,
+		Category:  "",
+		Randomize: true,
+		Word:      "",
+		Gray:      false,
+		Format:    "png",
+		Dir:       "",
+		FullPath:  true,
+	}
+}
+
+func newImageParams(userParams ImageParams) ImageParams {
+	defaults := defaultImageParams()
+
+	if userParams.Width == 0 {
+		userParams.Width = defaults.Width
+	}
+	if userParams.Height == 0 {
+		userParams.Height = defaults.Height
+	}
+	if userParams.Category == "" {
+		userParams.Category = defaults.Category
+	}
+	if userParams.Randomize == false {
+		userParams.Randomize = defaults.Randomize
+	}
+	if userParams.Word == "" {
+		userParams.Word = defaults.Word
+	}
+	if userParams.Gray == false {
+		userParams.Gray = defaults.Gray
+	}
+	if userParams.Format == "" {
+		userParams.Format = defaults.Format
+	}
+	if userParams.Dir == "" {
+		userParams.Dir = defaults.Dir
+	}
+	if userParams.FullPath == false {
+		userParams.FullPath = defaults.FullPath
+	}
+
+	return userParams
+}
+
+func newImageUrlParams(userParams ImageUrlParams) ImageUrlParams {
+	defaults := defaultImageUrlParams()
+
+	if userParams.Width == 0 {
+		userParams.Width = defaults.Width
+	}
+	if userParams.Height == 0 {
+		userParams.Height = defaults.Height
+	}
+	if userParams.Category == "" {
+		userParams.Category = defaults.Category
+	}
+	if userParams.Randomize == false {
+		userParams.Randomize = defaults.Randomize
+	}
+	if userParams.Word == "" {
+		userParams.Word = defaults.Word
+	}
+	if userParams.Gray == false {
+		userParams.Gray = defaults.Gray
+	}
+	if userParams.Format == "" {
+		userParams.Format = defaults.Format
+	}
+
+	return userParams
+}
 
 const BaseImageBaseUrl = "https://via.placeholder.com"
 const FormatJpg = "jpg"
@@ -46,17 +159,16 @@ func (i *BaseImage) GetImageFormatConstants() map[string]string {
 	}
 }
 
-func (i *BaseImage) ImageUrl(params ...extensions.ImageUrlParams) string {
-	var imageUrlParams extensions.ImageUrlParams
+func (i *BaseImage) ImageUrl(params ...ImageUrlParams) (string, error) {
+	var imageUrlParams ImageUrlParams
 	if len(params) > 0 {
-		imageUrlParams = extensions.NewImageUrlParams(params[0])
+		imageUrlParams = newImageUrlParams(params[0])
 	} else {
-		imageUrlParams = extensions.DefaultImageUrlParams()
+		imageUrlParams = defaultImageUrlParams()
 	}
 	imageFormats := i.GetImageFormats()
 	if slices.Contains(imageFormats, imageUrlParams.Format) == false {
-		log.Fatal(fmt.Sprintf("invalid image format %s. Allowable formats are: %s", imageUrlParams.Format, imageFormats))
-		return ""
+		return "", errors.New(fmt.Sprintf("invalid image format %s. Allowable formats are: %s", imageUrlParams.Format, imageFormats))
 	}
 
 	size := fmt.Sprintf("%dx%d.%s", imageUrlParams.Width, imageUrlParams.Height, imageUrlParams.Format)
@@ -72,14 +184,21 @@ func (i *BaseImage) ImageUrl(params ...extensions.ImageUrlParams) string {
 
 	if imageUrlParams.Randomize == true {
 		baseLorem := &BaseLorem{}
-		imageParts = append(imageParts, baseLorem.Word())
+		word, err := baseLorem.Word()
+		if err != nil {
+			return "", err
+		}
+		imageParts = append(imageParts, word)
 	}
 	var backgroundColor string
 	if imageUrlParams.Gray == true {
 		backgroundColor = "CCCCCC"
 	} else {
 		color := BaseColor{}
-		safeHexColor := color.SafeHexColor()
+		safeHexColor, err := color.SafeHexColor()
+		if err != nil {
+			return "", err
+		}
 		backgroundColor = strings.Replace(safeHexColor, "#", "", -1)
 	}
 	countImageParts := len(imageParts)
@@ -87,22 +206,22 @@ func (i *BaseImage) ImageUrl(params ...extensions.ImageUrlParams) string {
 	if countImageParts > 0 {
 		text = "?text=" + url.QueryEscape(strings.Join(imageParts, " "))
 	}
-	return fmt.Sprintf("%s/%s/%s%s", BaseImageBaseUrl, size, backgroundColor, text)
+	return fmt.Sprintf("%s/%s/%s%s", BaseImageBaseUrl, size, backgroundColor, text), nil
 }
 
-func (i *BaseImage) Image(params ...extensions.ImageParams) string {
-	imageParam := extensions.DefaultImageParams()
+func (i *BaseImage) Image(params ...ImageParams) (string, error) {
+	imageParam := defaultImageParams()
 	if len(params) > 0 {
-		imageParam = extensions.NewImageParams(params[0])
+		imageParam = newImageParams(params[0])
 	}
 	if imageParam.Dir == "" {
 		imageParam.Dir = os.TempDir()
 	}
 	if _, err := helperInstance.IsDirectory(imageParam.Dir); err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	if _, err := helperInstance.IsWritable(imageParam.Dir); err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	hostName, _ := os.Hostname()
 	uniqueID := time.Now().UnixNano()
@@ -112,7 +231,7 @@ func (i *BaseImage) Image(params ...extensions.ImageParams) string {
 
 	fileName := fmt.Sprintf("%s.%s", hashedString, imageParam.Format)
 	filePath := imageParam.Dir + fileName
-	imageUrl := i.ImageUrl(extensions.ImageUrlParams{
+	imageUrl, err := i.ImageUrl(ImageUrlParams{
 		Width:     imageParam.Width,
 		Height:    imageParam.Height,
 		Category:  imageParam.Category,
@@ -121,19 +240,17 @@ func (i *BaseImage) Image(params ...extensions.ImageParams) string {
 		Gray:      imageParam.Gray,
 		Format:    imageParam.Format,
 	})
-	imgFile, err := os.Open(imageUrl)
 	if err != nil {
-
+		return "", err
 	}
-	imgConfig, _, err := image.DecodeConfig(imgFile)
-	_, err := i.downloadFileFromUrl(imageUrl, filePath)
+	_, err = i.downloadFileFromUrl(imageUrl, filePath)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	if imageParam.FullPath {
-		return filePath
+		return filePath, nil
 	}
-	return fileName
+	return fileName, nil
 }
 
 func (i *BaseImage) downloadFileFromUrl(url, filePath string) (bool, error) {
@@ -144,7 +261,7 @@ func (i *BaseImage) downloadFileFromUrl(url, filePath string) (bool, error) {
 	defer func(file *os.File) {
 		err := file.Close()
 		if err != nil {
-			log.Fatal(err)
+			panic(err)
 		}
 	}(file)
 	client := &http.Client{}

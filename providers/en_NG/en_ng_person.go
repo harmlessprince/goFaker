@@ -5,34 +5,42 @@ import (
 )
 
 type EnNGPerson struct {
-	providers.BasePerson
+	*providers.BasePerson
 }
 
-func NewPerson() *EnNGPerson {
-	p := &EnNGPerson{}
+func NewEnNGPerson() *EnNGPerson {
+	p := &EnNGPerson{
+		BasePerson: providers.NewBasePerson(),
+	}
+	p.GetTitleFormats()
+	p.GetFemaleTitles()
 	p.SetMaleNameFormats()
 	p.SetFemaleNameFormats()
-	p.SetFirstNameFormats()
 	p.SetMaleFirstNames()
 	p.SetFemaleFirstNames()
 	p.SetLastNames()
+	p.SetFemaleNameFormats()
+	p.SetMaleFirstNames()
+	p.SetFemaleFirstNames()
+	p.SetLastNames()
+	p.GetFirstNameFormats()
 	return p
 }
 
 // SetMaleNameFormats is a method that provides access to the maleNameFormats.
 func (p *EnNGPerson) SetMaleNameFormats() {
-	maleNameFormats := [][]func(*providers.BasePerson) string{
-		{(*providers.BasePerson).FirstNameMale, (*providers.BasePerson).LastName},
-		{(*providers.BasePerson).FirstNameMale, (*providers.BasePerson).FirstNameMale, (*providers.BasePerson).LastName},
+	maleNameFormats := []string{
+		"{{FirstNameMale}} {{LastName}}",
+		"{{FirstNameMale}} {{FirstNameMale}} {{LastName}}",
 	}
 	p.BasePerson.SetMaleNameFormats(maleNameFormats)
 }
 
 // SetFemaleNameFormats is a method that provides access to the femaleNameFormats.
 func (p *EnNGPerson) SetFemaleNameFormats() {
-	femaleNameFormats := [][]func(*providers.BasePerson) string{
-		{(*providers.BasePerson).FirstNameFemale, (*providers.BasePerson).LastName},
-		{(*providers.BasePerson).FirstNameFemale, (*providers.BasePerson).FirstNameFemale, (*providers.BasePerson).LastName},
+	femaleNameFormats := []string{
+		"{{FirstNameFemale}} {{LastName}}",
+		"{{FirstNameFemale}} {{FirstNameFemale}} {{LastName}}",
 	}
 	p.BasePerson.SetFemaleNameFormats(femaleNameFormats)
 }

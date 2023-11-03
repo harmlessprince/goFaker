@@ -692,9 +692,13 @@ func (b BaseProvider) Parse(input string, data interface{}, args ...map[string]i
 		fieldName := parsed[start+2 : end]
 
 		field := structValue.MethodByName(fieldName)
+		if field.IsValid() == false {
+			return "", fmt.Errorf("field '%s' does not exist on the struct", fieldName)
+		}
+
 		// Check if the method does not exist and is  not a function.
-		if field.IsValid() == false && field.Type().Kind() != reflect.Func {
-			return "", fmt.Errorf("method '%s' does not exist on the struct", fieldName)
+		if field.Type().Kind() != reflect.Func {
+			return "", fmt.Errorf("field '%s' must be a function", fieldName)
 		}
 		methodArgs := make([]reflect.Value, 0)
 		// Check if an argument exists for the current method, and add it if found.
