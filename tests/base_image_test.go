@@ -86,7 +86,7 @@ func TestImage(t *testing.T) {
 			return
 		}
 		file, _ := baseImageInstanceTest.Image()
-		fmt.Println(file)
+
 		assert.FileExists(t, file)
 		checkImageProperties(t, "dd", 640, 480, "png")
 	})

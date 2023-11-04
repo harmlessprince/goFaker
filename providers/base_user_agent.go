@@ -1,7 +1,6 @@
 package providers
 
 import (
-	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -158,11 +157,11 @@ func (ua *BaseUserAgent) Chrome() (string, error) {
 	for i := 0; i < len(platFormTokens); i++ {
 		numberBtw36to40, err := ua.NumberBetween(36, 40)
 		if err != nil {
-			log.Fatal(err)
+			return "", err
 		}
 		numberBtw800to899, err := ua.NumberBetween(800, 899)
 		if err != nil {
-			log.Fatal(err)
+			return "", err
 		}
 		var platform strings.Builder
 		platform.WriteString("(")
@@ -174,7 +173,7 @@ func (ua *BaseUserAgent) Chrome() (string, error) {
 	}
 	platform, err := ua.BaseProvider.RandomElementFromStringSlice(platforms)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	return "Mozilla/5.0 " + platform, nil
 }
@@ -213,7 +212,7 @@ func (ua *BaseUserAgent) MicrosoftEdge() (string, error) {
 	}
 	platform, err := ua.BaseProvider.RandomElementFromStringSlice(platforms)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	return "Mozilla/5.0 " + platform, nil
 }
@@ -222,7 +221,7 @@ func (ua *BaseUserAgent) FireFox() (string, error) {
 	versionNumberBtw35To37, _ := ua.BaseProvider.NumberBetween(35, 37)
 	startTime, err := time.Parse(time.DateOnly, "2010-01-01")
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	endTime := time.Now()
 	versionNumberBtwDateTimeNumber, _ := ua.BaseProvider.NumberBetween(int(startTime.Unix()), int(endTime.Unix()))
@@ -253,7 +252,7 @@ func (ua *BaseUserAgent) FireFox() (string, error) {
 	}
 	platform, err := ua.BaseProvider.RandomElementFromStringSlice(platforms)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	return "Mozilla/5.0 " + platform, nil
 }
@@ -326,7 +325,7 @@ func (ua *BaseUserAgent) Opera() (string, error) {
 	}
 	platform, err := ua.BaseProvider.RandomElementFromStringSlice(platforms)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	return "Opera/" + strconv.Itoa(numberBtw8To9) + "." + strconv.Itoa(numberBtw10To99) + "." + platform, nil
 }
@@ -353,11 +352,11 @@ func (ua *BaseUserAgent) WindowsPlatformToken() (string, error) {
 func (ua *BaseUserAgent) IosMobileToken() (string, error) {
 	firstNumberBtw, err := ua.NumberBetween(13, 16)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	secondNumberBtw, err := ua.NumberBetween(0, 2)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	iosVersion := strconv.Itoa(firstNumberBtw) + "_" + strconv.Itoa(secondNumberBtw)
 	return "iPhone; CPU iPhone OS " + iosVersion + " like Mac OS X", nil
@@ -366,7 +365,7 @@ func (ua *BaseUserAgent) IosMobileToken() (string, error) {
 func (ua *BaseUserAgent) LinuxPlatformToken() (string, error) {
 	processor, err := ua.BaseProvider.RandomElementFromStringSlice(ua.linuxProcessors)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	return "X11; Linux " + processor, nil
 }
@@ -374,15 +373,15 @@ func (ua *BaseUserAgent) LinuxPlatformToken() (string, error) {
 func (ua *BaseUserAgent) MacPlatformToken() (string, error) {
 	processor, err := ua.BaseProvider.RandomElementFromStringSlice(ua.macProcessors)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	numberBtw5to8, err := ua.BaseProvider.NumberBetween(5, 8)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	numberBtw0to9, err := ua.BaseProvider.NumberBetween(5, 8)
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 	var token strings.Builder
 	token.WriteString("Macintosh; ")

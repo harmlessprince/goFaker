@@ -19,6 +19,7 @@ type AddressInterface interface {
 	Latitude() (float64, error)
 	CitySuffix() (string, error)
 	CityName() (string, error)
+	Country() (string, error)
 }
 type BaseAddress struct {
 	BaseProvider

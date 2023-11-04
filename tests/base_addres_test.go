@@ -14,11 +14,6 @@ func TestMain(m *testing.M) {
 
 var addressInstanceTest = providers.NewBaseAddress()
 
-//func TestName(t *testing.T) {
-//	t.Run("description", func(t *testing.T) {})
-//	t.Run("description", func(t *testing.T) {})
-//}
-
 func TestCityName(t *testing.T) {
 	t.Run("Validate CityName is generated", func(t *testing.T) {
 

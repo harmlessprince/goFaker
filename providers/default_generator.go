@@ -26,9 +26,12 @@ type DataGeneratorExtension interface {
 	TextInterface
 	UserAgentInterface
 	UuidInterface
+	NumberInterface
+	BarcodeInterface
 }
 type DefaultGenerator struct {
 	BaseAddress
+	BaseBarcode
 	BaseColor
 	BaseCompany
 	BaseDateTime
@@ -40,6 +43,7 @@ type DefaultGenerator struct {
 	BasePayment
 	BasePerson
 	BasePhoneNumber
+	BaseProvider
 	BaseUuid
 	BaseUserAgent
 	BaseText

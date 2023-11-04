@@ -275,6 +275,10 @@ func (i *BaseImage) downloadFileFromUrl(url, filePath string) (bool, error) {
 	}
 	// Check if the HTTP status code is 200 (OK)
 	if response.StatusCode != http.StatusOK {
+		err := os.Remove(filePath)
+		if err != nil {
+			return false, err
+		}
 		return false, fmt.Errorf("HTTP request failed with status code %d", response.StatusCode)
 	}
 	// Copy the response body to the local file

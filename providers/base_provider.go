@@ -16,6 +16,14 @@ import (
 
 var helperInstance helpers.Helper
 
+type NumberInterface interface {
+	NumberBetween(params ...int) (int, error)
+	RandomDigit() (uint, error)
+	RandomDigitNot(except uint) (int, error)
+	RandomDigitNotZero() (int, error)
+	RandomFloat(options ...RandomFloatOptions) (float64, error)
+	RandomNumber(numberOfDigits uint, strict bool) (int, error)
+}
 type BaseProvider struct {
 }
 
