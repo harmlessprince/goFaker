@@ -157,6 +157,10 @@ func (b *BaseInternet) GetTld() []string {
 	return b.tld
 }
 
+// Email generates a random email address.
+//
+// Returns:
+// - A string representing a randomly generated email address.
 func (b *BaseInternet) Email() (string, error) {
 	format, err := b.RandomElementFromStringSlice(b.GetEmailFormats())
 	if err != nil {
@@ -169,6 +173,10 @@ func (b *BaseInternet) Email() (string, error) {
 	return parsed, nil
 }
 
+// SafeEmail generates a random safe email address.
+//
+// Returns:
+// - A string representing a randomly generated safe email address.
 func (b *BaseInternet) SafeEmail() (string, error) {
 	//regular expression to match spaces.
 	re := regexp.MustCompile(`\s+`)
@@ -185,6 +193,10 @@ func (b *BaseInternet) SafeEmail() (string, error) {
 	return email, nil
 }
 
+// FreeEmail generates a random free email address.
+//
+// Returns:
+// - A string representing a randomly generated free email address.
 func (b *BaseInternet) FreeEmail() (string, error) {
 	//regular expression to match spaces.
 	re := regexp.MustCompile(`\s+`)
@@ -201,6 +213,10 @@ func (b *BaseInternet) FreeEmail() (string, error) {
 	return email, nil
 }
 
+// CompanyEmail generates a random company email address.
+//
+// Returns:
+// - A string representing a randomly generated company email address.
 func (b *BaseInternet) CompanyEmail() (string, error) {
 	//regular expression to match spaces.
 	re := regexp.MustCompile(`\s+`)
@@ -217,6 +233,10 @@ func (b *BaseInternet) CompanyEmail() (string, error) {
 	return email, nil
 }
 
+// FreeEmailDomain generates a random domain for free email addresses.
+//
+// Returns:
+// - A string representing a randomly generated domain for free email addresses.
 func (b *BaseInternet) FreeEmailDomain() (string, error) {
 	freeEmailDomain, err := b.RandomElementFromStringSlice(b.GetFreeEmailDomain())
 	if err != nil {
@@ -225,6 +245,10 @@ func (b *BaseInternet) FreeEmailDomain() (string, error) {
 	return freeEmailDomain, nil
 }
 
+// SafeEmailDomain generates a random safe domain for email addresses.
+//
+// Returns:
+// - A string representing a randomly generated safe domain for email addresses.
 func (b *BaseInternet) SafeEmailDomain() (string, error) {
 	domains := []string{
 		"example.com",
@@ -238,6 +262,10 @@ func (b *BaseInternet) SafeEmailDomain() (string, error) {
 	return safeEmailDomain, nil
 }
 
+// UserName generates a random username.
+//
+// Returns:
+// - A string representing a randomly generated username.
 func (b *BaseInternet) UserName() (string, error) {
 	format, err := b.RandomElementFromStringSlice(b.GetUserNameFormats())
 	if err != nil {
@@ -260,6 +288,13 @@ func (b *BaseInternet) UserName() (string, error) {
 	return userName, nil
 }
 
+// Password generates a random password.
+//
+// Parameters:
+// - params (optional): Specify the desired length of the generated password.
+//
+// Returns:
+// - A string representing a randomly generated password.
 func (b *BaseInternet) Password(params ...int) (string, error) {
 	minLength := 6
 	maxLength := 20
@@ -286,6 +321,10 @@ func (b *BaseInternet) Password(params ...int) (string, error) {
 	return password, nil
 }
 
+// DomainName generates a random domain name.
+//
+// Returns:
+// - A string representing a randomly generated domain name.
 func (b *BaseInternet) DomainName() (string, error) {
 	tld, err := b.Tld()
 	if err != nil {
@@ -298,6 +337,10 @@ func (b *BaseInternet) DomainName() (string, error) {
 	return domainWord + tld, nil
 }
 
+// DomainWord generates a random word suitable for use in a domain name.
+//
+// Returns:
+// - A string representing a randomly generated word for a domain name.
 func (b *BaseInternet) DomainWord() (string, error) {
 	lastName, err := b.BaseProvider.Parse("{{LastName}}", NewBasePerson())
 	if err != nil {
@@ -316,6 +359,10 @@ func (b *BaseInternet) DomainWord() (string, error) {
 	return lastName, nil
 }
 
+// Url generates a random URL.
+//
+// Returns:
+// - A string representing a randomly generated URL.
 func (b *BaseInternet) Url() (string, error) {
 	format, _ := b.RandomElementFromStringSlice(b.GetUrlFormats())
 	url, err := b.Parse(format, b)
@@ -325,6 +372,10 @@ func (b *BaseInternet) Url() (string, error) {
 	return url, nil
 }
 
+// Tld generates a random top-level domain (TLD) name.
+//
+// Returns:
+// - A string representing a randomly generated top-level domain name.
 func (b *BaseInternet) Tld() (string, error) {
 	tld, err := b.RandomElementFromStringSlice(b.GetTld())
 	if err != nil {
@@ -333,6 +384,10 @@ func (b *BaseInternet) Tld() (string, error) {
 	return tld, nil
 }
 
+// Ipv4 generates a random IPv4 address.
+//
+// Returns:
+// - A string representing a randomly generated IPv4 address.
 func (b *BaseInternet) Ipv4() (string, error) {
 	bm := &BaseMiscellaneous{}
 	var number int
@@ -357,6 +412,10 @@ func (b *BaseInternet) Ipv4() (string, error) {
 	return ip, nil
 }
 
+// Ipv6 generates a random IPv6 address.
+//
+// Returns:
+// - A string representing a randomly generated IPv6 address.
 func (b *BaseInternet) Ipv6() (string, error) {
 	var res []string
 	for i := 0; i < 8; i++ {
@@ -370,6 +429,10 @@ func (b *BaseInternet) Ipv6() (string, error) {
 	return strings.Join(res, ":"), nil
 }
 
+// LocalIpv4 generates a random local IPv4 address.
+//
+// Returns:
+// - A string representing a randomly generated local IPv4 address.
 func (b *BaseInternet) LocalIpv4() (string, error) {
 	rand.New(rand.NewSource(time.Now().UnixNano()))
 	formats := b.GetLocalIPBlocks()
@@ -395,6 +458,10 @@ func (b *BaseInternet) LocalIpv4() (string, error) {
 	return localIpV4, nil
 }
 
+// MacAddress generates a random MAC address.
+//
+// Returns:
+// - A string representing a randomly generated MAC address.
 func (b *BaseInternet) MacAddress() (string, error) {
 	var mac []string
 	for i := 0; i < 6; i += 1 {
@@ -408,6 +475,13 @@ func (b *BaseInternet) MacAddress() (string, error) {
 	return strings.Join(mac, ":"), nil
 }
 
+// Transliterate transliterates a given input string.
+//
+// Parameters:
+// - inputString: The input string to be transliterated.
+//
+// Returns:
+// - A string representing the transliterated version of the input string.
 func (b *BaseInternet) Transliterate(inputString string) (string, error) {
 	matched, err := regexp.MatchString("^[A-Za-z0-9_.]+$", inputString)
 	if err != nil {
@@ -437,6 +511,13 @@ func (b *BaseInternet) Slug(numberOfWords int, variableNumberOfWords bool) (stri
 	return strings.Join(words, "-"), nil
 }
 
+// ToAscii converts a given input string to its ASCII representation.
+//
+// Parameters:
+// - inputString: The input string to be converted to ASCII.
+//
+// Returns:
+// - A string representing the ASCII representation of the input string.
 func (b *BaseInternet) ToAscii(inputString string) (string, error) {
 	return strconv.QuoteToASCII(inputString), nil
 }

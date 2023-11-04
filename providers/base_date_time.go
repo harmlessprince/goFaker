@@ -39,6 +39,10 @@ type BaseDateTime struct {
 	defaultTimeZone string
 }
 
+// SetDefaultTimeZone sets the default time zone for the date and time generation.
+//
+// Parameters:
+// - timeZone: The time zone to set as the default for subsequent date and time generation.
 func (bdt *BaseDateTime) SetDefaultTimeZone(timeZone string) {
 	bdt.defaultTimeZone = timeZone
 }
@@ -442,17 +446,13 @@ func (bdt *BaseDateTime) ISO8602(max interface{}) (string, error) {
 	return bdt.Date(time.RFC3339, max)
 }
 
-// AmPm
-// Get a date time object somewhere within a month.
+// AmPm generates a random AM or PM.
 //
 // Parameters:
-//   - max: time.Time|int|string  maximum timestamp used as random end limit, default to time.Now()
+// - max: The maximum value.
 //
 // Returns:
-//   - time.Time
-//
-// Example usage:
-//   - baseDateTime.DateTimeThisMonth("")
+// - A string representing "AM" or "PM."
 func (bdt *BaseDateTime) AmPm(max interface{}) (string, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
@@ -464,17 +464,13 @@ func (bdt *BaseDateTime) AmPm(max interface{}) (string, error) {
 	return dateTime.Format("PM"), nil
 }
 
-// DayOfMonth
-// Get a month number.
+// DayOfMonth generates a random day of the month (1-31).
 //
 // Parameters:
-//   - max: time.Time|int|string  maximum timestamp used as random end limit, default to time.Now()
+// - max: The maximum day of the month.
 //
 // Returns:
-//   - int e.g 12
-//
-// Example usage:
-//   - baseDateTime.DayOfMonth("")
+// - An integer representing a randomly generated day of the month.
 func (bdt *BaseDateTime) DayOfMonth(max interface{}) (int, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
@@ -486,17 +482,13 @@ func (bdt *BaseDateTime) DayOfMonth(max interface{}) (int, error) {
 	return dateTime.Day(), nil
 }
 
-// DayOfWeek
-// Get a week name.
+// DayOfWeek generates a random day of the week.
 //
 // Parameters:
-//   - max: time.Time|int|string  maximum timestamp used as random end limit, default to time.Now()
+// - max: The maximum value.
 //
 // Returns:
-//   - int e.g 12
-//
-// Example usage:
-//   - baseDateTime.DayOfWeek("")
+// - A time.Weekday representing a randomly generated day of the week.
 func (bdt *BaseDateTime) DayOfWeek(max interface{}) (time.Weekday, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
@@ -508,17 +500,13 @@ func (bdt *BaseDateTime) DayOfWeek(max interface{}) (time.Weekday, error) {
 	return dateTime.Weekday(), nil
 }
 
-// Month
-// Get a month number.
+// Month generates a random month (1-12).
 //
 // Parameters:
-//   - max: time.Time|int|string  maximum timestamp used as random end limit, default to time.Now()
+// - max: The maximum month.
 //
 // Returns:
-//   - int e.g 1
-//
-// Example usage:
-//   - baseDateTime.Month("")
+// - An integer representing a randomly generated month.
 func (bdt *BaseDateTime) Month(max interface{}) (int, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
@@ -530,17 +518,13 @@ func (bdt *BaseDateTime) Month(max interface{}) (int, error) {
 	return int(dateTime.Month()), nil
 }
 
-// MonthName
-// Get a month name.
+// MonthName generates a random month name.
 //
 // Parameters:
-//   - max: time.Time|int|string  maximum timestamp used as random end limit, default to time.Now()
+// - max: The maximum value.
 //
 // Returns:
-//   - int e.g 12
-//
-// Example usage:
-//   - baseDateTime.MonthName("")
+// - A string representing a randomly generated month name.
 func (bdt *BaseDateTime) MonthName(max interface{}) (string, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
@@ -552,17 +536,13 @@ func (bdt *BaseDateTime) MonthName(max interface{}) (string, error) {
 	return dateTime.Month().String(), nil
 }
 
-// Year
-// Get a year from date time.
+// Year generates a random year.
 //
 // Parameters:
-//   - max: time.Time|int|string  maximum timestamp used as random end limit, default to time.Now()
+// - max: The maximum year.
 //
 // Returns:
-//   - int e.g 12
-//
-// Example usage:
-//   - baseDateTime.Year("")
+// - A string representing a randomly generated year.
 func (bdt *BaseDateTime) Year(max interface{}) (string, error) {
 	if max == "" {
 		max = time.Now().Format(time.DateTime)
@@ -574,6 +554,10 @@ func (bdt *BaseDateTime) Year(max interface{}) (string, error) {
 	return strconv.Itoa(dateTime.Year()), nil
 }
 
+// Century generates a random century.
+//
+// Returns:
+// - A string representing a randomly generated century.
 func (bdt *BaseDateTime) Century() (string, error) {
 	century, err := bdt.RandomElementFromStringSlice(constants.Century)
 	if err != nil {
@@ -582,6 +566,10 @@ func (bdt *BaseDateTime) Century() (string, error) {
 	return century, nil
 }
 
+// Timezone generates a random time zone based on the given country code.
+//
+// Parameters:
+// - countryCode: The country code used to determine
 func (bdt *BaseDateTime) Timezone(countryCode string) (*time.Location, error) {
 	timeZones := []string{
 		"America/New_York",

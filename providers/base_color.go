@@ -24,6 +24,10 @@ type ColorInterface interface {
 	HslColorAsArray() ([]int, error)
 }
 
+// HexColor generates a random hexadecimal color code.
+//
+// Returns:
+// - A string representing a randomly generated hexadecimal color code.
 func (b *BaseColor) HexColor() (string, error) {
 	numberBtw, errNumberBtw := b.NumberBetween(1, 16777215)
 	if errNumberBtw != nil {
@@ -34,6 +38,10 @@ func (b *BaseColor) HexColor() (string, error) {
 	return "#" + paddedNumberBtwToHex, nil
 }
 
+// SafeHexColor generates a random safe hexadecimal color code.
+//
+// Returns:
+// - A string representing a randomly generated safe hexadecimal color code.
 func (b *BaseColor) SafeHexColor() (string, error) {
 	numberBtw, errNumberBtw := b.NumberBetween(0, 255)
 	if errNumberBtw != nil {
@@ -45,6 +53,10 @@ func (b *BaseColor) SafeHexColor() (string, error) {
 	return "#" + split[0] + split[0] + split[1] + split[1] + split[2] + split[2], nil
 }
 
+// RgbColorAsArray generates a random RGB color represented as an array of strings.
+//
+// Returns:
+// - An array of strings representing a randomly generated RGB color.
 func (b *BaseColor) RgbColorAsArray() ([]string, error) {
 	color, err := b.HexColor()
 	if err != nil {
@@ -57,6 +69,10 @@ func (b *BaseColor) RgbColorAsArray() ([]string, error) {
 	}, nil
 }
 
+// RgbColor generates a random RGB color code.
+//
+// Returns:
+// - A string representing a randomly generated RGB color code.
 func (b *BaseColor) RgbColor() (string, error) {
 	rgbColorAsArray, err := b.RgbColorAsArray()
 	if err != nil {
@@ -65,6 +81,10 @@ func (b *BaseColor) RgbColor() (string, error) {
 	return strings.Join(rgbColorAsArray, ","), nil
 }
 
+// RgbCssColor generates a random CSS-compatible RGB color code.
+//
+// Returns:
+// - A string representing a randomly generated CSS-compatible RGB color code.
 func (b *BaseColor) RgbCssColor() (string, error) {
 	rgbColor, err := b.RgbColor()
 	if err != nil {
@@ -73,6 +93,10 @@ func (b *BaseColor) RgbCssColor() (string, error) {
 	return "rgb(" + rgbColor + ")", nil
 }
 
+// RgbaCssColor generates a random CSS-compatible RGBA color code.
+//
+// Returns:
+// - A string representing a randomly generated CSS-compatible RGBA color code.
 func (b *BaseColor) RgbaCssColor() (string, error) {
 	floatOptions := RandomFloatOptions{
 		NumberOfMaxDecimals: 1,
@@ -91,6 +115,10 @@ func (b *BaseColor) RgbaCssColor() (string, error) {
 	return "rgb(" + rgbColor + "," + randomFloatToString + ")", nil
 }
 
+// SafeColorName generates a random safe color name.
+//
+// Returns:
+// - A string representing a randomly generated safe color name.
 func (b *BaseColor) SafeColorName() (string, error) {
 	color, err := b.RandomElementFromStringSlice(constants.SafeColorNames)
 	if err != nil {
@@ -99,6 +127,10 @@ func (b *BaseColor) SafeColorName() (string, error) {
 	return color, nil
 }
 
+// ColorName generates a random color name.
+//
+// Returns:
+// - A string representing a randomly generated color name.
 func (b *BaseColor) ColorName() (string, error) {
 	color, err := b.RandomElementFromStringSlice(constants.AllColorNames)
 	if err != nil {
@@ -107,6 +139,10 @@ func (b *BaseColor) ColorName() (string, error) {
 	return color, nil
 }
 
+// HslColor generates a random HSL color code.
+//
+// Returns:
+// - A string representing a randomly generated HSL color code.
 func (b *BaseColor) HslColor() (string, error) {
 	first, err := b.NumberBetween(0, 360)
 	if err != nil {
@@ -123,6 +159,10 @@ func (b *BaseColor) HslColor() (string, error) {
 	return fmt.Sprintf("%d,%d,%d", first, second, third), nil
 }
 
+// HslColorAsArray generates a random HSL color represented as an array of integers.
+//
+// Returns:
+// - An array of integers representing a randomly generated HSL color.
 func (b *BaseColor) HslColorAsArray() ([]int, error) {
 	first, err := b.NumberBetween(0, 360)
 	if err != nil {

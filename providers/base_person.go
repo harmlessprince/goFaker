@@ -122,6 +122,14 @@ func (p *BasePerson) GetMaleGender() string {
 func (p *BasePerson) GetFemaleGender() string {
 	return p.genderFemale
 }
+
+// Name generates a random full name.
+//
+// Parameters:
+// - gender (optional): Specify the gender of the generated name (e.g., "male" or "female").
+//
+// Returns:
+// - A string representing a randomly generated full name.
 func (p *BasePerson) Name(gender ...string) (string, error) {
 	var suppliedGender string
 	format := helperInstance.RandomElementString(append(p.maleNameFormats, p.femaleNameFormats...))
@@ -141,6 +149,13 @@ func (p *BasePerson) Name(gender ...string) (string, error) {
 	return fullName, nil
 }
 
+// FirstName generates a random first name.
+//
+// Parameters:
+// - gender (optional): Specify the gender of the generated first name (e.g., "male" or "female").
+//
+// Returns:
+// - A string representing a randomly generated first name.
 func (p *BasePerson) FirstName(gender ...string) (string, error) {
 	var suppliedGender string
 	if len(gender) > 0 {
@@ -160,7 +175,10 @@ func (p *BasePerson) FirstName(gender ...string) (string, error) {
 	return firstName, nil
 }
 
-// FirstNameMale returns a male first name for BasePerson
+// FirstNameMale generates a random male first name.
+//
+// Returns:
+// - A string representing a randomly generated male first name.
 func (p *BasePerson) FirstNameMale() (string, error) {
 	firstName, err := p.RandomElementFromStringSlice(p.maleFirstNames)
 	if err != nil {
@@ -169,30 +187,49 @@ func (p *BasePerson) FirstNameMale() (string, error) {
 	return firstName, nil
 }
 
-// FirstNameFemale returns a female first name for BasePerson
+// FirstNameFemale generates a random female first name.
+//
+// Returns:
+// - A string representing a randomly generated female first name.
 func (p *BasePerson) FirstNameFemale() (string, error) {
 	firstName := helperInstance.RandomElementString(p.femaleFirstNames)
 	return firstName, nil
 }
 
-// LastName returns a last name for BasePerson
+// LastName generates a random last name.
+//
+// Returns:
+// - A string representing a randomly generated last name.
 func (p *BasePerson) LastName() (string, error) {
 	lastName := helperInstance.RandomElementString(p.lastNames)
 	return lastName, nil
 }
 
-// TitleMale returns a male title for BasePerson
+// TitleMale generates a random male job title.
+//
+// Returns:
+// - A string representing a randomly generated male job title.
 func (p *BasePerson) TitleMale() (string, error) {
 	title := helperInstance.RandomElementString(p.maleTitles)
 	return title, nil
 }
 
-// TitleFemale returns a female title for BasePerson
+// TitleFemale generates a random female job title.
+//
+// Returns:
+// - A string representing a randomly generated female job title.
 func (p *BasePerson) TitleFemale() (string, error) {
 	title := helperInstance.RandomElementString(p.femaleTitles)
 	return title, nil
 }
 
+// Title generates a random job title.
+//
+// Parameters:
+// - gender (optional): Specify the gender of the generated title (e.g., "male" or "female").
+//
+// Returns:
+// - A string representing a randomly generated job title.
 func (p *BasePerson) Title(gender ...string) (string, error) {
 	var suppliedGender string
 	if len(gender) > 0 {

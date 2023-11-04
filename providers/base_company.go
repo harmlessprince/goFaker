@@ -75,6 +75,10 @@ func (bc *BaseCompany) GetJobTitleFormats() []string {
 	return bc.jobTitleFormat
 }
 
+// Company generates a random company name.
+//
+// Returns:
+// - A string representing a randomly generated company name.
 func (bc *BaseCompany) Company() (string, error) {
 	format := helperInstance.RandomElementString(bc.GetFormats())
 	parse, err := bc.BaseProvider.Parse(format, bc)
@@ -84,6 +88,10 @@ func (bc *BaseCompany) Company() (string, error) {
 	return parse, nil
 }
 
+// CompanySuffix generates a random company suffix.
+//
+// Returns:
+// - A string representing a randomly generated company suffix.
 func (bc *BaseCompany) CompanySuffix() (string, error) {
 	suffix := helperInstance.RandomElementString(bc.GetCompanySuffix())
 	return suffix, nil
@@ -98,6 +106,10 @@ func (bc *BaseCompany) CompanyPrefix() (string, error) {
 	return prefix, nil
 }
 
+// JobTitle generates a random job title.
+//
+// Returns:
+// - A string representing a randomly generated job title.
 func (bc *BaseCompany) JobTitle() (string, error) {
 	format := helperInstance.RandomElementString(bc.GetJobTitleFormats())
 	parse, err := bc.BaseProvider.Parse(format, &BaseLorem{})

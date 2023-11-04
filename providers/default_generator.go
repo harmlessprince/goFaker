@@ -49,6 +49,12 @@ type DefaultGenerator struct {
 	BaseText
 }
 
+// Address generates a random address string.
+//
+// This method generates a random address string that can be used for various purposes such as testing, example data, or placeholders.
+//
+// Returns:
+// - A string representing a randomly generated address.
 func (e *DefaultGenerator) Address() (string, error) {
 	return addressGenerator.Address()
 }

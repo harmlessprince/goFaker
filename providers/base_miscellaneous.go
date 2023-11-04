@@ -47,6 +47,13 @@ func (m *BaseMiscellaneous) GetCurrencyCodes() []string {
 	return constants.CurrencyCode
 }
 
+// Boolean generates a random boolean value.
+//
+// Parameters:
+// - chanceOfGettingTrue (optional): Specify the probability of getting 'true' as a percentage (default is 50%).
+//
+// Returns:
+// - A boolean value, either true or false.
 func (m *BaseMiscellaneous) Boolean(chanceOfGettingTrue ...int) (bool, error) {
 	defaultChanceOfGettingTrue := 50
 	if len(chanceOfGettingTrue) > 0 {
@@ -59,6 +66,10 @@ func (m *BaseMiscellaneous) Boolean(chanceOfGettingTrue ...int) (bool, error) {
 	return number <= defaultChanceOfGettingTrue, nil
 }
 
+// Md5 generates a random MD5 hash.
+//
+// Returns:
+// - A string representing a randomly generated MD5 hash.
 func (m *BaseMiscellaneous) Md5() (string, error) {
 	number, err := m.NumberBetween()
 	if err != nil {
@@ -70,6 +81,10 @@ func (m *BaseMiscellaneous) Md5() (string, error) {
 	return string(hash), nil
 }
 
+// Sha1 generates a random SHA-1 hash.
+//
+// Returns:
+// - A string representing a randomly generated SHA-1 hash.
 func (m *BaseMiscellaneous) Sha1() (string, error) {
 	number, err := m.NumberBetween()
 	if err != nil {
@@ -81,6 +96,10 @@ func (m *BaseMiscellaneous) Sha1() (string, error) {
 	return string(hash), nil
 }
 
+// Sha256 generates a random SHA-256 hash.
+//
+// Returns:
+// - A string representing a randomly generated SHA-256 hash.
 func (m *BaseMiscellaneous) Sha256() (string, error) {
 	number, err := m.NumberBetween()
 	if err != nil {
@@ -92,6 +111,10 @@ func (m *BaseMiscellaneous) Sha256() (string, error) {
 	return string(hash), nil
 }
 
+// Locale generates a random locale code.
+//
+// Returns:
+// - A string representing a randomly generated locale code.
 func (m *BaseMiscellaneous) Locale() (string, error) {
 	localeData, err := m.RandomElementFromStringSlice(m.GetLocaleData())
 	if err != nil {
@@ -100,6 +123,10 @@ func (m *BaseMiscellaneous) Locale() (string, error) {
 	return localeData, nil
 }
 
+// CountryCode generates a random country code.
+//
+// Returns:
+// - A string representing a randomly generated country code.
 func (m *BaseMiscellaneous) CountryCode() (string, error) {
 	countryCode, err := m.RandomElementFromStringSlice(m.CountryCodes())
 	if err != nil {
@@ -108,6 +135,10 @@ func (m *BaseMiscellaneous) CountryCode() (string, error) {
 	return countryCode, nil
 }
 
+// CountryISOAlpha3 generates a random ISO 3166-1 alpha-3 country code.
+//
+// Returns:
+// - A string representing a randomly generated ISO 3166-1 alpha-3 country code.
 func (m *BaseMiscellaneous) CountryISOAlpha3() (string, error) {
 	countryCode, err := m.RandomElementFromStringSlice(m.GetCountryISOAlpha3())
 	if err != nil {
@@ -116,6 +147,10 @@ func (m *BaseMiscellaneous) CountryISOAlpha3() (string, error) {
 	return countryCode, nil
 }
 
+// LanguageCode generates a random language code.
+//
+// Returns:
+// - A string representing a randomly generated language code.
 func (m *BaseMiscellaneous) LanguageCode() (string, error) {
 	langCode, err := m.RandomElementFromStringSlice(m.GetLanguageCodes())
 	if err != nil {
@@ -124,6 +159,10 @@ func (m *BaseMiscellaneous) LanguageCode() (string, error) {
 	return langCode, nil
 }
 
+// CurrencyCode generates a random currency code.
+//
+// Returns:
+// - A string representing a randomly generated currency code.
 func (m *BaseMiscellaneous) CurrencyCode() (string, error) {
 	currencyCode, err := m.RandomElementFromStringSlice(m.GetCurrencyCodes())
 	if err != nil {
@@ -132,6 +171,10 @@ func (m *BaseMiscellaneous) CurrencyCode() (string, error) {
 	return currencyCode, nil
 }
 
+// Emoji generates a random emoji.
+//
+// Returns:
+// - A string representing a randomly generated emoji.
 func (m *BaseMiscellaneous) Emoji() (string, error) {
 	emoji, err := m.RandomElementFromStringSlice(m.GetEmojis())
 	if err != nil {

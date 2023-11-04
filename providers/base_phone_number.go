@@ -255,6 +255,10 @@ func (p *BasePhoneNumber) GetE164Formats() []string {
 	return p.e164Formats
 }
 
+// PhoneNumber generates a random phone number.
+//
+// Returns:
+// - A string representing a randomly generated phone number.
 func (p *BasePhoneNumber) PhoneNumber() (string, error) {
 	format, err := p.BaseProvider.RandomElementFromStringSlice(p.GetFormats())
 	if err != nil {
@@ -267,6 +271,10 @@ func (p *BasePhoneNumber) PhoneNumber() (string, error) {
 	return phoneNumber, nil
 }
 
+// E164PhoneNumber generates a random E.164 formatted phone number.
+//
+// Returns:
+// - A string representing a randomly generated E.164 formatted phone number.
 func (p *BasePhoneNumber) E164PhoneNumber() (string, error) {
 	format, err := p.BaseProvider.RandomElementFromStringSlice(p.GetE164Formats())
 	if err != nil {
@@ -279,6 +287,10 @@ func (p *BasePhoneNumber) E164PhoneNumber() (string, error) {
 	return phoneNumber, nil
 }
 
+// Imei generates a random IMEI (International Mobile Equipment Identity) number.
+//
+// Returns:
+// - A string representing a randomly generated IMEI number.
 func (p *BasePhoneNumber) Imei() (string, error) {
 	imei, err := p.BaseProvider.Numerify("##############")
 	if err != nil {

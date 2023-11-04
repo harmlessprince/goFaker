@@ -216,6 +216,12 @@ func (a *BaseAddress) GetAddressFormats() []string {
 
 //<=============Start Implementations=============>//
 
+// CityName generates a random city name.
+//
+// Use this method to generate random city names.
+//
+// Returns:
+// - A string representing a randomly generated city name.
 func (a *BaseAddress) CityName() (string, error) {
 	cityPrefix, err := a.BaseProvider.RandomElementFromStringSlice(a.GetCityPrefix())
 	if err != nil {
@@ -237,6 +243,13 @@ func (a *BaseAddress) StreetPrefix() (string, error) {
 	}
 	return streetPrefix, err
 }
+
+// CitySuffix generates a random city suffix.
+//
+// This method generates a random city suffix that can be used for creating realistic city names or test data.
+//
+// Returns:
+// - A string representing a randomly generated city suffix.
 func (a *BaseAddress) CitySuffix() (string, error) {
 	citySuffix, err := a.BaseProvider.RandomElementFromStringSlice(a.GetCitySuffix())
 	if err != nil {
@@ -253,6 +266,12 @@ func (a *BaseAddress) StreetSuffix() (string, error) {
 	return citySuffix, nil
 }
 
+// Country generates a random country name.
+//
+// This method is used to generate random country names for various applications such as generating test data or example content.
+//
+// Returns:
+// - A string representing a randomly generated country name.
 func (a *BaseAddress) Country() (string, error) {
 	country, err := a.BaseProvider.RandomElementFromStringSlice(a.GetCountry())
 	if err != nil {
@@ -271,6 +290,12 @@ func (a *BaseAddress) Address() (string, error) {
 	return address, nil
 }
 
+// City generates a random city.
+//
+// Use this method to generate random city for testing, data generation, or other purposes.
+//
+// Returns:
+// - A string representing a randomly generated city name.
 func (a *BaseAddress) City() (string, error) {
 	formats := a.GetCityFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -282,6 +307,12 @@ func (a *BaseAddress) City() (string, error) {
 	return city, nil
 }
 
+// PostCode generates a random postal code.
+//
+// Use this method to generate random postal codes that can be used for testing or other purposes.
+//
+// Returns:
+// - A string representing a randomly generated postal code.
 func (a *BaseAddress) PostCode() (string, error) {
 	randomCode, err := a.BaseProvider.RandomElementFromStringSlice(a.GetPostCodes())
 	if err != nil {
@@ -294,6 +325,12 @@ func (a *BaseAddress) PostCode() (string, error) {
 	return a.BaseProvider.ToLower(postCode), nil
 }
 
+// StreetName generates a random street name.
+//
+// This method generates a random street name, suitable for test data, sample content, or other applications.
+//
+// Returns:
+// - A string representing a randomly generated street name.
 func (a *BaseAddress) StreetName() (string, error) {
 	formats := a.GetStreetNameFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -305,6 +342,12 @@ func (a *BaseAddress) StreetName() (string, error) {
 	return streetName, nil
 }
 
+// StreetAddress generates a random street address.
+//
+// Use this method to generate random street addresses for various purposes such as generating test data or example content.
+//
+// Returns:
+// - A string representing a randomly generated street address.
 func (a *BaseAddress) StreetAddress() (string, error) {
 	formats := a.GetStreetAddressFormats()
 	rand.New(rand.NewSource(time.Now().UnixNano()))
@@ -316,6 +359,12 @@ func (a *BaseAddress) StreetAddress() (string, error) {
 	return streetAddress, nil
 }
 
+// BuildingNumber generates a random building number.
+//
+// This method generates a random building number that can be used for testing, example data, or placeholders.
+//
+// Returns:
+// - A string representing a randomly generated building number.string
 func (a *BaseAddress) BuildingNumber() (string, error) {
 	randomBuildNumber, err := a.BaseProvider.RandomElementFromStringSlice(a.GetBuildingNumber())
 	if err != nil {
@@ -336,7 +385,7 @@ func (a *BaseAddress) BuildingNumber() (string, error) {
 //
 // Example usage:
 //
-//	coordinates := address.LocalCoordinates()
+//	coordinates, _ := factory.LocalCoordinates()
 //	fmt.Println(coordinates["latitude"], coordinates["longitude"])
 //
 // Returns:
@@ -352,6 +401,12 @@ func (a *BaseAddress) LocalCoordinates() (map[string]float64, error) {
 	return coordinate, nil
 }
 
+// Longitude generates a random longitude coordinate.
+//
+// This method generates a random longitude coordinate suitable for testing or other applications.
+//
+// Returns:
+// - A float64 representing a randomly generated longitude coordinate.
 func (a *BaseAddress) Longitude() (float64, error) {
 	options := RandomFloatOptions{
 		NumberOfMaxDecimals: 6,
@@ -365,6 +420,12 @@ func (a *BaseAddress) Longitude() (float64, error) {
 	return long, err
 }
 
+// Latitude generates a random latitude coordinate.
+//
+// Use this method to generate random latitude coordinates for various purposes such as generating test data or example content.
+//
+// Returns:
+// - A float64 representing a randomly generated latitude coordinate.
 func (a *BaseAddress) Latitude() (float64, error) {
 	options := RandomFloatOptions{
 		NumberOfMaxDecimals: 6,

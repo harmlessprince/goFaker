@@ -32,6 +32,10 @@ func (bl *BaseLorem) GetWordList() []string {
 	return bl.wordList
 }
 
+// Word generates a random word.
+//
+// Returns:
+// - A string representing a randomly generated word.
 func (bl *BaseLorem) Word() (string, error) {
 	word, err := bl.RandomElementFromStringSlice(bl.GetWordList())
 	if err != nil {
@@ -40,6 +44,13 @@ func (bl *BaseLorem) Word() (string, error) {
 	return word, nil
 }
 
+// WordsAsText generates a string of random words.
+//
+// Parameters:
+// - numberOfWords: The number of words to generate.
+//
+// Returns:
+// - A string representing a space-separated list of randomly generated words.
 func (bl *BaseLorem) WordsAsText(numberOfWords int) (string, error) {
 	var words []string
 	for i := 0; i < numberOfWords; i++ {
@@ -49,6 +60,13 @@ func (bl *BaseLorem) WordsAsText(numberOfWords int) (string, error) {
 	return strings.Join(words, " "), nil
 }
 
+// WordsAsList generates a list of random words.
+//
+// Parameters:
+// - numberOfWords: The number of words to generate.
+//
+// Returns:
+// - A slice of strings representing randomly generated words.
 func (bl *BaseLorem) WordsAsList(numberOfWords int) ([]string, error) {
 	var words []string
 	for i := 0; i < numberOfWords; i++ {
@@ -58,6 +76,14 @@ func (bl *BaseLorem) WordsAsList(numberOfWords int) ([]string, error) {
 	return words, nil
 }
 
+// Sentence generates a random sentence.
+//
+// Parameters:
+// - numberOfWords: The number of words in the sentence.
+// - variableNumberOfWords: Specify if the number of words can vary.
+//
+// Returns:
+// - A string representing a randomly generated sentence.
 func (bl *BaseLorem) Sentence(numberOfWords int, variableNumberOfWords bool) (string, error) {
 	if numberOfWords <= 0 {
 		return "", errors.New("numberOfWords should be greater than 0")
@@ -73,6 +99,14 @@ func (bl *BaseLorem) Sentence(numberOfWords int, variableNumberOfWords bool) (st
 	return strings.Join(words, " ") + ".", nil
 }
 
+// SentencesAsText generates a string of random sentences.
+//
+// Parameters:
+// - numberOfSentences: The number of sentences to generate.
+// - variableNumberOfWords: Specify if the number of words can vary in each sentence.
+//
+// Returns:
+// - A string representing a space-separated list of randomly generated sentences.
 func (bl *BaseLorem) SentencesAsText(numberOfSentences int, variableNumberOfWords bool) (string, error) {
 	if numberOfSentences <= 0 {
 		return "", errors.New("numberOfSentences should be greater than 0")
@@ -87,6 +121,15 @@ func (bl *BaseLorem) SentencesAsText(numberOfSentences int, variableNumberOfWord
 	}
 	return strings.Join(sentences, " "), nil
 }
+
+// SentencesAsList generates a list of random sentences.
+//
+// Parameters:
+// - numberOfSentences: The number of sentences to generate.
+// - variableNumberOfWords: Specify if the number of words can vary in each sentence.
+//
+// Returns:
+// - A slice of strings representing randomly generated sentences.
 func (bl *BaseLorem) SentencesAsList(numberOfSentences int, variableNumberOfWords bool) ([]string, error) {
 	if numberOfSentences <= 0 {
 		return nil, errors.New("numberOfSentences should be greater than 0")
@@ -102,6 +145,14 @@ func (bl *BaseLorem) SentencesAsList(numberOfSentences int, variableNumberOfWord
 	return sentences, nil
 }
 
+// Paragraph generates a random paragraph.
+//
+// Parameters:
+// - numberOfSentences: The number of sentences in the paragraph.
+// - variableNumberOfSentences: Specify if the number of sentences can vary.
+//
+// Returns:
+// - A string representing a randomly generated paragraph.
 func (bl *BaseLorem) Paragraph(numberOfSentences int, variableNumberOfSentences bool) (string, error) {
 	if numberOfSentences <= 0 {
 		return "", errors.New("numberOfSentences should be greater than 0")
@@ -116,6 +167,13 @@ func (bl *BaseLorem) Paragraph(numberOfSentences int, variableNumberOfSentences 
 	return strings.Join(sentences, " "), nil
 }
 
+// ParagraphsAsList generates a list of random paragraphs.
+//
+// Parameters:
+// - numberOfParagraphs: The number of paragraphs to generate.
+//
+// Returns:
+// - A slice of strings representing randomly generated paragraphs.
 func (bl *BaseLorem) ParagraphsAsList(numberOfParagraphs ...int) ([]string, error) {
 	n := 3
 	if len(numberOfParagraphs) > 0 {
@@ -148,6 +206,14 @@ func (bl *BaseLorem) ParagraphsAsText(numberOfParagraphs ...int) (string, error)
 	}
 	return strings.Join(paragraphs, "\n\n"), nil
 }
+
+// Text generates a random text with a specified maximum number of characters.
+//
+// Parameters:
+// - maxNumberOfCharacters (optional): The maximum number of characters for the generated text.
+//
+// Returns:
+// - A string representing randomly generated text.
 func (bl *BaseLorem) Text(maxNumberOfCharacters ...int) (string, error) {
 	maxN := 200
 	if len(maxNumberOfCharacters) > 0 {
